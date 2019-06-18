@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name="keywords" content="EMall网上商城">
+    <meta name="description" content="EMall网上商城">
+    <title>商品详情 - EMall</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/detail.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/js/jquery-3.3.1.js"></script>
+    <script src="${pageContext.request.contextPath}/js/common.js"></script>
+</head>
+<body>
+<div class="nav">
+    <div class="w">
+        <div class="user-info">
+            <span class="user login">
+                <span class="link-text"> 欢迎 <span class="username">${user.getuName()}，</span> </span>
+                <span class="link js-logout" id="exit">退出</span>
+            </span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="link" href="">购物车(<span class="cart-count">0</span>)</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的订单</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="${pageContext.request.contextPath}/views/back/user/userCenter.jsp">我的EMall</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="header">
+    <div class="w">
+        <a class="logo" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+        <div class="search-con">
+            <form action="${pageContext.request.contextPath}/goods/keyWord" method="post">
+                <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
+                <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="crumb">
+    <div class="w">
+        <div class="crumb-con">
+            <a class="link" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+            <span>&gt;</span>
+            <span class="link-text">商品详情页</span>
+        </div>
+    </div>
+</div>
+<div class="page-wrap w">
+    <div class="intro-wrap">
+        <div class="p-img-con">
+            <div class="main-img-con">
+                <img class="main-img" src="${goods.gPicture}" alt="${goods.gName}">
+            </div>
+        </div>
+        <div class="p-info-con">
+            <h1 class="p-name">${goods.gName}</h1>
+            <p class="p-subtitle">${goods.gDescribe}</p>
+            <div class="p-info-item p-price-con">
+                <span class="label">价格:</span>
+                <span class="info">￥${goods.gPrice}</span>
+            </div>
+            <div class="p-info-item">
+                <span class="label">库存:</span>
+                <span class="info">${goods.gStock}</span>
+            </div>
+            <div class="p-info-item p-count-con">
+                <span class="label">数量:</span>
+                <input type="text" class="p-count" value="1">
+            </div>
+            <div class="p-info-item">
+                <a class="btn cart-add">加入购物车</a>
+            </div>
+        </div>
+    </div>
+    <div class="detail-wrap">
+        <div class="detail-tab-con">
+            <ul class="tab-list">
+                <li class="tab-item active">详细描述</li>
+            </ul>
+        </div>
+        <div class="detail-con">
+            <p>${goods.gDetails}</p>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="w">
+        <div class=links>EMall网上商城</div>
+    </div>
+</div>
+</body>
+</html>

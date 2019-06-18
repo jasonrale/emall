@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name="keywords" content="EMall网上商城">
+    <meta name="description" content="EMall网上商城">
+    <title>商品列表 - EMall</title>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/list.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/js/jquery-3.3.1.js"></script>
+    <script src="${pageContext.request.contextPath}/js/common.js"></script>
+    <script src="${pageContext.request.contextPath}/js/goodslist.js"></script>
+</head>
+<body>
+<div class="nav">
+    <div class="w">
+        <div class="user-info">
+            <span class="user login">
+                <span class="link-text"> 欢迎 <span class="username">${user.getuName()}，</span> </span>
+                <span class="link js-logout" id="exit">退出</span>
+            </span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="link" href="">购物车(<span class="cart-count">0</span>)</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的订单</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="${pageContext.request.contextPath}/views/back/user/userCenter.jsp">我的EMall</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="header">
+    <div class="w">
+        <a class="logo" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+        <div class="search-con">
+            <form action="${pageContext.request.contextPath}/goods/keyWord" method="post">
+                <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
+                <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="crumb">
+    <div class="w">
+        <div class="crumb-con">
+            <a class="link" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+            <span>&gt;</span>
+            <span class="link-text">商品列表页</span>
+        </div>
+    </div>
+</div>
+<div class="page-wrap w">
+    <ul class="sort-con">
+        <li class="sort-item active" id="default">默认排序</li>
+        <li class="sort-item" id="price">价格排序</li>
+    </ul>
+    <!-- list 容器 -->
+    <div id="list">
+        <c:choose>
+            <c:when test="${glist != null}">
+                <ul class="p-list-con">
+                    <c:forEach items="${glist}" var="goods">
+                        <li class="p-item">
+                            <div class="p-img-con">
+                                <a class="link" href="${pageContext.request.contextPath}/goods/detail?gId=${goods.gId}">
+                                    <img class="p-img" src="${goods.gPicture}" alt="${goods.gName}">
+                                </a>
+                            </div>
+                            <div class="p-price-con">
+                                <span class="p-price">${goods.gPrice}</span>
+                            </div>
+                            <div class="p-name-con">
+                                <a class="p-name" href="${pageContext.request.contextPath}/goods/detail?gId=${goods.gId}">${goods.gName}</a>
+                            </div>
+                        </li>
+                    </c:forEach>
+                </ul>
+            </c:when>
+            <c:otherwise>
+                <ul class="p-list-con">  <p class="err-tip">很抱歉，实在找不到您要的商品。</p> </ul>
+            </c:otherwise>
+        </c:choose>
+    </div>
+    <!-- 分页容器 -->
+    <div class="pagination"></div>
+</div>
+<div class="footer">
+    <div class="w">
+        <div class=links>EMall网上商城</div>
+    </div>
+</div>
+</body>
+</html>

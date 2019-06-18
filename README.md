@@ -1,2 +1,2 @@
 # emall
-Emall for graduaction project.
+Emall for graduation project.

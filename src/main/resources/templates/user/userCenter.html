@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name="keywords" content="EMall网上商城">
+    <meta name="description" content="EMall网上商城">
+    <title>个人中心 - EMall</title>
+    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/css/userCenter.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/js/jquery-3.3.1.js"></script>
+    <script src="${pageContext.request.contextPath}/js/common.js"></script>
+</head>
+<body>
+<div class="nav">
+    <div class="w">
+        <div class="user-info">
+            <span class="user login">
+                <span class="link-text"> 欢迎 <span class="username">${user.getuName()}，</span> </span>
+                <span class="link js-logout" id="exit">退出</span>
+            </span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="link" href="">购物车(<span class="cart-count">0</span>)</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的订单</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的EMall</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="header">
+    <div class="w">
+        <a class="logo" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+        <div class="search-con">
+            <form action="${pageContext.request.contextPath}/goods/keyWord" method="post">
+                <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
+                <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="crumb">
+    <div class="w">
+        <div class="crumb-con">
+            <a class="link" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+            <span>></span>
+            <span class="link-text">个人中心</span>
+        </div>
+    </div>
+</div>
+<div class="page-wrap w">
+    <ul class="nav-side">
+        <li class="nav-item active">
+            <a class="link" href="">个人中心</a>
+        </li>
+        <li class="nav-item">
+            <a class="link" href="">我的订单</a> </li>
+        <li class="nav-item">
+            <a class="link" href="${pageContext.request.contextPath}/views/back/user/password.jsp">修改密码</a>
+        </li>
+    </ul>
+    <div class="content with-nav">
+        <div class="panel">
+            <div class="panel-title">个人中心</div>
+            <div class="panel-body">
+                <div class="user-info">
+                    <div class="form-line">
+                        <span class="label">用户名：</span>
+                        <span class="text">${user.getuName()}</span>
+                    </div>
+                    <div class="form-line">
+                        <span class="label">性 别：</span>
+                        <span class="text">${user.getuSex()}</span>
+                    </div>
+                    <div class="form-line">
+                        <span class="label">手机号：</span>
+                        <span class="text">${user.getuPhoneNumber()}</span>
+                    </div>
+                    <a class="btn btn-submit" href="${pageContext.request.contextPath}/views/back/user/userUpdate.jsp">编辑</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="w">
+        <div class=links>EMall网上商城</div>
+    </div>
+</div>
+</body>
+</html>
