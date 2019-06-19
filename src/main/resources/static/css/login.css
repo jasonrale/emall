@@ -1,5 +1,6 @@
 .nav-simple {
-    height: 60px;
+    padding-top: 10px;
+    height: 75px;
     line-height: 60px;
     border-bottom: 1px solid #ddd;
     background: #fff
@@ -13,7 +14,7 @@
 }
 
 .page-wrap {
-    padding: 40px 0;
+    padding: 100px;
     background: #e72955
 }
 

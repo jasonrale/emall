@@ -56,7 +56,10 @@
 .nav .user .link {
     margin-right: 5px
 }
-
+.nav .user .link.login {
+    display: inline-block;
+    color: #c60023;
+}
 .nav .nav-list {
     float: right
 }

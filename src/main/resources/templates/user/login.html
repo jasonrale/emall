@@ -12,11 +12,14 @@
     <link rel="stylesheet" th:href="@{/css/login.css}">
     <script th:src="@{/js/jquery-3.3.1.js}"></script>
     <script th:src="@{/js/login.js}"></script>
+    <script th:src="@{/layer/layer.js}"></script>
+    <script th:src="@{/jquery-validation/jquery.validate.min.js}"></script>
+    <script th:src="@{/jquery-validation/localization/messages_zh.min.js}"></script>
 </head>
 <body>
 <div class="nav-simple">
     <div class="w">
-        <a class="logo" th:href="@{/index.html}">EMall</a>
+        <a class="logo" th:href="@{/}">EMall</a>
     </div>
 </div>
 <div class="page-wrap">
@@ -27,19 +30,21 @@
                 <div class="error-item">
                     <p class="err-msg">Error</p>
                 </div>
-                <div class="user-item">
-                    <label class="user-label" for="username">
-                        帐号：
-                    </label>
-                    <input class="user-content" id="username" placeholder="请输入用户名" autocomplete="off" autofocus/>
-                </div>
-                <div class="user-item">
-                    <label class="user-label" for="password">
-                        密码：
-                    </label>
-                    <input type="password" class="user-content" id="password" placeholder="请输入密码" autocomplete="off"/>
-                </div>
-                <a class="btn btn-submit" id="submit">登录</a>
+                <form name="loginForm" id="loginForm" method="post">
+                    <div class="user-item">
+                        <label class="user-label" for="username">
+                            帐号：
+                        </label>
+                        <input class="user-content" id="username" placeholder="请输入用户名" autocomplete="off" autofocus/>
+                    </div>
+                    <div class="user-item">
+                        <label class="user-label" for="password">
+                            密码：
+                        </label>
+                        <input type="password" class="user-content" id="password" placeholder="请输入密码" autocomplete="off"/>
+                    </div>
+                    <a class="btn btn-submit" id="submit">登录</a>
+                </form>
                 <div class="link-item">
                     <a class="link" href="">免费注册</a>
                 </div>

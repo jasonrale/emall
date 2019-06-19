@@ -18,8 +18,9 @@
     <div class="w">
         <div class="user-info">
             <span class="user login">
-                <span class="link-text"> 欢迎 <span class="username">${user.getuName()}，</span> </span>
-                <span class="link js-logout" id="exit">退出</span>
+                <span class="link login" id="login">登录</span>
+                <span class="link-text" style="display: none"> 欢迎 <span class="username"></span> </span>
+                <span class="link js-logout" style="display: none" id="exit">退出</span>
             </span>
         </div>
         <ul class="nav-list">
@@ -30,16 +31,16 @@
                 <a class="link" href="">我的订单</a>
             </li>
             <li class="nav-item">
-                <a class="link" href="${pageContext.request.contextPath}/views/back/user/userCenter.jsp">我的EMall</a>
+                <a class="link" href="">我的EMall</a>
             </li>
         </ul>
     </div>
 </div>
 <div class="header">
     <div class="w">
-        <a class="logo" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+        <span class="logo">EMall</span>
         <div class="search-con">
-            <form action="${pageContext.request.contextPath}/goods/keyWord" method="post">
+            <form action="" method="post">
                 <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
                 <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
             </form>
@@ -49,80 +50,80 @@
 <div class="w">
     <ul class="keywords-list">
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=手机">手机</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=数码">数码</a>
+            <a class="link" target="_blank" href="">手机</a>
+            <a class="link" target="_blank" href="">数码</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=电脑">电脑</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=办公配件">办公配件</a>
+            <a class="link" target="_blank" href="">电脑</a>
+            <a class="link" target="_blank" href="">办公配件</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=电视">电视</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=空调">空调</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=冰箱">冰箱</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=洗衣机">洗衣机</a>
+            <a class="link" target="_blank" href="">电视</a>
+            <a class="link" target="_blank" href="">空调</a>
+            <a class="link" target="_blank" href="">冰箱</a>
+            <a class="link" target="_blank" href="">洗衣机</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=厨卫家电">厨卫家电</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=小家电">小家电</a>
+            <a class="link" target="_blank" href="">厨卫家电</a>
+            <a class="link" target="_blank" href="">小家电</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=家具">家具</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=家具">家具</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=家装">家装</a>
+            <a class="link" target="_blank" href="">家具</a>
+            <a class="link" target="_blank" href="">家具</a>
+            <a class="link" target="_blank" href="">家装</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=厨卫家电">厨卫家电</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=小家电">小家电</a>
+            <a class="link" target="_blank" href="">厨卫家电</a>
+            <a class="link" target="_blank" href="">小家电</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=个护化妆">个护化妆</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=清洁用品">清洁用品</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=纸品">纸品</a>
+            <a class="link" target="_blank" href="">个护化妆</a>
+            <a class="link" target="_blank" href="">清洁用品</a>
+            <a class="link" target="_blank" href="">纸品</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=母婴用品">母婴用品</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=儿童玩具">儿童玩具</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=童装童鞋">童装童鞋</a>
+            <a class="link" target="_blank" href="">母婴用品</a>
+            <a class="link" target="_blank" href="">儿童玩具</a>
+            <a class="link" target="_blank" href="">童装童鞋</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=鞋靴">鞋靴</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=箱包">箱包</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=钟表">钟表</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=珠宝">珠宝</a>
+            <a class="link" target="_blank" href="">鞋靴</a>
+            <a class="link" target="_blank" href="">箱包</a>
+            <a class="link" target="_blank" href="">钟表</a>
+            <a class="link" target="_blank" href="">珠宝</a>
         </li>
         <li class="keywords-item">
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=图书">图书</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=音像">音像</a>
-            <a class="link" target="_blank" href="${pageContext.request.contextPath}/goods/key?key=电子书">电子书</a>
+            <a class="link" target="_blank" href="">图书</a>
+            <a class="link" target="_blank" href="">音像</a>
+            <a class="link" target="_blank" href="">电子书</a>
         </li>
     </ul>
     <div class="banner-con">
         <div class="banner has-dots" style="overflow: hidden; width: 830px; height: 370px;">
             <ul style="width: 500%; position: relative; left: 0%; height: 370px;">
                 <li style="width: 20%;">
-                    <a href="${pageContext.request.contextPath}/goods/cId?cId=1007"" target="_blank">
-                    <img class="banner-img" src="${pageContext.request.contextPath}/images/banner1.jpg"/>
+                    <a href="" target="_blank">
+                    <img class="banner-img" src=""/>
                     </a>
                 </li>
                 <li style="width: 20%;">
-                    <a href="${pageContext.request.contextPath}/goods/cId?cId=1007" target="_blank">
-                        <img class="banner-img" src="${pageContext.request.contextPath}/images/banner2.jpg"/>
+                    <a href="" target="_blank">
+                        <img class="banner-img" src=""/>
                     </a>
                 </li>
                 <li style="width: 20%;">
-                    <a href="${pageContext.request.contextPath}/goods/cId?cId=1007" target="_blank">
-                        <img class="banner-img" src="${pageContext.request.contextPath}/images/banner3.jpg"/>
+                    <a href="" target="_blank">
+                        <img class="banner-img" src=""/>
                     </a>
                 </li>
                 <li style="width: 20%;">
-                    <a href="${pageContext.request.contextPath}/goods/cId?cId=1007" target="_blank">
-                        <img class="banner-img" src="${pageContext.request.contextPath}/images/banner4.jpg"/>
+                    <a href="" target="_blank">
+                        <img class="banner-img" src=""/>
                     </a>
                 </li>
                 <li style="width: 20%;">
-                    <a href="${pageContext.request.contextPath}/goods/cId?cId=1007" target="_blank">
-                        <img class="banner-img" src="${pageContext.request.contextPath}/images/banner5.jpg"/>
+                    <a href="" target="_blank">
+                        <img class="banner-img" src=""/>
                     </a>
                 </li>
             </ul>
@@ -147,33 +148,33 @@
         <h1 class="floor-title">F1 家用电器</h1>
         <ul class="floor-list">
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1001">
+                <a href="">
                     <span class="floor-text">冰箱</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor1-1.jpg" alt="双开门冰箱" />
+                    <img class="floor-img" src="" alt="双开门冰箱" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1002">
+                <a href="">
                     <span class="floor-text">电视</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor1-2.jpg" alt="电视" />
+                    <img class="floor-img" src="" alt="电视" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1003">
+                <a href="">
                     <span class="floor-text">洗衣机</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor1-3.jpg" alt="洗衣机" />
+                    <img class="floor-img" src="" alt="洗衣机" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1004">
+                <a href="">
                     <span class="floor-text">空调</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor1-4.jpg" alt="空调" />
+                    <img class="floor-img" src="" alt="空调" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1005">
+                <a href="">
                     <span class="floor-text">热水器</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor1-5.jpg" alt="热水器" />
+                    <img class="floor-img" src="$" alt="热水器" />
                 </a>
             </li>
         </ul>
@@ -182,33 +183,33 @@
         <h1 class="floor-title">F2 数码3C</h1>
         <ul class="floor-list">
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1006">
+                <a href="">
                     <span class="floor-text">笔记本电脑</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor2-1.jpg" alt="笔记本电脑" />
+                    <img class="floor-img" src="" alt="笔记本电脑" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1007">
+                <a href="">
                     <span class="floor-text">手机</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor2-2.jpg" alt="手机" />
+                    <img class="floor-img" src="" alt="手机" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1008">
+                <a href="">
                     <span class="floor-text">平板电脑</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor2-3.jpg" alt="平板电脑" />
+                    <img class="floor-img" src="" alt="平板电脑" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1009">
+                <a href="">
                     <span class="floor-text">数码相机</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor2-4.jpg" alt="数码相机" />
+                    <img class="floor-img" src="" alt="数码相机" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1010">
+                <a href="">
                     <span class="floor-text">3C配件</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor2-5.jpg" alt="3C配件" />
+                    <img class="floor-img" src="" alt="3C配件" />
                 </a>
             </li>
         </ul>
@@ -217,33 +218,33 @@
         <h1 class="floor-title">F3 服装箱包</h1>
         <ul class="floor-list">
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1011">
+                <a href="">
                     <span class="floor-text">女装</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor3-1.jpg" alt="女装" />
+                    <img class="floor-img" src="" alt="女装" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1012">
+                <a href="">
                     <span class="floor-text">帽子</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor3-2.jpg" alt="帽子专区" />
+                    <img class="floor-img" src="" alt="帽子专区" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1013">
+                <a href="">
                     <span class="floor-text">旅行箱</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor3-3.jpg" alt="旅行箱" />
+                    <img class="floor-img" src="" alt="旅行箱" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1014">
+                <a href="">
                     <span class="floor-text">手提包</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor3-4.jpg" alt="手提包" />
+                    <img class="floor-img" src="" alt="手提包" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href=".${pageContext.request.contextPath}/goods/cId?cId=1015">
+                <a href="">
                     <span class="floor-text">保暖内衣</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor3-5.jpg" alt="保暖内衣" />
+                    <img class="floor-img" src="" alt="保暖内衣" />
                 </a>
             </li>
         </ul>
@@ -252,33 +253,33 @@
         <h1 class="floor-title">F4 食品生鲜</h1>
         <ul class="floor-list">
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1016">
+                <a href="">
                     <span class="floor-text">零食</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor4-1.jpg" alt="最爱零食" />
+                    <img class="floor-img" src="" alt="最爱零食" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1017">
+                <a href="">
                     <span class="floor-text">生鲜</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor4-2.jpg" alt="生鲜" />
+                    <img class="floor-img" src="" alt="生鲜" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1018">
+                <a href="">
                     <span class="floor-text">半成品菜</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor4-3.jpg" alt="半成品菜" />
+                    <img class="floor-img" src="" alt="半成品菜" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1019">
+                <a href="">
                     <span class="floor-text">速冻专区</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor4-4.jpg" alt="速冻专区" />
+                    <img class="floor-img" src="" alt="速冻专区" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1020">
+                <a href="">
                     <span class="floor-text">进口牛奶</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor4-5.jpg" alt="进口牛奶" />
+                    <img class="floor-img" src="" alt="进口牛奶" />
                 </a>
             </li>
         </ul>
@@ -287,33 +288,33 @@
         <h1 class="floor-title">F5 酒水饮料</h1>
         <ul class="floor-list">
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1021">
+                <a href="">
                     <span class="floor-text">白酒</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor5-1.jpg" alt="白酒" />
+                    <img class="floor-img" src="" alt="白酒" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1022">
+                <a href="">
                     <span class="floor-text">红酒</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor5-2.jpg" alt="红酒" />
+                    <img class="floor-img" src="" alt="红酒" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1023">
+                <a href="">
                     <span class="floor-text">饮料</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor5-3.jpg" alt="饮料" />
+                    <img class="floor-img" src="" alt="饮料" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1024">
+                <a href="">
                     <span class="floor-text">调制鸡尾酒</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor5-4.jpg" alt="调制鸡尾酒" />
+                    <img class="floor-img" src="" alt="调制鸡尾酒" />
                 </a>
             </li>
             <li class="floor-item">
-                <a href="${pageContext.request.contextPath}/goods/cId?cId=1025">
+                <a href="">
                     <span class="floor-text">进口洋酒</span>
-                    <img class="floor-img" src="${pageContext.request.contextPath}/images/floor5-5.jpg" alt="进口洋酒" />
+                    <img class="floor-img" src="" alt="进口洋酒" />
                 </a>
             </li>
         </ul>

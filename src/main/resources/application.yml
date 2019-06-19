@@ -1,7 +1,7 @@
 server:
   port: 8080
   servlet:
-    context-path: /emall
+    context-path: /
 
 spring:
   # thymeleaf
@@ -22,7 +22,7 @@ spring:
 
     filters: stat,wall,log4j
     maxActive: 2
-    initialSsize: 1
+    initialSize: 1
     # 配置获取连接等待超时的时间
     maxWait: 60000
     minIdle: 1

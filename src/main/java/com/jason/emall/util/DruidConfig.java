@@ -3,10 +3,11 @@ package com.jason.emall.util;
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.support.http.StatViewServlet;
 import com.alibaba.druid.support.http.WebStatFilter;
-import jdk.nashorn.internal.objects.annotations.Getter;
-import jdk.nashorn.internal.objects.annotations.Setter;
+import lombok.Getter;
+import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
@@ -18,11 +19,8 @@ import org.springframework.stereotype.Component;
 import javax.sql.DataSource;
 import java.sql.SQLException;
 
-@Configuration
 public class DruidConfig {
     private static final Logger logger = LoggerFactory.getLogger(DruidConfig.class);
-
-    private static final String DB_PREFIX = "spring.datasource";
 
     @Bean
     public ServletRegistrationBean druidServlet() {
@@ -47,48 +45,70 @@ public class DruidConfig {
     }
 
     //解决 spring.datasource.filters=stat,wall,log4j 无法正常注册进去
-    @ConfigurationProperties(prefix = DB_PREFIX)
+    @ConfigurationProperties(prefix = "spring.datasource")
     @Component
-    class IDataSourceProperties {
+    @Getter@Setter
+    @Configuration
+    class DataSourceProperties {
+        @Value("spring.datasource.url")
         private String url;
 
+        @Value("spring.datasource.username")
         private String username;
 
+        @Value("spring.datasource.password")
         private String password;
 
+        @Value("spring.datasource.driverClassName")
         private String driverClassName;
 
+        @Value("spring.datasource.filters")
         private String filters;
 
+        @Value("spring.datasource.initialSize")
         private int initialSize;
 
+        @Value("spring.datasource.minIdle")
         private int minIdle;
 
+        @Value("spring.datasource.maxActive")
         private int maxActive;
 
+        @Value("spring.datasource.maxWait")
         private int maxWait;
 
+        @Value("spring.datasource.timeBetweenEvictionRunsMillis")
         private int timeBetweenEvictionRunsMillis;
 
+        @Value("spring.datasource.minEvictableIdleTimeMillis")
         private int minEvictableIdleTimeMillis;
 
+        @Value("spring.datasource.validationQuery")
         private String validationQuery;
 
+        @Value("spring.datasource.testWhileIdle")
         private boolean testWhileIdle;
 
+        @Value("spring.datasource.testOnBorrow")
         private boolean testOnBorrow;
 
+        @Value("spring.datasource.testOnReturn")
         private boolean testOnReturn;
 
+        @Value("spring.datasource.poolPreparedStatements")
         private boolean poolPreparedStatements;
 
+        @Value("spring.datasource.maxPoolPreparedStatementPerConnectionSize")
         private int maxPoolPreparedStatementPerConnectionSize;
 
+        @Value("spring.datasource.connectionProperties")
         private String connectionProperties;
+
+        @Value("spring.datasource.useGlobalDataSourceStat")
+        private boolean useGlobalDataSourceStat;
 
         @Bean     //声明其为Bean实例
         @Primary  //在同样的DataSource中，首先使用被标注的DataSource
-        @Getter@Setter
         public DataSource dataSource() {
             DruidDataSource datasource = new DruidDataSource();
             datasource.setUrl(url);
@@ -97,6 +117,11 @@ public class DruidConfig {
             datasource.setDriverClassName(driverClassName);
 
             //configuration
+            try{
+                datasource.setFilters(filters);
+            } catch (SQLException e) {
+                System.err.println("druid configuration initialization filter: " + e);
+            }
             datasource.setInitialSize(initialSize);
             datasource.setMinIdle(minIdle);
             datasource.setMaxActive(maxActive);
@@ -109,12 +134,8 @@ public class DruidConfig {
             datasource.setTestOnReturn(testOnReturn);
             datasource.setPoolPreparedStatements(poolPreparedStatements);
             datasource.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
-            try{
-                datasource.setFilters(filters);
-            } catch (SQLException e) {
-                System.err.println("druid configuration initialization filter: " + e);
-            }
             datasource.setConnectionProperties(connectionProperties);
+            datasource.setUseGlobalDataSourceStat(useGlobalDataSourceStat);
             return datasource;
         }
     }
