@@ -11,4 +11,9 @@ public class UserController {
     public String login(){
         return "user/login";
     }
+
+    @RequestMapping(value = "/loginValidate", method = RequestMethod.POST)
+    public String loginValidate(){
+        return null;
+    }
 }
