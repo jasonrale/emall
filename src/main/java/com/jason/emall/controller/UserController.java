@@ -1,5 +1,6 @@
 package com.jason.emall.controller;
 
+import com.jason.emall.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,5 +24,4 @@ public class UserController {
 
         return null;
     }
-
 }

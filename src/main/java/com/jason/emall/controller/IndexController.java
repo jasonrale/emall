@@ -9,7 +9,6 @@ import java.lang.reflect.Method;
 @Controller
 @RequestMapping(value = "", method = RequestMethod.GET)
 public class IndexController {
-
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index() {
         return "index";
