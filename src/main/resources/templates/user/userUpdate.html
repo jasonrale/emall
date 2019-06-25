@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv=x-ua-compatible content="ie=edge">
     <meta name="keywords" content="EMall网上商城">
     <meta name="description" content="EMall网上商城">
     <title>个人中心 - EMall</title>
-    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/userUpdate.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/js/jquery-3.3.1.js"></script>
-    <script src="${pageContext.request.contextPath}/js/common.js"></script>
-    <script src="${pageContext.request.contextPath}/js/userUpdate.js"></script>
+    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon" />
+    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/userUpdate.css}">
+    <script th:src="@{/js/jquery-3.3.1.js}"></script>
+    <script th:src="@{/js/userUpdate.js}"></script>
+    <script th:src="@{/layer/layer.js}"></script>
+    <script th:src="@{/jquery-validation/jquery.validate.min.js}"></script>
+    <script th:src="@{/jquery-validation/localization/messages_zh.min.js}"></script>
 </head>
 <body>
 <div class="nav">
@@ -72,7 +76,7 @@
                 <div class="user-info">
                     <div class="form-line">
                         <span class="label">用户名：</span>
-                        <input class="input" id="username" placeholder="请输入用户名" value="${user.getuName()}" autocomplete="off" autofocus>
+                        <input class="input" id="username" placeholder="请输入用户名" value="${user.getuName()}" required="true" autocomplete="off" autofocus>
                     </div>
                     <span class="uName-error">
                         <p class="uName-msg">Error</p>
