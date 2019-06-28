@@ -1,4 +1,4 @@
-package com.jason.emall;
+package com.emall;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

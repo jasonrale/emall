@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name="description" content="商品管理">
+    <title>商品管理</title>
+    <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/js/jquery-3.3.1.js"></script>
+    <script src="${pageContext.request.contextPath}/js/admin.js"></script>
+    <script src="${pageContext.request.contextPath}/js/common.js"></script>
+</head>
+<body>
+<div id="page">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">商品管理</h1>
+            <div class="page-header-right"><a class="btn btn-primary" href="#/product/save">添加商品</a></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="search-wrap col-md-12">
+            <div class="form-inline">
+                <div class="form-group">
+                    <select id="select" class="form-control">
+                        <option value="goodId">按商品id查询</option>
+                        <option value="goodName">按商品名称查询</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="关键词" id="keyWord">
+                </div>
+                <input type="button" class="btn btn-default" value="查询" id="sbtn"/>
+            </div>
+        </div>
+        <div class="table-wrap col-lg-12">
+            <c:choose>
+                <c:when test="${page.list != null}">
+                    <table class="table table-striped table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>信息</th>
+                            <th>价格</th>
+                            <th>库存</th>
+                            <th>状态</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <c:forEach items="${page.list}" var="goods">
+                            <tr>
+                                <td>${goods.gId}</td>
+                                <td>${goods.gDescribe}</td>
+                                <td>${goods.gPrice}</td>
+                                <td>${goods.gStock}</td>
+                                <td><a class="btn btn-xs btn-warning opear">下架</a></td>
+                                <td>
+                                    <a class="opear" href="">编辑</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                        </tbody>
+                    </table>
+                </c:when>
+            </c:choose>
+        </div>
+        <input type="hidden" id="type" value="${page.type}"/>
+        <input type="hidden" id="key" value="${page.key}"/>
+        <input type="hidden" id="pageCount" value="${page.pageCount}"/>
+        <ul class="rc-pagination">
+            <li title="上一页" class=" rc-pagination-prev" aria-disabled="false" tabindex="0">
+                <a id="lastPage" class="rc-pagination-item-link"></a>
+            </li>
+            <li title="页数" tabindex="0">
+                <input type="text" id="pageNow" value="${page.pageNow}" class="rc-pagination-item" placeholder=""/>
+            </li>
+            <li tabindex="0">
+                <label class="rc-pagination-disabled rc-pagination-item">/</label>
+            </li>
+            <li title="总页数" class="rc-pagination-disabled rc-pagination-item" tabindex="0">
+                <a>${page.pageCount}</a>
+            </li>
+            <li title="下一页" tabindex="0" class=" rc-pagination-next" aria-disabled="false">
+                <a id="nextPage" class="rc-pagination-item-link"></a>
+            </li>
+
+            <li title="跳转" tabindex="0" class=" rc-pagination-item" id="skip" >
+                <a class="rc-pagination-item-link" id="get">跳转</a>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

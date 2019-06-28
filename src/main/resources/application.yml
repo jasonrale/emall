@@ -3,6 +3,8 @@ server:
   servlet:
     context-path: /
 
+logging.level.org.springframework.boot.autoconfigure: ERROR
+
 spring:
   # thymeleaf
   thymeleaf:
@@ -56,19 +58,17 @@ spring:
     # 最大建立连接等待时间
     poolMaxWaitMillis: 3000
   # security
-  security:
-    user:
-      name: admin
-      password: 123456
-      roles: ADMIN
+#  security:
+#    user:
+#      name: admin
+#      password: 123456
+#      roles: ADMIN
 
 # mybatis
 mybatis:
-  type-aliases-package: com.jason.emall.dao
+  type-aliases-package: com.emall.dao
   configuration:
     map-underscore-to-camel-case: true
     default-fetch-size: 100
     default-statement-timeout: 3000
   mapper-locations: classpath:mappers/*.xml
-
-
