@@ -25,5 +25,7 @@ public class User {
 
     private String uMobileNumber;   //用户手机号码
 
-    private String uRole;           //用户角色
+    private String uSalt;           //用户密码盐值
+
+    private Integer rId;            //用户角色id
 }

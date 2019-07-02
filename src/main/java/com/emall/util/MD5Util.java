@@ -37,6 +37,4 @@ public class MD5Util {
     public static String inputToDatabase(String input, String salt) {
         return md5(formToDatabase(inputToForm(input), salt));
     }
-
-
 }

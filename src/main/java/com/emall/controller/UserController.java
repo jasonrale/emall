@@ -1,11 +1,8 @@
 package com.emall.controller;
 
-import com.emall.entity.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -19,11 +16,11 @@ public class UserController {
         return "user/login";
     }
 
-    @RequestMapping(value = "/loginValidate", method = RequestMethod.POST)
-    public String loginValidate(@Valid User user) {
-
-        return null;
-    }
+//    @RequestMapping(value = "/loginValidate", method = RequestMethod.POST)
+//    public String loginValidate(@Valid User user) {
+//
+//        return null;
+//    }
 
     /**
      * 跳转到注册页面

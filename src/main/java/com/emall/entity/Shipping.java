@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Repository;
 
 /**
- *   收货实体类
+ *   收货信息实体类
  */
 @Getter
 @Setter
