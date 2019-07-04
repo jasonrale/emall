@@ -1,5 +1,8 @@
 package com.emall.result;
 
+import lombok.*;
+
+@Data
 public class Result<T> {
     private boolean status;
     private String msg;

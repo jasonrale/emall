@@ -1,10 +1,7 @@
 package com.emall.entity;
 
 import com.emall.validator.IsMobile;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Repository;
 
 import javax.validation.constraints.NotEmpty;
@@ -13,10 +10,7 @@ import javax.validation.constraints.Size;
 /**
  *   用户实体类
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Repository
 public class User {
     private Integer uId;            //用户id

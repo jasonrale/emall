@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:c="http://mybatis.org/schema/mybatis-mapper">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -38,7 +38,7 @@
 </div>
 <div class="header">
     <div class="w">
-        <a class="logo" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+        <span class="logo">EMall</span>
         <div class="search-con">
             <form action="${pageContext.request.contextPath}/goods/keyWord" method="post">
                 <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />

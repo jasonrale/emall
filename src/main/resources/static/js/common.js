@@ -17,4 +17,8 @@ $(document).ready(function () {
     $("#exit").click(function () {
         $(window).attr('location','/user/exit');
     });
+
+    $(".logo").click(function () {
+        $(window).attr('location', '/index');
+    });
 });

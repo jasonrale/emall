@@ -1,9 +1,6 @@
 package com.emall.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -11,10 +8,7 @@ import java.util.Date;
 /**
  *   订单实体类
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Repository
 public class Order {
     private Integer oId;            //订单id

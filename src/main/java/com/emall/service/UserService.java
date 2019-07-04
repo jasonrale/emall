@@ -1,6 +1,5 @@
 package com.emall.service;
 
-
 import com.emall.dao.UserMapper;
 import com.emall.entity.User;
 import com.emall.exception.GeneralException;
@@ -32,7 +31,7 @@ public class UserService {
         String uPassword = user.getUPassword();
 
         User userInfo = selectByUsername(uName);
-        if (userInfo.getUName().equals(uName)) {
+        if (userInfo != null) {
             throw new GeneralException("用户名已存在");
         } else {
             String salt = new SecureRandomNumberGenerator().nextBytes().toHex();

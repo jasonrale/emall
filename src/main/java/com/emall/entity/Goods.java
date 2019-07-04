@@ -1,9 +1,6 @@
 package com.emall.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
@@ -11,10 +8,7 @@ import java.math.BigDecimal;
 /**
  *   商品实体类
  */
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
 @Repository
 public class Goods {
     private Integer gId;            //商品id
