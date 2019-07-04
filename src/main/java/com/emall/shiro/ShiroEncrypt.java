@@ -12,9 +12,12 @@ public class ShiroEncrypt {
 
     /**
      * SHA-256加密
+     * @param password
+     * @param salt
+     * @return String
      */
-    public static String shiroEncryption(String password,String salt) {
+    public static String shiroEncrypt(String password,String salt) {
         // 返回加密后的密码
-        return new SimpleHash(algorithmName, password, salt, hashIterations).toString();
+        return new SimpleHash(algorithmName, password, salt, hashIterations).toBase64();
     }
 }

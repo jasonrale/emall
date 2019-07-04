@@ -19,7 +19,7 @@
 <body>
 <div class="nav-simple">
     <div class="w">
-        <a class="logo" href="/index">EMall</a>
+        <a class="logo" th:href="@{/index}">EMall</a>
     </div>
 </div>
 <div class="page-wrap">
@@ -33,20 +33,20 @@
                 <form name="loginForm" id="loginForm" method="post">
                     <div class="user-item">
                         <label class="user-label" for="username">
-                            帐号：
+                            帐号
                         </label>
                         <input class="user-content" id="username" placeholder="请输入用户名" autocomplete="off" required="true" autofocus/>
                     </div>
                     <div class="user-item">
                         <label class="user-label" for="password">
-                            密码：
+                            密码
                         </label>
                         <input type="password" class="user-content" id="password" placeholder="请输入密码" required="true" autocomplete="off"/>
                     </div>
                     <input class="btn btn-submit" id="submit" value="登录" type="submit"/>
                 </form>
                 <div class="link-item">
-                    <a class="link" href="/user/register">免费注册</a>
+                    <a class="link" th:href="@{/user/register}">免费注册</a>
                 </div>
             </div>
         </div>

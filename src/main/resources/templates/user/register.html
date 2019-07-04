@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:required="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta http-equiv=x-ua-compatible content="no-cache">
     <meta name="keywords" content="EMall网上商城">
     <meta name="description" content="EMall网上商城">
     <title>用户注册 - EMall</title>
@@ -12,6 +12,7 @@
     <link rel="stylesheet" th:href="@{/css/register.css}">
     <script th:src="@{/js/jquery-3.3.1.js}"></script>
     <script th:src="@{/js/register.js}"></script>
+    <script th:src="@{/js/common.js}"></script>
     <script th:src="@{/layer/layer.js}"></script>
     <script th:src="@{/jquery-validation/jquery.validate.min.js}"></script>
     <script th:src="@{/jquery-validation/localization/messages_zh.min.js}"></script>
@@ -30,42 +31,44 @@
                 <div class="error-item">
                     <p class="err-msg">Error</p>
                 </div>
-                <form name="registerForm" id="registerForm" method="post">
                     <div class="user-item">
                         <label class="user-label" for="username">
-                            用户名：
+                            用户名
                         </label>
                         <input class="user-content" id="username" placeholder="请输入用户名" autocomplete="off" autofocus>
                     </div>
                     <div class="user-item">
                         <label class="user-label" for="password">
-                            密码：
+                            密码
                         </label>
                         <input type="password" class="user-content" id="password" placeholder="请输入密码" autocomplete="off"/>
                     </div>
                     <div class="user-item">
                         <label class="user-label" for="pwdConfirm">
-                            确认密码：
+                            密码
                         </label>
                         <input type="password" class="user-content" id="pwdConfirm" placeholder="请再次输入密码" autocomplete="off"/>
                     </div>
                     <div class="user-item">
                         <label class="user-label">
-                            性别：
+                            性别
                         </label>
-                        <input type="radio"  class="sex" name="sex" value="男" checked/>男
-                        <input type="radio"  class="sex" name="sex" value="女"/>女
+                        <label>
+                            <input type="radio"  class="sex" name="sex" value="男" checked/>
+                        </label>男
+                        <label>
+                            <input type="radio"  class="sex" name="sex" value="女"/>
+                        </label>女
                     </div>
                     <div class="user-item">
-                        <label class="user-label" for="phone">
-                            手机号：
+                        <label class="user-label" for="mobile">
+                            手机号码
                         </label>
-                        <input class="user-content" id="phone" placeholder="请输入手机号" autocomplete="off">
+                        <input class="user-content" id="mobile" placeholder="请输入手机号" autocomplete="off">
                     </div>
                     <input type="submit" class="btn btn-submit" id="submit" value="立即注册"/>
-                </form>
                 <div class="link-item">
-                    <a class="link" href="${pageContext.request.contextPath}/views/user/login.jsp">已有帐号，去登录>></a>
+                    <a class="link" th:href="@{/user/login}">已有帐号，去登录>></a>
                 </div>
             </div>
         </div>

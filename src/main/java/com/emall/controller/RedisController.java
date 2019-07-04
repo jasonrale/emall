@@ -21,18 +21,17 @@ public class RedisController {
     public Result<String> redisGet() {
         Key key = new Key("userName", 0);
         String username = redisService.get(key, String.class);
-        return Result.success(username);
+        return Result.success("success", username);
     }
 
     @RequestMapping(value = "/keyValue", method = RequestMethod.GET)
     @ResponseBody
     public Result<Boolean> redisSet() {
         Key key = new Key("userName", 0);
-        Boolean flag = redisService.set(key, "jason");
+        boolean flag = redisService.set(key, "jason");
         if (flag) {
-            return Result.success(true);
+            return Result.success("success",true);
         }
-        return Result.error(flag);
-
+        return Result.error("error");
     }
 }

@@ -67,7 +67,7 @@
     left: 1px;
     top: 1px;
     bottom: 1px;
-    width: 40px;
+    width: 60px;
     height: 38px;
     line-height: 36px;
     background: #f3f3f3;
@@ -78,8 +78,8 @@
 }
 
 .user-con .user-item .user-content {
-    padding: 10px 0 10px 50px;
-    width: 308px;
+    padding: 10px 0 10px 70px;
+    width: 288px;
     height: 18px;
     line-height: 18px;
     font-size: 15px;

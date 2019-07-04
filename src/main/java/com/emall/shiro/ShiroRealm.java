@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
+import java.util.Arrays;
 
 /**
  *  实现AuthorizingRealm接口用户认证
@@ -49,9 +50,13 @@ public class ShiroRealm extends AuthorizingRealm {
 
     //用户认证
     @Override
-    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+    protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //获取用户信息
-        String uName = token.getPrincipal().toString();
+        UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
+        String uName = token.getUsername();
+        String uPassword = Arrays.toString(token.getPassword());
+        logger.info("开始认证--username : " + uName + "password : " + uPassword );
+
         User user = userService.selectByUsername(uName);
         if (user == null) {
             logger.error("用户名或密码错误");

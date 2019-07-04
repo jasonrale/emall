@@ -37,11 +37,11 @@ public class ShiroConfig {
         //登出
         filterChainDefinitionMap .put("/logout","logout");
         //对所有用户认证
-        filterChainDefinitionMap .put("/index","authc");
+        //filterChainDefinitionMap .put("/index","authc");
         //登录
-        shiroFilterFactoryBean.setLoginUrl("/login");
+        shiroFilterFactoryBean.setLoginUrl("user/login");
         //首页
-        shiroFilterFactoryBean.setSuccessUrl("/index");
+        //shiroFilterFactoryBean.setSuccessUrl("/index");
         //错误页面，认证不通过跳转
         //shiroFilterFactoryBean.setUnauthorizedUrl("/error");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap );

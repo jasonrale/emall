@@ -40,7 +40,7 @@ $(document).ready(function () {
     //验证手机号码
     function phoneVali() {
         var phoneNumber = $("#phone").val();
-        var phoneValidate = /^1[3|4|5|7|8]\d{9}$/;
+        var phoneValidate = /^(1[3-9])\d{9}$/;
 
         if (!(phoneValidate.test(phoneNumber))) {
             $(".phone-msg").html("手机号码格式不正确！");

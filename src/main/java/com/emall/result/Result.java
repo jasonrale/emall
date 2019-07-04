@@ -1,24 +1,21 @@
 package com.emall.result;
 
-import lombok.Getter;
-
-@Getter
 public class Result<T> {
-    private int code;
+    private boolean status;
     private String msg;
     private T data;
 
-    private Result(int code, String msg, T data) {
-        this.code = code;
+    private Result(boolean status, String msg, T data) {
+        this.status = status;
         this.msg = msg;
         this.data = data;
     }
 
-    public static<T> Result<T> success(T data) {
-        return new Result<T>(1, "success", data);
+    public static<T> Result<T> success(String msg, T data) {
+        return new Result<T>(true, msg, data);
     }
 
-    public static<T> Result<T> error(T data) {
-        return new Result<T>(0, "error", data);
+    public static<T> Result<T> error(String msg) {
+        return new Result<T>(false, msg, null);
     }
 }
