@@ -1,7 +1,9 @@
 package com.emall.dao;
 
 import com.emall.entity.OrderItem;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface OrderItemMapper {
     int deleteByPrimaryKey(Integer oiId);
 

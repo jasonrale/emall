@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:c="http://mybatis.org/schema/mybatis-mapper">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv=x-ua-compatible content="ie=edge">
@@ -10,9 +10,10 @@
     <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
     <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/list.css" rel="stylesheet">
-    <script src="${pageContext.request.contextPath}/js/jquery-3.3.1.js"></script>
+    <script th:src="@{http://code.jquery.com/jquery-3.4.1.min.js}"></script>
     <script src="${pageContext.request.contextPath}/js/common.js"></script>
     <script src="${pageContext.request.contextPath}/js/goodslist.js"></script>
+    <script th:src="@{https://www.layuicdn.com/layer-v3.1.1/layer.js}"></script>
 </head>
 <body>
 <div class="nav">

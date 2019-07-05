@@ -1,7 +1,9 @@
 package com.emall.dao;
 
 import com.emall.entity.Category;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface CategoryMapper {
     int deleteByPrimaryKey(Integer cId);
 

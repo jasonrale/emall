@@ -117,17 +117,6 @@ CREATE TABLE `orderitem`
   ROW_FORMAT = Dynamic;
 
 -- ----------------------------
--- Table structure for role
--- ----------------------------
-DROP TABLE IF EXISTS `role`;
-CREATE TABLE `role`  (
-                         `r_id`   int(255)                                                NOT NULL AUTO_INCREMENT COMMENT '角色id',
-                         `r_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色名称',
-                         `r_perm` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色权限',
-                         PRIMARY KEY (`r_id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '此表为角色权限表。' ROW_FORMAT = Dynamic;
-
--- ----------------------------
 -- Table structure for shipping
 -- ----------------------------
 DROP TABLE IF EXISTS `shipping`;
@@ -151,14 +140,12 @@ CREATE TABLE `user`  (
                          `u_id`            int(255)                                                NOT NULL AUTO_INCREMENT COMMENT '用户id',
                          `u_name`          varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名称',
                          `u_password`      varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户密码',
-                         `u_sex`           varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户性别',
+                         `u_sex`           int(255)                                                NOT NULL COMMENT '用户性别',
                          `u_mobile_number` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户手机号码',
                          `u_role`          int(255)                                                NOT NULL COMMENT '用户角色',
                          `u_salt`          varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户密码盐值',
-                         `r_id`            int(255)                                                NOT NULL COMMENT '用户角色id',
                          PRIMARY KEY (`u_id`) USING BTREE,
-                         UNIQUE INDEX `u_name` (`u_name`) USING BTREE COMMENT '用户名称索引',
-                         INDEX `r_id` (`r_id`) USING BTREE COMMENT '用户角色id索引'
+                         UNIQUE INDEX `u_name` (`u_name`) USING BTREE COMMENT '用户名称索引'
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_ci COMMENT = '此表为用户表。'

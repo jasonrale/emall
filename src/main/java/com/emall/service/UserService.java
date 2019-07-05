@@ -14,7 +14,7 @@ import static com.emall.shiro.ShiroEncrypt.shiroEncrypt;
 @Service
 public class UserService {
     @Resource
-    UserMapper userMapper;
+    private UserMapper userMapper;
 
     /**
      * 根据用户名查询用户对象
@@ -39,7 +39,7 @@ public class UserService {
             user.setUPassword(uPassword);
             user.setUSalt(salt);
             //设置为普通用户
-            user.setRId(0);
+            user.setURole(0);
             userMapper.insertSelective(user);
             return Result.success("注册成功！", user);
         }

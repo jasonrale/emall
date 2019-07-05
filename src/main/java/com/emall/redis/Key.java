@@ -1,12 +1,14 @@
 package com.emall.redis;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import org.springframework.stereotype.Repository;
 
-@Getter @Setter
-@NoArgsConstructor @AllArgsConstructor
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Repository
 public class Key {
     private String key;         //键的字符串
 

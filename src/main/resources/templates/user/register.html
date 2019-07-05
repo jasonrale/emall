@@ -13,9 +13,7 @@
     <script th:src="@{/js/jquery-3.3.1.js}"></script>
     <script th:src="@{/js/register.js}"></script>
     <script th:src="@{/js/common.js}"></script>
-    <script th:src="@{/layer/layer.js}"></script>
-    <script th:src="@{/jquery-validation/jquery.validate.min.js}"></script>
-    <script th:src="@{/jquery-validation/localization/messages_zh.min.js}"></script>
+    <script th:src="@{https://www.layuicdn.com/layer-v3.1.1/layer.js}"></script>
 </head>
 <body>
 <div class="nav-simple">
@@ -54,10 +52,10 @@
                             性别
                         </label>
                         <label>
-                            <input type="radio"  class="sex" name="sex" value="男" checked/>
+                            <input type="radio"  class="sex" name="sex" value="1" checked/>
                         </label>男
                         <label>
-                            <input type="radio"  class="sex" name="sex" value="女"/>
+                            <input type="radio"  class="sex" name="sex" value="0"/>
                         </label>女
                     </div>
                     <div class="user-item">

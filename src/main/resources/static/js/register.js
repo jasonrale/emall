@@ -11,7 +11,7 @@ $(document).ready(function () {
         var result = true;
         var userName = getUserName.val();
 
-        if (userName === "" || userName === null) {
+        if (userName === "") {
             $(".err-msg").html("用户名不能为空！");
             $(".error-item").css("display", "block");
             result = false;
@@ -29,7 +29,6 @@ $(document).ready(function () {
     function pwdValid() {
         var result = true;
         var password = getPassword.val();
-        var pwdConfirm = getConfirm.val();
 
         if (password.length < 6) {
             $(".err-msg").html("密码长度不能少于6位！");

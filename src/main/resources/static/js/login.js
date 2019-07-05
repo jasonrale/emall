@@ -1,40 +1,33 @@
-﻿// $(document).ready(function () {
-//     $("#submit").click(function () {
-//         var userName = $("#username").val();
-//         var password = $("#password").val();
-//
-//         if (userName === "" || password === "") {
-//             $(".err-msg").html("用户名或密码不能为空！");
-//             $(".error-item").css("display", "block")
-//         } else {
-//             var login = {"uName" : userName, "uPassword" : password};
-//             $.ajax({
-//                 type : "post",
-//                 url : "/emall/login/validate",
-//                 data : login,
-//                 success : function (msg) {
-//                     console.log(msg);
-//                     if (msg === 0) {
-//                         $(".err-msg").html("用户名或密码错误！");
-//                         $(".error-item").css("display", "block")
-//                     } else if (msg === 1) {
-//                         $(window).attr("location","/emall/views/back/index.jsp");
-//                     } else if (msg === -1) {
-//                         $(window).attr("location","/emall/views/admin/admin.jsp");
-//                     }
-//                 }
-//             });
-//         }
-//     });
-// });
-
-//登录验证
+﻿//登录验证
 $(document).ready(function () {
     $("#submit").click(function () {
-        $("#loginForm").validate({
-            submitHandler:function(form){
-                form.submit();
-            }
-        });
+        var username = $("#username").val();
+        var password = $("#password").val();
+
+        if (username === "" || password === "") {
+            $(".err-msg").html("用户名或密码不能为空！");
+            $(".error-item").css("display", "block")
+        } else {
+            var login = {"uName" : username, "uPassword" : password};
+            $.ajax({
+                type : "post",
+                url : "/user/loginValidate",
+                data : login,
+                success : function (data) {
+                    if (data.status === true) {
+                        showLoading();
+                        layer.msg(data.msg);
+                        if (data.obj === 0) {
+                            $(window).attr("location","/index");
+                        } else {
+                            $(window).attr("location","/admin/index");
+                        }
+                    } else{
+                        $(".err-msg").html("用户名或密码错误！");
+                        $(".error-item").css("display", "block")
+                    }
+                }
+            });
+        }
     });
 });

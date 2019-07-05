@@ -5,14 +5,14 @@
     <id column="u_id" jdbcType="INTEGER" property="uId" />
     <result column="u_name" jdbcType="VARCHAR" property="uName" />
     <result column="u_password" jdbcType="VARCHAR" property="uPassword" />
-    <result column="u_sex" jdbcType="VARCHAR" property="uSex" />
+    <result column="u_sex" jdbcType="INTEGER" property="uSex" />
     <result column="u_mobile_number" jdbcType="VARCHAR" property="uMobileNumber" />
+    <result column="u_role" jdbcType="INTEGER" property="uRole" />
     <result column="u_salt" jdbcType="VARCHAR" property="uSalt" />
-    <result column="r_id" jdbcType="INTEGER" property="rId" />
   </resultMap>
 
   <sql id="Base_Column_List">
-    u_id, u_name, u_password, u_sex, u_mobile_number, u_salt, r_id
+    u_id, u_name, u_password, u_sex, u_mobile_number, u_role, u_salt
   </sql>
 
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -22,12 +22,12 @@
     where u_id = #{uId,jdbcType=INTEGER}
   </select>
 
-    <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from user
-        where u_name = #{uName,jdbcType=VARCHAR}
-    </select>
+  <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    where u_name = #{uName,jdbcType=VARCHAR}
+  </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
@@ -35,10 +35,10 @@
   </delete>
 
   <insert id="insert" parameterType="com.emall.entity.User">
-    insert into user (u_id, u_name, u_password, u_sex, u_mobile_number, u_salt, r_id)
+    insert into user (u_id, u_name, u_password, u_sex, u_mobile_number, u_role, u_salt)
     values (#{uId,jdbcType=INTEGER}, #{uName,jdbcType=VARCHAR}, #{uPassword,jdbcType=VARCHAR}, 
-      #{uSex,jdbcType=VARCHAR}, #{uMobileNumber,jdbcType=VARCHAR}, #{uSalt,jdbcType=VARCHAR}, 
-      #{rId,jdbcType=INTEGER})
+      #{uSex,jdbcType=INTEGER}, #{uMobileNumber,jdbcType=VARCHAR}, #{uRole,jdbcType=INTEGER}, 
+      #{uSalt,jdbcType=VARCHAR})
   </insert>
 
   <insert id="insertSelective" parameterType="com.emall.entity.User">
@@ -59,11 +59,11 @@
       <if test="uMobileNumber != null">
         u_mobile_number,
       </if>
+      <if test="uRole != null">
+        u_role,
+      </if>
       <if test="uSalt != null">
         u_salt,
-      </if>
-      <if test="rId != null">
-        r_id,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -77,21 +77,21 @@
         #{uPassword,jdbcType=VARCHAR},
       </if>
       <if test="uSex != null">
-        #{uSex,jdbcType=VARCHAR},
+        #{uSex,jdbcType=INTEGER},
       </if>
       <if test="uMobileNumber != null">
         #{uMobileNumber,jdbcType=VARCHAR},
       </if>
+      <if test="uRole != null">
+        #{uRole,jdbcType=INTEGER},
+      </if>
       <if test="uSalt != null">
         #{uSalt,jdbcType=VARCHAR},
-      </if>
-      <if test="rId != null">
-        #{rId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.User">
+  <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.User">
     update user
     <set>
       <if test="uName != null">
@@ -101,29 +101,29 @@
         u_password = #{uPassword,jdbcType=VARCHAR},
       </if>
       <if test="uSex != null">
-        u_sex = #{uSex,jdbcType=VARCHAR},
+        u_sex = #{uSex,jdbcType=INTEGER},
       </if>
       <if test="uMobileNumber != null">
         u_mobile_number = #{uMobileNumber,jdbcType=VARCHAR},
       </if>
+      <if test="uRole != null">
+        u_role = #{uRole,jdbcType=INTEGER},
+      </if>
       <if test="uSalt != null">
         u_salt = #{uSalt,jdbcType=VARCHAR},
-      </if>
-      <if test="rId != null">
-        r_id = #{rId,jdbcType=INTEGER},
       </if>
     </set>
     where u_id = #{uId,jdbcType=INTEGER}
   </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.emall.entity.User">
+  <update id="updateByPrimaryKey" parameterType="com.emall.entity.User">
     update user
     set u_name = #{uName,jdbcType=VARCHAR},
       u_password = #{uPassword,jdbcType=VARCHAR},
-      u_sex = #{uSex,jdbcType=VARCHAR},
+      u_sex = #{uSex,jdbcType=INTEGER},
       u_mobile_number = #{uMobileNumber,jdbcType=VARCHAR},
-      u_salt = #{uSalt,jdbcType=VARCHAR},
-      r_id = #{rId,jdbcType=INTEGER}
+      u_role = #{uRole,jdbcType=INTEGER},
+      u_salt = #{uSalt,jdbcType=VARCHAR}
     where u_id = #{uId,jdbcType=INTEGER}
   </update>
 </mapper>

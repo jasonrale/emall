@@ -10,7 +10,7 @@ import javax.annotation.Resource;
 @Service
 public class RedisService {
     @Resource
-    JedisPool jedisPool;
+    private JedisPool jedisPool;
 
     /**
      * 通过key获取redis中的值然后转换成java对象

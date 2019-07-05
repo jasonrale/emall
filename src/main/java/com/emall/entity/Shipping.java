@@ -1,12 +1,16 @@
 package com.emall.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 /**
  *   收货信息实体类
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Repository
 public class Shipping {
     private Integer sId;            //收货信息id

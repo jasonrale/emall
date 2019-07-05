@@ -1,12 +1,16 @@
 package com.emall.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 /**
  *   商品类别实体类
  */
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Repository
 public class Category {
     private Integer cId;            //商品类别id

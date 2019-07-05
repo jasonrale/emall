@@ -13,7 +13,7 @@ import javax.annotation.Resource;
 @Service
 public class RedisPoolFactory {
     @Resource
-    RedisConfig redisConfig;
+    private RedisConfig redisConfig;
 
     /**
      * redis数据连接池工厂

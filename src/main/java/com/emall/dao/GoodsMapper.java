@@ -1,7 +1,9 @@
 package com.emall.dao;
 
 import com.emall.entity.Goods;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface GoodsMapper {
     int deleteByPrimaryKey(Integer gId);
 

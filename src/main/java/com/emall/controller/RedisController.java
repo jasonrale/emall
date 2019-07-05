@@ -14,7 +14,7 @@ import javax.annotation.Resource;
 @RequestMapping(value = "/redis")
 public class RedisController {
     @Resource
-    RedisService redisService;
+    private RedisService redisService;
 
     @RequestMapping(value = "/key", method = RequestMethod.GET)
     @ResponseBody
