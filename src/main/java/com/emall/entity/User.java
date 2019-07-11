@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
+
 /**
  *   用户实体类
  */
@@ -12,25 +14,25 @@ import org.springframework.stereotype.Repository;
 @NoArgsConstructor
 @AllArgsConstructor
 @Repository
-public class User {
-    //角色常量
-    public static final String GENERAL_USER = "普通用户";
+public class User implements Serializable {
+    public static final int GENERAL_USER = 0;
 
-    public static final String SYSTEM_ADMIN = "系统管理员";
+    public static final int SYSTEM_ADMIN = 1;
 
-    public static final String SERVICE_ADMIN = "业务管理员";
+    public static final int SERVICE_ADMIN = 2;
 
-    private Integer uId;            //用户id
 
-    private String uName;           //用户名称
+    private Long uId;               //用户id
+
+    private String uName;          //名称
 
     private String uPassword;       //用户密码
 
-    private Integer uSex;           //用户性别，1 ：男，0 ：女
+    private Integer uSex;           //用户性别--男 ：1，女 ：0
 
-    private String uMobileNumber;   //用户手机号码
+    private String uMobileNumber; //用户手机号码
 
-    private Integer uRole;          //用户角色，0 ：普通用户，1 ：系统管理员，2 ：业务管理员
+    private Integer uRole;          //用户角色--普通用户 ：0，系统管理员 ：1，业务管理员 ：2
 
     private String uSalt;           //用户密码盐值
 }

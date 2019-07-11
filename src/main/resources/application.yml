@@ -70,6 +70,3 @@ mybatis:
 #shiro
 shiro:
   enabled: true
-  password:
-    algorithmName: sha-256
-    hashIterations: 1024

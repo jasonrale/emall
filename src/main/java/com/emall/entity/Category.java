@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @AllArgsConstructor
 @Repository
 public class Category {
-    private Integer cId;            //商品类别id
+    private Long cId;           //商品类别id
 
-    private String cName;           //商品类别名称
+    private String cName;      //商品类别名称
 }

@@ -1,6 +1,6 @@
 package com.emall.validator;
 
-import com.emall.util.ValidatorUtil;
+import com.emall.utils.ValidatorUtil;
 import org.springframework.util.StringUtils;
 
 import javax.validation.ConstraintValidator;

@@ -1,4 +1,4 @@
-package com.emall.util;
+package com.emall.utils;
 
 import org.springframework.util.StringUtils;
 

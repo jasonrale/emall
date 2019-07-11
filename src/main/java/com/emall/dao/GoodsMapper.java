@@ -1,17 +1,15 @@
 package com.emall.dao;
 
 import com.emall.entity.Goods;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface GoodsMapper {
-    int deleteByPrimaryKey(Integer gId);
+    int deleteByPrimaryKey(Long gId);
 
     int insert(Goods record);
 
     int insertSelective(Goods record);
 
-    Goods selectByPrimaryKey(Integer gId);
+    Goods selectByPrimaryKey(Long gId);
 
     int updateByPrimaryKeySelective(Goods record);
 

@@ -1,17 +1,15 @@
 package com.emall.dao;
 
 import com.emall.entity.Category;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface CategoryMapper {
-    int deleteByPrimaryKey(Integer cId);
+    int deleteByPrimaryKey(Long cId);
 
     int insert(Category record);
 
     int insertSelective(Category record);
 
-    Category selectByPrimaryKey(Integer cId);
+    Category selectByPrimaryKey(Long cId);
 
     int updateByPrimaryKeySelective(Category record);
 

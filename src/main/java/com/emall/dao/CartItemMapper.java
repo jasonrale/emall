@@ -1,17 +1,15 @@
 package com.emall.dao;
 
 import com.emall.entity.CartItem;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface CartItemMapper {
-    int deleteByPrimaryKey(Integer ciId);
+    int deleteByPrimaryKey(Long ciId);
 
     int insert(CartItem record);
 
     int insertSelective(CartItem record);
 
-    CartItem selectByPrimaryKey(Integer ciId);
+    CartItem selectByPrimaryKey(Long ciId);
 
     int updateByPrimaryKeySelective(CartItem record);
 

@@ -7,7 +7,6 @@ import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +21,9 @@ public class ShiroConfig {
      */
     @Bean
     public ShiroRealm shiroRealm() {
-        return new ShiroRealm();
+        ShiroRealm shiroRealm = new ShiroRealm();
+        shiroRealm.setCredentialsMatcher(hashedCredentialsMatcher());
+        return shiroRealm;
     }
 
     /**
@@ -40,14 +41,13 @@ public class ShiroConfig {
      * //设置盐解析，这里要和生成盐的设置相同，使用SHA-256，解密次数1024次
      * @return
      */
-//    @Bean
-//    public HashedCredentialsMatcher hashedCredentialsMatcher() {
-//        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-//        hashedCredentialsMatcher.setHashAlgorithmName(ShiroEncrypt.algorithmName);// 散列算法
-//        hashedCredentialsMatcher.setHashIterations(ShiroEncrypt.hashIterations);// 散列的次数
-//        hashedCredentialsMatcher.setStoredCredentialsHexEncoded(true);// 表示是否存储散列后的密码为16进制，需要和生成密码时的一样，默认是base64；
-//        return hashedCredentialsMatcher;
-//    }
+    @Bean
+    public HashedCredentialsMatcher hashedCredentialsMatcher() {
+        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
+        hashedCredentialsMatcher.setHashAlgorithmName(ShiroEncrypt.algorithmName);// 散列算法
+        hashedCredentialsMatcher.setHashIterations(ShiroEncrypt.hashIterations);// 散列的次数
+        return hashedCredentialsMatcher;
+    }
 
     /**
      * Filter工厂，设置对应的过滤条件和跳转条件
@@ -73,7 +73,7 @@ public class ShiroConfig {
     }
 
     /**
-     * 加入注解的使用，不加入这个注解不生效
+     * 开启Shiro Aop 注解
      * @param securityManager
      * @return
      */

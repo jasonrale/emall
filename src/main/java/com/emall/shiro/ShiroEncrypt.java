@@ -1,24 +1,13 @@
 package com.emall.shiro;
 
+import lombok.Data;
 import org.apache.shiro.crypto.hash.SimpleHash;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
+@Data
 public class ShiroEncrypt {
-    private static String algorithmName;
+    public static final String algorithmName = "SHA-256";
 
-    private static int hashIterations;
-
-    @Value("${shiro.password.algorithmName}")
-    public void setAlgorithmName(String algorithmName) {
-        ShiroEncrypt.algorithmName = algorithmName;
-    }
-
-    @Value("${shiro.password.hashIterations}")
-    public void setHashIterations(int hashIterations) {
-        ShiroEncrypt.hashIterations = hashIterations;
-    }
+    public static final int hashIterations = 1024;
 
     /**
      * SHA-256加密

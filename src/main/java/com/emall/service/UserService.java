@@ -4,6 +4,8 @@ import com.emall.dao.UserMapper;
 import com.emall.entity.User;
 import com.emall.exception.GeneralException;
 import com.emall.result.Result;
+import com.emall.utils.SnowflakeIdWorker;
+import com.emall.utils.SpringUtil;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,8 @@ public class UserService {
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private SnowflakeIdWorker snowflakeIdWorker;
     /**
      * 根据用户名查询用户对象
      *
@@ -23,7 +27,7 @@ public class UserService {
      * @return User
      */
     public User selectByUsername(String uName) {
-        return userMapper.selectByUsername(uName);
+        return userMapper.selectByUserName(uName);
     }
 
     public Result<User> registerValidate(User user) {
@@ -36,11 +40,12 @@ public class UserService {
         } else {
             String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
             uPassword = shiroEncrypt(uPassword, salt);
+            user.setUId(snowflakeIdWorker.nextId());
             user.setUPassword(uPassword);
             user.setUSalt(salt);
             //设置为普通用户
             user.setURole(0);
-            userMapper.insertSelective(user);
+            userMapper.insert(user);
             return Result.success("注册成功！", user);
         }
     }

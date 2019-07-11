@@ -1,17 +1,15 @@
 package com.emall.dao;
 
 import com.emall.entity.Order;
-import org.springframework.stereotype.Repository;
 
-@Repository
 public interface OrderMapper {
-    int deleteByPrimaryKey(Integer oId);
+    int deleteByPrimaryKey(Long oId);
 
     int insert(Order record);
 
     int insertSelective(Order record);
 
-    Order selectByPrimaryKey(Integer oId);
+    Order selectByPrimaryKey(Long oId);
 
     int updateByPrimaryKeySelective(Order record);
 

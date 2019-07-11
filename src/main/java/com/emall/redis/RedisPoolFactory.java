@@ -1,6 +1,7 @@
 package com.emall.redis;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
@@ -10,7 +11,7 @@ import javax.annotation.Resource;
 /**
  * redis数据连接池工厂类
  */
-@Service
+@Configuration
 public class RedisPoolFactory {
     @Resource
     private RedisConfig redisConfig;

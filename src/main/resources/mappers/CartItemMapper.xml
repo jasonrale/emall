@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.CartItemMapper">
   <resultMap id="BaseResultMap" type="com.emall.entity.CartItem">
-    <id column="ci_id" jdbcType="INTEGER" property="ciId" />
-    <result column="u_id" jdbcType="INTEGER" property="uId" />
-    <result column="g_id" jdbcType="INTEGER" property="gId" />
+    <id column="ci_id" jdbcType="BIGINT" property="ciId" />
+    <result column="u_id" jdbcType="BIGINT" property="uId" />
+    <result column="g_id" jdbcType="BIGINT" property="gId" />
     <result column="g_count" jdbcType="VARCHAR" property="gCount" />
     <result column="g_price" jdbcType="DECIMAL" property="gPrice" />
     <result column="g_image" jdbcType="VARCHAR" property="gImage" />
@@ -15,23 +15,21 @@
     ci_id, u_id, g_id, g_count, g_price, g_image, ci_subtotal
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from cart_item
-    where ci_id = #{ciId,jdbcType=INTEGER}
+    where ci_id = #{ciId,jdbcType=BIGINT}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from cart_item
-    where ci_id = #{ciId,jdbcType=INTEGER}
+    where ci_id = #{ciId,jdbcType=BIGINT}
   </delete>
 
   <insert id="insert" parameterType="com.emall.entity.CartItem">
-    insert into cart_item (ci_id, u_id, g_id, 
-      g_count, g_price, g_image, 
-      ci_subtotal)
-    values (#{ciId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{gId,jdbcType=INTEGER}, 
+    insert into cart_item (ci_id, u_id, g_id, g_count, g_price, g_image, ci_subtotal)
+    values (#{ciId,jdbcType=BIGINT}, #{uId,jdbcType=BIGINT}, #{gId,jdbcType=BIGINT}, 
       #{gCount,jdbcType=VARCHAR}, #{gPrice,jdbcType=DECIMAL}, #{gImage,jdbcType=VARCHAR}, 
       #{ciSubtotal,jdbcType=DECIMAL})
   </insert>
@@ -63,13 +61,13 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="ciId != null">
-        #{ciId,jdbcType=INTEGER},
+        #{ciId,jdbcType=BIGINT},
       </if>
       <if test="uId != null">
-        #{uId,jdbcType=INTEGER},
+        #{uId,jdbcType=BIGINT},
       </if>
       <if test="gId != null">
-        #{gId,jdbcType=INTEGER},
+        #{gId,jdbcType=BIGINT},
       </if>
       <if test="gCount != null">
         #{gCount,jdbcType=VARCHAR},
@@ -90,10 +88,10 @@
     update cart_item
     <set>
       <if test="uId != null">
-        u_id = #{uId,jdbcType=INTEGER},
+        u_id = #{uId,jdbcType=BIGINT},
       </if>
       <if test="gId != null">
-        g_id = #{gId,jdbcType=INTEGER},
+        g_id = #{gId,jdbcType=BIGINT},
       </if>
       <if test="gCount != null">
         g_count = #{gCount,jdbcType=VARCHAR},
@@ -108,17 +106,17 @@
         ci_subtotal = #{ciSubtotal,jdbcType=DECIMAL},
       </if>
     </set>
-    where ci_id = #{ciId,jdbcType=INTEGER}
+    where ci_id = #{ciId,jdbcType=BIGINT}
   </update>
 
   <update id="updateByPrimaryKey" parameterType="com.emall.entity.CartItem">
     update cart_item
-    set u_id = #{uId,jdbcType=INTEGER},
-      g_id = #{gId,jdbcType=INTEGER},
+    set u_id = #{uId,jdbcType=BIGINT},
+      g_id = #{gId,jdbcType=BIGINT},
       g_count = #{gCount,jdbcType=VARCHAR},
       g_price = #{gPrice,jdbcType=DECIMAL},
       g_image = #{gImage,jdbcType=VARCHAR},
       ci_subtotal = #{ciSubtotal,jdbcType=DECIMAL}
-    where ci_id = #{ciId,jdbcType=INTEGER}
+    where ci_id = #{ciId,jdbcType=BIGINT}
   </update>
 </mapper>

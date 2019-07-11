@@ -1,7 +1,10 @@
 package com.emall.shiro;
 
 import com.emall.entity.User;
+import com.emall.redis.Key;
+import com.emall.redis.RedisService;
 import com.emall.service.UserService;
+import com.emall.utils.SnowflakeIdWorker;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
@@ -12,10 +15,10 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
+import org.apache.shiro.web.servlet.Cookie;
+import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 
@@ -31,24 +34,15 @@ public class ShiroRealm extends AuthorizingRealm {
     @Resource
     private UserService userService;
 
-//    @Autowired
-//    private HashedCredentialsMatcher hashedCredentialsMatcher;
+    @Resource
+    private SnowflakeIdWorker snowflakeIdWorker;
+
+    @Resource
+    private RedisService redisService;
 
     @Override
     public String getName() {
         return "shiroRealm";
-    }
-
-    /**
-     * //设置盐解析，这里要和生成盐的设置相同，使用SHA-256，解密次数1024次
-     * @param credentialsMatcher
-     */
-    @Override
-    public void setCredentialsMatcher(CredentialsMatcher credentialsMatcher) {
-        HashedCredentialsMatcher hashedCredentialsMatcher = new HashedCredentialsMatcher();
-        hashedCredentialsMatcher.setHashAlgorithmName("sha-256");//散列算法
-        hashedCredentialsMatcher.setHashIterations(1024);//散列的次数
-        super.setCredentialsMatcher(hashedCredentialsMatcher);
     }
 
     /**
@@ -63,7 +57,7 @@ public class ShiroRealm extends AuthorizingRealm {
         User user = (User) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加角色
-        info.addRole(user.getUId() == 0 ? GENERAL_USER : user.getUId() == 1 ? SYSTEM_ADMIN : SERVICE_ADMIN);
+        info.addRole(user.getUId() == GENERAL_USER ? "普通用户" : user.getUId() == SYSTEM_ADMIN ? "系统管理员" : "业务管理员");
         return info;
     }
 
@@ -96,6 +90,11 @@ public class ShiroRealm extends AuthorizingRealm {
             //认证通过后将用户信息放在session里
             Session session = SecurityUtils.getSubject().getSession();
             session.setAttribute("CurrentUser", user);
+            //生成cookie
+            String uuId = String.valueOf(snowflakeIdWorker.nextId());
+            Key CurrentUser = new Key(uuId, 0);
+//            redisService.set(CurrentUser, user);
+            Cookie cookie = new SimpleCookie();
             return info;
         } catch (IncorrectCredentialsException exception) {
             throw new IncorrectCredentialsException("用户名或密码错误");
