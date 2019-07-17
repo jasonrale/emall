@@ -5,7 +5,6 @@ import com.emall.entity.User;
 import com.emall.exception.GeneralException;
 import com.emall.result.Result;
 import com.emall.utils.SnowflakeIdWorker;
-import com.emall.utils.SpringUtil;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,7 @@ public class UserService {
 
     @Resource
     private SnowflakeIdWorker snowflakeIdWorker;
+
     /**
      * 根据用户名查询用户对象
      *
@@ -30,6 +30,12 @@ public class UserService {
         return userMapper.selectByUserName(uName);
     }
 
+    /**
+     * 注册验证
+     *
+     * @param user
+     * @return Result
+     */
     public Result<User> registerValidate(User user) {
         String uName = user.getUName();
         String uPassword = user.getUPassword();
@@ -49,4 +55,5 @@ public class UserService {
             return Result.success("注册成功！", user);
         }
     }
+
 }

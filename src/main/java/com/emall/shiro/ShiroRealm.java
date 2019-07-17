@@ -1,22 +1,16 @@
 package com.emall.shiro;
 
 import com.emall.entity.User;
-import com.emall.redis.Key;
-import com.emall.redis.RedisService;
 import com.emall.service.UserService;
 import com.emall.utils.SnowflakeIdWorker;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
-import org.apache.shiro.authc.credential.CredentialsMatcher;
-import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.apache.shiro.web.servlet.Cookie;
-import org.apache.shiro.web.servlet.SimpleCookie;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,9 +30,6 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Resource
     private SnowflakeIdWorker snowflakeIdWorker;
-
-    @Resource
-    private RedisService redisService;
 
     @Override
     public String getName() {
@@ -89,12 +80,8 @@ public class ShiroRealm extends AuthorizingRealm {
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, byteSalt, getName());
             //认证通过后将用户信息放在session里
             Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute("CurrentUser", user);
-            //生成cookie
-            String uuId = String.valueOf(snowflakeIdWorker.nextId());
-            Key CurrentUser = new Key(uuId, 0);
-//            redisService.set(CurrentUser, user);
-            Cookie cookie = new SimpleCookie();
+            String sessionToken = String.valueOf(snowflakeIdWorker.nextId());
+            session.setAttribute(sessionToken, user);
             return info;
         } catch (IncorrectCredentialsException exception) {
             throw new IncorrectCredentialsException("用户名或密码错误");
