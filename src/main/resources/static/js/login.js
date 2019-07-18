@@ -17,7 +17,7 @@ $(document).ready(function () {
                     if (data.status === true) {
                         showLoading();
                         layer.msg(data.msg);
-                        if (data.obj === 0) {
+                        if (data.obj.urole === 0) {
                             $(window).attr("location","/index");
                         } else {
                             $(window).attr("location","/admin/index");

@@ -80,8 +80,7 @@ public class ShiroRealm extends AuthorizingRealm {
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, byteSalt, getName());
             //认证通过后将用户信息放在session里
             Session session = SecurityUtils.getSubject().getSession();
-            String sessionToken = String.valueOf(snowflakeIdWorker.nextId());
-            session.setAttribute(sessionToken, user);
+            session.setAttribute("CurrentUser", user);
             return info;
         } catch (IncorrectCredentialsException exception) {
             throw new IncorrectCredentialsException("用户名或密码错误");

@@ -91,6 +91,12 @@
             <groupId>org.crazycake</groupId>
             <artifactId>shiro-redis</artifactId>
             <version>2.4.2.1-RELEASE</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.shiro</groupId>
+                    <artifactId>shiro-core</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--mysql and druid-->

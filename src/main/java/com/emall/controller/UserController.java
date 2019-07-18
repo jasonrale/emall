@@ -5,6 +5,7 @@ import com.emall.result.Result;
 import com.emall.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.session.Session;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,7 @@ public class UserController {
      */
     @RequestMapping(value = "/loginValidate", method = RequestMethod.POST)
     @ResponseBody
-    public Result<Integer> loginValidate(@Valid User user) {
+    public Result<User> loginValidate(@Valid User user) {
         logger.info("登录验证--" + "用户名：" + user.getUName());
         //获得Subject对象
         Subject subject = SecurityUtils.getSubject();
@@ -50,7 +51,7 @@ public class UserController {
         subject.login(token);
 
         user = (User) subject.getPrincipal();
-        return Result.success("登录成功", user.getURole());
+        return Result.success("登录成功", user);
     }
 
     /**
@@ -73,5 +74,12 @@ public class UserController {
         logger.info("注册验证--" + "用户名：" + user.getUName() + "  性别：" + user.getUSex()
                 + "  手机号码：" + user.getUMobileNumber());
         return userService.registerValidate(user);
+    }
+
+    @RequestMapping(value = "/getSession", method = RequestMethod.GET)
+    @ResponseBody
+    public Object getSession() {
+        Session session = SecurityUtils.getSubject().getSession();
+        return session.getAttribute("CurrentUser");
     }
 }
