@@ -18,6 +18,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.stereotype.Component;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
@@ -25,7 +26,7 @@ import java.time.Duration;
 
 @Data
 @EnableCaching
-@Configuration
+@Component
 @ConfigurationProperties(prefix = "spring.redis")
 public class RedisConfig {
     private String host;                //服务器地址

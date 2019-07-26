@@ -109,7 +109,7 @@ public class RedisService {
     }
 
     /**
-     * java对象转字符串
+     * Java对象转JSON字符串
      * @param value
      * @param <T>
      * @return String
@@ -132,7 +132,7 @@ public class RedisService {
     }
 
     /**
-     * 字符串转java对象
+     * JSON字符串转Java对象
      * @param str
      * @param clazz
      * @param <T>

@@ -2,7 +2,6 @@ package com.emall.shiro;
 
 import com.emall.entity.User;
 import com.emall.service.UserService;
-import com.emall.utils.SnowflakeIdWorker;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -27,9 +26,6 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Resource
     private UserService userService;
-
-    @Resource
-    private SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
     public String getName() {

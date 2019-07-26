@@ -7,7 +7,7 @@ import org.apache.shiro.crypto.hash.SimpleHash;
 public class ShiroEncrypt {
     public static final String algorithmName = "SHA-256";
 
-    public static final int hashIterations = 1024;
+    public static final int hashIterations = 10;
 
     /**
      * SHA-256加密
