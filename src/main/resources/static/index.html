@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name="keywords" content="EMall网上商城">
+    <meta name="description" content="EMall网上商城">
+    <title>首页 - EMall</title>
+    <link rel="shortcut icon" href="afrontfiles/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="afrontfiles/css/common.css">
+    <link rel="stylesheet" href="afrontfiles/css/index.css">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="afrontfiles/js/index.js"></script>
+    <script src="afrontfiles/js/common.js"></script>
+</head>
+<body>
+<div class="nav">
+    <div class="w">
+        <div class="user-info">
+            <span class="user login">
+                <span class="link login" id="login" style="display: block">登录</span>
+                <span class="link-text" id="welcome" style="display: none">欢迎 <span id="username"
+                                                                                    style="display: none"></span>，</span>
+                <span class="link js-logout" id="logout" style="display: none">退出</span>
+            </span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="link" href="">购物车(<span class="cart-count">0</span>)</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的订单</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的EMall</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="header">
+    <div class="w">
+        <span class="logo">EMall</span>
+        <div class="search-con">
+            <form action="" method="post">
+                <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
+                <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="w">
+    <ul class="keywords-list">
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">手机</a>
+            <a class="link" target="_blank" href="">数码</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">电脑</a>
+            <a class="link" target="_blank" href="">办公配件</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">电视</a>
+            <a class="link" target="_blank" href="">空调</a>
+            <a class="link" target="_blank" href="">冰箱</a>
+            <a class="link" target="_blank" href="">洗衣机</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">厨卫家电</a>
+            <a class="link" target="_blank" href="">小家电</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">家具</a>
+            <a class="link" target="_blank" href="">家具</a>
+            <a class="link" target="_blank" href="">家装</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">厨卫家电</a>
+            <a class="link" target="_blank" href="">小家电</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">个护化妆</a>
+            <a class="link" target="_blank" href="">清洁用品</a>
+            <a class="link" target="_blank" href="">纸品</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">母婴用品</a>
+            <a class="link" target="_blank" href="">儿童玩具</a>
+            <a class="link" target="_blank" href="">童装童鞋</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">鞋靴</a>
+            <a class="link" target="_blank" href="">箱包</a>
+            <a class="link" target="_blank" href="">钟表</a>
+            <a class="link" target="_blank" href="">珠宝</a>
+        </li>
+        <li class="keywords-item">
+            <a class="link" target="_blank" href="">图书</a>
+            <a class="link" target="_blank" href="">音像</a>
+            <a class="link" target="_blank" href="">电子书</a>
+        </li>
+    </ul>
+    <div class="banner-con">
+        <div class="banner has-dots" style="overflow: hidden; width: 830px; height: 370px;">
+            <ul style="width: 500%; position: relative; left: 0%; height: 370px;">
+                <li style="width: 20%;">
+                    <a href="" target="_blank">
+                    <img class="banner-img" src=""/>
+                    </a>
+                </li>
+                <li style="width: 20%;">
+                    <a href="" target="_blank">
+                        <img class="banner-img" src=""/>
+                    </a>
+                </li>
+                <li style="width: 20%;">
+                    <a href="" target="_blank">
+                        <img class="banner-img" src=""/>
+                    </a>
+                </li>
+                <li style="width: 20%;">
+                    <a href="" target="_blank">
+                        <img class="banner-img" src=""/>
+                    </a>
+                </li>
+                <li style="width: 20%;">
+                    <a href="" target="_blank">
+                        <img class="banner-img" src=""/>
+                    </a>
+                </li>
+            </ul>
+            <div class="banner-arrow prev">
+                <i class="fa fa-angle-left"></i>
+            </div>
+            <div class="banner-arrow next">
+                <i class="fa fa-angle-right"></i>
+            </div>
+            <ol class="dots">
+                <li class="dot active">1</li>
+                <li class="dot">2</li>
+                <li class="dot">3</li>
+                <li class="dot">4</li>
+                <li class="dot">5</li>
+            </ol>
+        </div>
+    </div>
+</div>
+<div class="w">
+    <div class="floor-wrap">
+        <h1 class="floor-title">F1 家用电器</h1>
+        <ul class="floor-list">
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">冰箱</span>
+                    <img class="floor-img" src="" alt="双开门冰箱" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">电视</span>
+                    <img class="floor-img" src="" alt="电视" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">洗衣机</span>
+                    <img class="floor-img" src="" alt="洗衣机" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">空调</span>
+                    <img class="floor-img" src="" alt="空调" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">热水器</span>
+                    <img class="floor-img" src="" alt="热水器" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="floor-wrap">
+        <h1 class="floor-title">F2 数码3C</h1>
+        <ul class="floor-list">
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">笔记本电脑</span>
+                    <img class="floor-img" src="" alt="笔记本电脑" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">手机</span>
+                    <img class="floor-img" src="" alt="手机" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">平板电脑</span>
+                    <img class="floor-img" src="" alt="平板电脑" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">数码相机</span>
+                    <img class="floor-img" src="" alt="数码相机" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">3C配件</span>
+                    <img class="floor-img" src="" alt="3C配件" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="floor-wrap">
+        <h1 class="floor-title">F3 服装箱包</h1>
+        <ul class="floor-list">
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">女装</span>
+                    <img class="floor-img" src="" alt="女装" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">帽子</span>
+                    <img class="floor-img" src="" alt="帽子专区" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">旅行箱</span>
+                    <img class="floor-img" src="" alt="旅行箱" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">手提包</span>
+                    <img class="floor-img" src="" alt="手提包" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">保暖内衣</span>
+                    <img class="floor-img" src="" alt="保暖内衣" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="floor-wrap">
+        <h1 class="floor-title">F4 食品生鲜</h1>
+        <ul class="floor-list">
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">零食</span>
+                    <img class="floor-img" src="" alt="最爱零食" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">生鲜</span>
+                    <img class="floor-img" src="" alt="生鲜" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">半成品菜</span>
+                    <img class="floor-img" src="" alt="半成品菜" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">速冻专区</span>
+                    <img class="floor-img" src="" alt="速冻专区" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">进口牛奶</span>
+                    <img class="floor-img" src="" alt="进口牛奶" />
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="floor-wrap">
+        <h1 class="floor-title">F5 酒水饮料</h1>
+        <ul class="floor-list">
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">白酒</span>
+                    <img class="floor-img" src="" alt="白酒" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">红酒</span>
+                    <img class="floor-img" src="" alt="红酒" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">饮料</span>
+                    <img class="floor-img" src="" alt="饮料" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">调制鸡尾酒</span>
+                    <img class="floor-img" src="" alt="调制鸡尾酒" />
+                </a>
+            </li>
+            <li class="floor-item">
+                <a href="">
+                    <span class="floor-text">进口洋酒</span>
+                    <img class="floor-img" src="" alt="进口洋酒" />
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="footer">
+    <div class="w">
+        <div class=links>EMall网上商城</div>
+    </div>
+</div>
+</body>
+</html>

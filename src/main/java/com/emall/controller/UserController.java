@@ -10,9 +10,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -26,20 +24,11 @@ public class UserController {
     private UserService userService;
 
     /**
-     * 跳转到登陆页面
-     * @return 登录页面url
-     */
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(){
-        return "user/login";
-    }
-
-    /**
      * 登录认证
      * @param user
      * @return Result
      */
-    @RequestMapping(value = "/loginValidate", method = RequestMethod.POST)
+    @PostMapping("/loginValidate")
     @ResponseBody
     public Result<User> loginValidate(@Valid User user) {
         logger.info("登录验证--" + "用户名：" + user.getUName());
@@ -55,12 +44,20 @@ public class UserController {
     }
 
     /**
-     * 跳转到注册页面
-     * @return 注册页面url
+     * 登录认证
+     * @param
+     * @return Result
      */
-    @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String register(){
-        return "user/register";
+    @GetMapping("/getCurrentUser")
+    @ResponseBody
+    public Result<Object> getCurrentUser() {
+        logger.info("获取登录用户中......");
+        Session session = SecurityUtils.getSubject().getSession();
+        Object object = session.getAttribute("CurrentUser");
+        if (object != null) {
+            return Result.success("已登录", object);
+        }
+        return Result.error("未登录");
     }
 
     /**
@@ -68,18 +65,11 @@ public class UserController {
      * @param user
      * @return Result
      */
-    @RequestMapping(value = "/registerValidate", method = RequestMethod.POST)
+    @PostMapping("/registerValidate")
     @ResponseBody
     public Result<User> registerValidate(@Valid User user) {
         logger.info("注册验证--" + "用户名：" + user.getUName() + "  性别：" + user.getUSex()
                 + "  手机号码：" + user.getUMobileNumber());
         return userService.registerValidate(user);
-    }
-
-    @RequestMapping(value = "/getSession", method = RequestMethod.GET)
-    @ResponseBody
-    public Object getSession() {
-        Session session = SecurityUtils.getSubject().getSession();
-        return session.getAttribute("CurrentUser");
     }
 }

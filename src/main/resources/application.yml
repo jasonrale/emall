@@ -1,19 +1,11 @@
 server:
-  port: 8080
+  port: 8888
   servlet:
     context-path: /
 
 logging.level.org.springframework.boot.autoconfigure: ERROR
 
 spring:
-  # thymeleaf
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    cache: false
-    enabled: true
-    encoding: UTF-8
-    mode: HTML
   # druid
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -79,6 +71,7 @@ spring:
         max-attempts: 3
         max-interval: 10000
         multiplier: 1
+    publisher-confirms: true
 
 # mybatis
 mybatis:

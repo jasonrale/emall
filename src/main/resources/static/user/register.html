@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=x-ua-compatible content="no-cache">
+    <meta name="keywords" content="EMall网上商城">
+    <meta name="description" content="EMall网上商城">
+    <title>用户注册 - EMall</title>
+    <link rel="shortcut icon" href="../afrontfiles/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="../afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../afrontfiles/css/common.css">
+    <link rel="stylesheet" href="../afrontfiles/css/register.css">
+    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="../afrontfiles/js/register.js"></script>
+    <script src="../afrontfiles/js/common.js"></script>
+    <script src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
+</head>
+<body>
+<div class="nav-simple">
+    <div class="w">
+        <span class="logo">EMall</span>
+    </div>
+</div>
+<div class="page-wrap">
+    <div class="w">
+        <div class="user-con">
+            <div class="user-title">用户注册</div>
+            <div class="user-box">
+                <div class="error-item">
+                    <p class="err-msg">Error</p>
+                </div>
+                    <div class="user-item">
+                        <label class="user-label" for="username">
+                            用户名
+                        </label>
+                        <input class="user-content" id="username" placeholder="请输入用户名" autocomplete="off" autofocus>
+                    </div>
+                    <div class="user-item">
+                        <label class="user-label" for="password">
+                            密码
+                        </label>
+                        <input type="password" class="user-content" id="password" placeholder="请输入密码" autocomplete="off"/>
+                    </div>
+                    <div class="user-item">
+                        <label class="user-label" for="pwdConfirm">
+                            密码
+                        </label>
+                        <input type="password" class="user-content" id="pwdConfirm" placeholder="请再次输入密码" autocomplete="off"/>
+                    </div>
+                    <div class="user-item">
+                        <label class="user-label">
+                            性别
+                        </label>
+                        <label>
+                            <input type="radio"  class="sex" name="sex" value="1" checked/>
+                        </label>男
+                        <label>
+                            <input type="radio"  class="sex" name="sex" value="0"/>
+                        </label>女
+                    </div>
+                    <div class="user-item">
+                        <label class="user-label" for="mobile">
+                            手机号码
+                        </label>
+                        <input class="user-content" id="mobile" placeholder="请输入手机号" autocomplete="off">
+                    </div>
+                    <input type="submit" class="btn btn-submit" id="submit" value="立即注册"/>
+                <div class="link-item">
+                    <a class="link" id="goLogin">已有帐号，去登录>></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="w">
+        <div class=links>EMall网上商城</div>
+    </div>
+</div>
+</body>
+</html>
