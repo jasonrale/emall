@@ -15,13 +15,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Repository
 public class OrderItem {
-    private Long oiId;              //订单明细id
+    private String oiId;              //订单明细id
 
-    private Long oId;              //订单id
+    private String oId;              //订单id
 
-    private Long uId;              //订单用户id
+    private String uId;              //订单用户id
 
-    private Long gId;              //订单商品id
+    private String gId;              //订单商品id
 
     private String gName;         //订单商品名称
 

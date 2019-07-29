@@ -15,11 +15,11 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Repository
 public class CartItem {
-    private Long ciId;              //购物车明细id
+    private String ciId;              //购物车明细id
 
-    private Long uId;               //用户id
+    private String uId;               //用户id
 
-    private Long gId;               //商品id
+    private String gId;               //商品id
 
     private String gCount;          //商品数量
 

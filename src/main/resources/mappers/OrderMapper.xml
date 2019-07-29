@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.OrderMapper">
   <resultMap id="BaseResultMap" type="com.emall.entity.Order">
-    <id column="o_id" jdbcType="BIGINT" property="oId" />
-    <result column="u_id" jdbcType="BIGINT" property="uId" />
+      <id column="o_id" jdbcType="VARCHAR" property="oId"/>
+      <result column="u_id" jdbcType="VARCHAR" property="uId"/>
     <result column="o_payment" jdbcType="VARCHAR" property="oPayment" />
     <result column="o_status" jdbcType="VARCHAR" property="oStatus" />
     <result column="o_create_time" jdbcType="TIMESTAMP" property="oCreateTime" />
@@ -16,28 +16,30 @@
     o_id, u_id, o_payment, o_status, o_create_time, o_payment_time, o_send_time, o_end_time
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from `order`
-    where o_id = #{oId,jdbcType=BIGINT}
+        from order
+        where o_id = #{oId,jdbcType=VARCHAR}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-
-    delete from `order`
-    where o_id = #{oId,jdbcType=BIGINT}
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete
+        from order
+        where o_id = #{oId,jdbcType=VARCHAR}
   </delete>
 
   <insert id="insert" parameterType="com.emall.entity.Order">
-    insert into `order` (o_id, u_id, o_payment, o_status, o_create_time, o_payment_time, o_send_time, o_end_time)
-    values (#{oId,jdbcType=BIGINT}, #{uId,jdbcType=BIGINT}, #{oPayment,jdbcType=VARCHAR}, 
+      insert into order (o_id, u_id, o_payment,
+                         o_status, o_create_time, o_payment_time,
+                         o_send_time, o_end_time)
+      values (#{oId,jdbcType=VARCHAR}, #{uId,jdbcType=VARCHAR}, #{oPayment,jdbcType=VARCHAR},
       #{oStatus,jdbcType=VARCHAR}, #{oCreateTime,jdbcType=TIMESTAMP}, #{oPaymentTime,jdbcType=TIMESTAMP}, 
       #{oSendTime,jdbcType=TIMESTAMP}, #{oEndTime,jdbcType=TIMESTAMP})
   </insert>
 
   <insert id="insertSelective" parameterType="com.emall.entity.Order">
-    insert into `order`
+      insert into order
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="oId != null">
         o_id,
@@ -66,10 +68,10 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="oId != null">
-        #{oId,jdbcType=BIGINT},
+          #{oId,jdbcType=VARCHAR},
       </if>
       <if test="uId != null">
-        #{uId,jdbcType=BIGINT},
+          #{uId,jdbcType=VARCHAR},
       </if>
       <if test="oPayment != null">
         #{oPayment,jdbcType=VARCHAR},
@@ -93,10 +95,10 @@
   </insert>
 
   <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.Order">
-    update `order`
+      update order
     <set>
       <if test="uId != null">
-        u_id = #{uId,jdbcType=BIGINT},
+          u_id = #{uId,jdbcType=VARCHAR},
       </if>
       <if test="oPayment != null">
         o_payment = #{oPayment,jdbcType=VARCHAR},
@@ -117,18 +119,18 @@
         o_end_time = #{oEndTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where o_id = #{oId,jdbcType=BIGINT}
+      where o_id = #{oId,jdbcType=VARCHAR}
   </update>
 
   <update id="updateByPrimaryKey" parameterType="com.emall.entity.Order">
-    update `order`
-    set u_id = #{uId,jdbcType=BIGINT},
+      update order
+      set u_id       = #{uId,jdbcType=VARCHAR},
       o_payment = #{oPayment,jdbcType=VARCHAR},
       o_status = #{oStatus,jdbcType=VARCHAR},
       o_create_time = #{oCreateTime,jdbcType=TIMESTAMP},
       o_payment_time = #{oPaymentTime,jdbcType=TIMESTAMP},
       o_send_time = #{oSendTime,jdbcType=TIMESTAMP},
       o_end_time = #{oEndTime,jdbcType=TIMESTAMP}
-    where o_id = #{oId,jdbcType=BIGINT}
+      where o_id = #{oId,jdbcType=VARCHAR}
   </update>
 </mapper>

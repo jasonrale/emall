@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @AllArgsConstructor
 @Repository
 public class Shipping {
-    private Long sId;               //收货地址id
+    private String sId;               //收货地址id
 
     private String sName;          //收货人名称
 

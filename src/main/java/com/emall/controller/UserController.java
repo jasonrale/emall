@@ -3,6 +3,7 @@ package com.emall.controller;
 import com.emall.entity.User;
 import com.emall.result.Result;
 import com.emall.service.UserService;
+import com.emall.utils.ClassCastUtil;
 import com.emall.vo.LoginVo;
 import com.emall.vo.UserUpdateVo;
 import org.apache.shiro.SecurityUtils;
@@ -117,10 +118,33 @@ public class UserController {
      */
     @PostMapping("/userUpdate")
     @ResponseBody
-    public Result<UserUpdateVo> userUpdate(@Valid UserUpdateVo userUpdateVo) {
+    public Result userUpdate(@Valid UserUpdateVo userUpdateVo) {
         logger.info("修改用户信息--" + "用户名：" + userUpdateVo.getUName() + "  性别：" + userUpdateVo.getUSex()
                 + "  手机号码：" + userUpdateVo.getUMobileNumber());
-        return userService.userUpdate(userUpdateVo);
+
+        Result result = userService.userUpdate(userUpdateVo);
+
+        if (result.isStatus()) {
+            Session session = SecurityUtils.getSubject().getSession();
+            Object object = session.getAttribute("CurrentUser");
+            ClassCastUtil castUtil = new ClassCastUtil();
+            User user;
+            try {
+                user = castUtil.classCast(object, User.class);
+            } catch (IllegalAccessException | InstantiationException e) {
+                return Result.error("登录时间过期");
+            }
+            if (user != null) {
+                user.setUName(userUpdateVo.getUName());
+                user.setUMobileNumber(userUpdateVo.getUMobileNumber());
+            } else {
+                session.removeAttribute("CurrentUser");
+            }
+
+            session.setAttribute("CurrentUser", user);
+        }
+
+        return result;
     }
 
 

@@ -15,9 +15,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Repository
 public class Order {
-    private Long oId;           //订单id
+    private String oId;           //订单id
 
-    private Long uId;           //订单用户id
+    private String uId;           //订单用户id
 
     private String oPayment;   //订单总付款
 

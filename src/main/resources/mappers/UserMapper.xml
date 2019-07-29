@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.UserMapper">
   <resultMap id="BaseResultMap" type="com.emall.entity.User">
-    <id column="u_id" jdbcType="BIGINT" property="uId" />
+      <id column="u_id" jdbcType="VARCHAR" property="uId"/>
     <result column="u_name" jdbcType="VARCHAR" property="uName" />
     <result column="u_password" jdbcType="VARCHAR" property="uPassword" />
     <result column="u_sex" jdbcType="INTEGER" property="uSex" />
@@ -15,11 +15,11 @@
     u_id, u_name, u_password, u_sex, u_mobile_number, u_role, u_salt
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from user
-    where u_id = #{uId,jdbcType=BIGINT}
+        where u_id = #{uId,jdbcType=VARCHAR}
   </select>
 
   <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -29,16 +29,16 @@
     where u_name = #{uName,jdbcType=VARCHAR}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from user
-    where u_id = #{uId,jdbcType=BIGINT}
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from user
+        where u_id = #{uId,jdbcType=VARCHAR}
   </delete>
 
   <insert id="insert" parameterType="com.emall.entity.User">
-    insert into user (u_id, u_name, u_password, u_sex, u_mobile_number, u_role, u_salt)
-    values (#{uId,jdbcType=BIGINT}, #{uName,jdbcType=VARCHAR}, #{uPassword,jdbcType=VARCHAR},
-      #{uSex,jdbcType=INTEGER}, #{uMobileNumber,jdbcType=VARCHAR}, #{uRole,jdbcType=INTEGER},
-      #{uSalt,jdbcType=VARCHAR})
+      insert into user (u_id, u_name, u_password, u_sex, u_mobile_number, u_role, u_salt)
+      values (#{uId,jdbcType=VARCHAR}, #{uName,jdbcType=VARCHAR}, #{uPassword,jdbcType=VARCHAR},
+              #{uSex,jdbcType=INTEGER}, #{uMobileNumber,jdbcType=VARCHAR}, #{uRole,jdbcType=INTEGER},
+              #{uSalt,jdbcType=VARCHAR})
   </insert>
 
   <insert id="insertSelective" parameterType="com.emall.vo.UserUpdateVo">
@@ -68,7 +68,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uId != null">
-        #{uId,jdbcType=BIGINT},
+          #{uId,jdbcType=VARCHAR},
       </if>
       <if test="uName != null">
         #{uName,jdbcType=VARCHAR},
@@ -92,10 +92,10 @@
   </insert>
 
   <update id="updateByUserId" parameterType="com.emall.vo.UserUpdateVo">
-    update user
-    set u_name = #{uName,jdbcType=VARCHAR},
+      update user
+      set u_name = #{uName,jdbcType=VARCHAR},
       u_sex = #{uSex,jdbcType=INTEGER},
       u_mobile_number = #{uMobileNumber,jdbcType=VARCHAR}
-    where u_id = #{uId,jdbcType=BIGINT}
+      where u_id = #{uId,jdbcType=VARCHAR}
   </update>
 </mapper>

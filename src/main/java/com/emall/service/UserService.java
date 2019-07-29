@@ -33,20 +33,6 @@ public class UserService {
     }
 
     /**
-     * 判断用户名是否已经存在
-     *
-     * @param userName
-     * @return Result
-     */
-    public boolean userNameExist(String userName) {
-        User userInfo = selectByUsername(userName);
-        if (userInfo != null) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
      * 注册验证
      *
      * @param user
@@ -62,7 +48,7 @@ public class UserService {
         } else {
             String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
             uPassword = shiroEncrypt(uPassword, salt);
-            user.setUId(snowflakeIdWorker.nextId());
+            user.setUId(String.valueOf(snowflakeIdWorker.nextId()));
             user.setUPassword(uPassword);
             user.setUSalt(salt);
             //设置为普通用户
@@ -77,11 +63,10 @@ public class UserService {
      * @param userUpdateVo
      * @return
      */
-    public Result<UserUpdateVo> userUpdate(@Valid UserUpdateVo userUpdateVo) {
-        if (userNameExist(userUpdateVo.getUName())) {
-            return Result.error("用户已存在");
+    public Result userUpdate(@Valid UserUpdateVo userUpdateVo) {
+        if (userMapper.updateByUserId(userUpdateVo) == 0) {
+            throw new GeneralException("用户信息修改失败");
         }
-        userMapper.updateByUserId(userUpdateVo);
         return Result.success("用户信息修改成功", userUpdateVo);
     }
 }

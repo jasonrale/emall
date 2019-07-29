@@ -15,13 +15,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Repository
 public class Goods {
-    private Long gId;           //商品id
+    private String gId;           //商品id
 
     private String gName;      //商品名称
 
     private String gDescribe;    //商品描述
 
-    private Long cId;           //商品类别id
+    private String cId;           //商品类别id
 
     private Integer gStock;     //商品库存
 

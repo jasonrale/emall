@@ -44,7 +44,7 @@ public class ShiroRealm extends AuthorizingRealm {
         User user = (User) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加角色
-        info.addRole(user.getURole() == GENERAL_USER ? "user" : user.getUId() == SYSTEM_ADMIN ? "sysAdmin" : "serAdmin");
+        info.addRole(user.getURole() == GENERAL_USER ? "user" : user.getURole() == SYSTEM_ADMIN ? "sysAdmin" : "serAdmin");
         return info;
     }
 

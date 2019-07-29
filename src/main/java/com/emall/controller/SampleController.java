@@ -18,7 +18,7 @@ public class SampleController {
     @ResponseBody
     public Result<String> mqFanout() {
         producer.sendFanout("Hello World");
-        Category category = new Category(111111L, "手机");
+        Category category = new Category("111111", "手机");
         producer.sendFanout(category);
         return Result.success("Send success:", "null");
     }
@@ -27,7 +27,7 @@ public class SampleController {
     @ResponseBody
     public Result<String> mqDirect() {
         producer.sendDirect("Hello World");
-        Category category = new Category(111111L, "手机");
+        Category category = new Category("111111", "手机");
         producer.sendDirect(category);
         return Result.success("Send success:", "null");
     }
@@ -36,7 +36,7 @@ public class SampleController {
     @ResponseBody
     public Result<String> mqTopic() {
         producer.sendTopic("Hello World");
-        Category category = new Category(111111L, "手机");
+        Category category = new Category("111111", "手机");
         producer.sendTopic(category);
         return Result.success("Send success:", "null");
     }
@@ -45,7 +45,7 @@ public class SampleController {
     @ResponseBody
     public Result<String> mqHeaders() {
         producer.sendHeaders("Hello World");
-        Category category = new Category(111111L, "手机");
+        Category category = new Category("111111", "手机");
         producer.sendHeaders(category);
         return Result.success("Send success:", "null");
     }

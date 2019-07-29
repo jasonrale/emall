@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.OrderItemMapper">
   <resultMap id="BaseResultMap" type="com.emall.entity.OrderItem">
-    <id column="oi_id" jdbcType="BIGINT" property="oiId" />
-    <result column="o_id" jdbcType="BIGINT" property="oId" />
-    <result column="u_id" jdbcType="BIGINT" property="uId" />
-    <result column="g_id" jdbcType="BIGINT" property="gId" />
+      <id column="oi_id" jdbcType="VARCHAR" property="oiId"/>
+      <result column="o_id" jdbcType="VARCHAR" property="oId"/>
+      <result column="u_id" jdbcType="VARCHAR" property="uId"/>
+      <result column="g_id" jdbcType="VARCHAR" property="gId"/>
     <result column="g_name" jdbcType="VARCHAR" property="gName" />
     <result column="g_image" jdbcType="VARCHAR" property="gImage" />
     <result column="g_price" jdbcType="DECIMAL" property="gPrice" />
@@ -17,23 +17,23 @@
     oi_id, o_id, u_id, g_id, g_name, g_image, g_price, g_count, oi_subtotal
   </sql>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from order_item
-    where oi_id = #{oiId,jdbcType=BIGINT}
+        where oi_id = #{oiId,jdbcType=VARCHAR}
   </select>
 
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-    delete from order_item
-    where oi_id = #{oiId,jdbcType=BIGINT}
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        delete from order_item
+        where oi_id = #{oiId,jdbcType=VARCHAR}
   </delete>
 
   <insert id="insert" parameterType="com.emall.entity.OrderItem">
-    insert into order_item (oi_id, o_id, u_id, g_id, g_name, g_image, g_price, g_count, oi_subtotal)
-    values (#{oiId,jdbcType=BIGINT}, #{oId,jdbcType=BIGINT}, #{uId,jdbcType=BIGINT}, 
-      #{gId,jdbcType=BIGINT}, #{gName,jdbcType=VARCHAR}, #{gImage,jdbcType=VARCHAR}, 
-      #{gPrice,jdbcType=DECIMAL}, #{gCount,jdbcType=VARCHAR}, #{oiSubtotal,jdbcType=DECIMAL})
+      insert into order_item (oi_id, o_id, u_id, g_id, g_name, g_image, g_price, g_count, oi_subtotal)
+      values (#{oiId,jdbcType=VARCHAR}, #{oId,jdbcType=VARCHAR}, #{uId,jdbcType=VARCHAR},
+              #{gId,jdbcType=VARCHAR}, #{gName,jdbcType=VARCHAR}, #{gImage,jdbcType=VARCHAR},
+              #{gPrice,jdbcType=DECIMAL}, #{gCount,jdbcType=VARCHAR}, #{oiSubtotal,jdbcType=DECIMAL})
   </insert>
 
   <insert id="insertSelective" parameterType="com.emall.entity.OrderItem">
@@ -69,16 +69,16 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="oiId != null">
-        #{oiId,jdbcType=BIGINT},
+          #{oiId,jdbcType=VARCHAR},
       </if>
       <if test="oId != null">
-        #{oId,jdbcType=BIGINT},
+          #{oId,jdbcType=VARCHAR},
       </if>
       <if test="uId != null">
-        #{uId,jdbcType=BIGINT},
+          #{uId,jdbcType=VARCHAR},
       </if>
       <if test="gId != null">
-        #{gId,jdbcType=BIGINT},
+          #{gId,jdbcType=VARCHAR},
       </if>
       <if test="gName != null">
         #{gName,jdbcType=VARCHAR},
@@ -102,13 +102,13 @@
     update order_item
     <set>
       <if test="oId != null">
-        o_id = #{oId,jdbcType=BIGINT},
+          o_id = #{oId,jdbcType=VARCHAR},
       </if>
       <if test="uId != null">
-        u_id = #{uId,jdbcType=BIGINT},
+          u_id = #{uId,jdbcType=VARCHAR},
       </if>
       <if test="gId != null">
-        g_id = #{gId,jdbcType=BIGINT},
+          g_id = #{gId,jdbcType=VARCHAR},
       </if>
       <if test="gName != null">
         g_name = #{gName,jdbcType=VARCHAR},
@@ -126,19 +126,19 @@
         oi_subtotal = #{oiSubtotal,jdbcType=DECIMAL},
       </if>
     </set>
-    where oi_id = #{oiId,jdbcType=BIGINT}
+      where oi_id = #{oiId,jdbcType=VARCHAR}
   </update>
 
   <update id="updateByPrimaryKey" parameterType="com.emall.entity.OrderItem">
-    update order_item
-    set o_id = #{oId,jdbcType=BIGINT},
-      u_id = #{uId,jdbcType=BIGINT},
-      g_id = #{gId,jdbcType=BIGINT},
-      g_name = #{gName,jdbcType=VARCHAR},
-      g_image = #{gImage,jdbcType=VARCHAR},
-      g_price = #{gPrice,jdbcType=DECIMAL},
-      g_count = #{gCount,jdbcType=VARCHAR},
-      oi_subtotal = #{oiSubtotal,jdbcType=DECIMAL}
-    where oi_id = #{oiId,jdbcType=BIGINT}
+      update order_item
+      set o_id        = #{oId,jdbcType=VARCHAR},
+          u_id        = #{uId,jdbcType=VARCHAR},
+          g_id        = #{gId,jdbcType=VARCHAR},
+          g_name      = #{gName,jdbcType=VARCHAR},
+          g_image     = #{gImage,jdbcType=VARCHAR},
+          g_price     = #{gPrice,jdbcType=DECIMAL},
+          g_count     = #{gCount,jdbcType=VARCHAR},
+          oi_subtotal = #{oiSubtotal,jdbcType=DECIMAL}
+      where oi_id = #{oiId,jdbcType=VARCHAR}
   </update>
 </mapper>
