@@ -5,10 +5,12 @@ import com.emall.entity.User;
 import com.emall.exception.GeneralException;
 import com.emall.result.Result;
 import com.emall.utils.SnowflakeIdWorker;
+import com.emall.vo.UserUpdateVo;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 import static com.emall.shiro.ShiroEncrypt.shiroEncrypt;
 
@@ -28,6 +30,20 @@ public class UserService {
      */
     public User selectByUsername(String uName) {
         return userMapper.selectByUserName(uName);
+    }
+
+    /**
+     * 判断用户名是否已经存在
+     *
+     * @param userName
+     * @return Result
+     */
+    public boolean userNameExist(String userName) {
+        User userInfo = selectByUsername(userName);
+        if (userInfo != null) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -56,4 +72,16 @@ public class UserService {
         }
     }
 
+    /**
+     * 用户信息修改
+     * @param userUpdateVo
+     * @return
+     */
+    public Result<UserUpdateVo> userUpdate(@Valid UserUpdateVo userUpdateVo) {
+        if (userNameExist(userUpdateVo.getUName())) {
+            return Result.error("用户已存在");
+        }
+        userMapper.updateByUserId(userUpdateVo);
+        return Result.success("用户信息修改成功", userUpdateVo);
+    }
 }

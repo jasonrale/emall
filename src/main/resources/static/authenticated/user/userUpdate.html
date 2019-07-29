@@ -1,26 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv=x-ua-compatible content="ie=edge">
     <meta name="keywords" content="EMall网上商城">
     <meta name="description" content="EMall网上商城">
     <title>个人中心 - EMall</title>
-    <link rel="shortcut icon" th:href="@{/images/favicon.ico}" type="image/x-icon" />
-    <link rel="icon" th:href="@{/images/favicon.ico}" type="image/x-icon">
-    <link rel="stylesheet" th:href="@{/css/common.css}">
-    <link rel="stylesheet" th:href="@{/css/userUpdate.css}">
-    <script th:src="@{http://code.jquery.com/jquery-3.4.1.min.js}"></script>
-    <script th:src="@{/js/userUpdate.js}"></script>
-    <script th:src="@{/layer/layer.js}"></script>
+    <link rel="shortcut icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../afrontfiles/css/common.css">
+    <link href="../../afrontfiles/css/userUpdate.css" rel="stylesheet">
+    <script src="../../afrontfiles/js/jquery-3.3.1.js"></script>
+    <script src="../../afrontfiles/jquery-validation/jquery.validate.min.js"></script>
+    <script src="../../afrontfiles/jquery-validation/localization/messages_zh.min.js"></script>
+    <!--<script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>-->
+    <script src="../../afrontfiles/js/common.js"></script>
+    <script src="../../afrontfiles/js/userUpdate.js"></script>
+    <script src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
 </head>
 <body>
 <div class="nav">
     <div class="w">
         <div class="user-info">
             <span class="user login">
-                <span class="link-text"> 欢迎 <span class="username">${user.getuName()}，</span> </span>
-                <span class="link js-logout" id="exit">退出</span>
+                <span class="link login" id="login" style="display: block">登录</span>
+                <span class="link-text" id="welcome" style="display: none">欢迎
+                    <span id="loginName" style="display: none"></span>，
+                </span>
+                <span class="link js-logout" id="logout" style="display: none">退出</span>
             </span>
         </div>
         <ul class="nav-list">
@@ -31,16 +38,16 @@
                 <a class="link" href="">我的订单</a>
             </li>
             <li class="nav-item">
-                <a class="link" href="${pageContext.request.contextPath}/views/back/user/userCenter.jsp">我的EMall</a>
+                <a class="link" href="">我的EMall</a>
             </li>
         </ul>
     </div>
 </div>
 <div class="header">
     <div class="w">
-        <a class="logo" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+        <span class="logo">EMall</span>
         <div class="search-con">
-            <form action="${pageContext.request.contextPath}/goods/keyWord" method="post">
+            <form action="" method="post">
                 <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
                 <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
             </form>
@@ -50,7 +57,7 @@
 <div class="crumb">
     <div class="w">
         <div class="crumb-con">
-            <a class="link" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+            <a class="link" href="../../index.html">EMall</a>
             <span>></span>
             <span class="link-text">修改个人信息</span>
         </div>
@@ -59,12 +66,12 @@
 <div class="page-wrap w">
     <ul class="nav-side">
         <li class="nav-item active">
-            <a class="link" href="${pageContext.request.contextPath}/views/back/user/userCenter.jsp">个人中心</a>
+            <a class="link" href="">个人中心</a>
         </li>
         <li class="nav-item">
             <a class="link" href="">我的订单</a> </li>
         <li class="nav-item">
-            <a class="link" href="${pageContext.request.contextPath}/views/back/user/password.jsp">修改密码</a>
+            <a class="link" href="">修改密码</a>
         </li>
     </ul>
     <div class="content with-nav">
@@ -72,26 +79,30 @@
             <div class="panel-title">个人中心</div>
             <div class="panel-body">
                 <div class="user-info">
-                    <div class="form-line">
-                        <span class="label">用户名：</span>
-                        <input class="input" id="username" placeholder="请输入用户名" value="${user.getuName()}" required="true" autocomplete="off" autofocus>
-                    </div>
-                    <span class="uName-error">
-                        <p class="uName-msg">Error</p>
-                    </span>
-                    <div class="form-line">
-                        <span class="label">性 别：</span>
-                        <input type="radio"  class="sex" name="sex" value="男" ${user.getuSex() == "男" ? "checked" : ""}>男
-                        <input type="radio"  class="sex" name="sex" value="女" ${user.getuSex() == "女" ? "checked" : ""}>女
-                    </div>
-                    <div class="form-line">
-                        <span class="label">手机号：</span>
-                        <input class="input" id="phone" placeholder="请输入手机号码" value="${user.getuPhoneNumber()}" autocomplete="off">
-                    </div>
-                    <span class="phone-error">
-                        <p class="phone-msg">Error</p>
-                    </span>
-                    <span class="btn btn-submit" id="submit">提交</span>
+                    <form id="updateUserForm" method="get">
+                        <input type="hidden" id="userId">
+                        <div class="form-line">
+                            <span class="label">用户名：</span>
+                            <input class="input" type="text" id="userName" value="" autocomplete="off" autofocus>
+                        </div>
+                        <span class="uName-error">
+                            <p class="uName-msg"></p>
+                        </span>
+                        <div class="form-line">
+                            <span class="label">性 别：</span>
+                            <input type="radio" name="sex" id="male" value="1">男
+                            <input type="radio" name="sex" id="female" value="0"/>女
+                        </div>
+                        <div class="form-line">
+                            <span class="label">手机号：</span>
+                            <input class="input" type="text" name="mobileNumber" id="mobileNumber" value="" autocomplete="off">
+                        </div>
+                        <span class="phone-error">
+                            <p class="phone-msg"></p>
+                        </span>
+                        <input type="submit" class="btn btn-submit" id="submit" value="保存">
+                        <input type="button" class="btn btn-submit" id="return" value="返回">
+                    </form>
                 </div>
             </div>
         </div>

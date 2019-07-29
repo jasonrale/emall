@@ -15,17 +15,13 @@ $(document).ready(function () {
             var login = {"uName" : username, "uPassword" : password};
             $.ajax({
                 type : "POST",
-                url : "/user/loginValidate",
+                url : "/user/authenticate",
                 data : login,
                 success : function (data) {
                     if (data.status === true) {
                         showLoading();
-                        layer.msg(data.msg);
-                        if (data.obj.urole === 0) {
-                            $(window).attr("location", "/index.html");
-                        } else {
-                            $(window).attr("location","/admin/index");
-                        }
+                        layer.msg("登录成功");
+                        $(window).attr("location", data.msg);
                     } else{
                         $(".err-msg").html("用户名或密码错误！");
                         $(".error-item").css("display", "block")

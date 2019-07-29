@@ -12,7 +12,7 @@ public @interface IsMobile {
 
     boolean require() default true;
 
-    String message() default "com.emall.validator.IsMobile.message";
+    String message() default "手机号码格式不正确";
 
     Class<?>[] groups() default {};
 

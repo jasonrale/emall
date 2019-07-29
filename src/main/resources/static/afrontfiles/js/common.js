@@ -1,3 +1,4 @@
+//获取url后的参数
 (function ($) {
     $.getUrlParam = function (name) {
         var sValue = location.search.match(new RegExp("[\?\&]" + name + "=([^\&]*)(\&?)", "i"));
@@ -14,11 +15,11 @@ $(document).ready(function () {
         $(window).attr('location', '/user/login.html');
     });
 
-    $("#exit").click(function () {
-        $(window).attr('location','/user/exit');
+    $("#logout").click(function () {
+        $(window).attr("location", "/user/logout")
     });
 
     $(".logo").click(function () {
-        $(window).attr('location', '/index');
+        $(window).attr('location', '/index.html');
     });
 });

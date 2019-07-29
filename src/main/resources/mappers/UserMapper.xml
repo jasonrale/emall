@@ -41,7 +41,7 @@
       #{uSalt,jdbcType=VARCHAR})
   </insert>
 
-  <insert id="insertSelective" parameterType="com.emall.entity.User">
+  <insert id="insertSelective" parameterType="com.emall.vo.UserUpdateVo">
     insert into user
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="uId != null">
@@ -91,39 +91,11 @@
     </trim>
   </insert>
 
-  <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.User">
-    update user
-    <set>
-      <if test="uName != null">
-        u_name = #{uName,jdbcType=VARCHAR},
-      </if>
-      <if test="uPassword != null">
-        u_password = #{uPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="uSex != null">
-        u_sex = #{uSex,jdbcType=INTEGER},
-      </if>
-      <if test="uMobileNumber != null">
-        u_mobile_number = #{uMobileNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="uRole != null">
-        u_role = #{uRole,jdbcType=INTEGER},
-      </if>
-      <if test="uSalt != null">
-        u_salt = #{uSalt,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where u_id = #{uId,jdbcType=BIGINT}
-  </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.emall.entity.User">
+  <update id="updateByUserId" parameterType="com.emall.vo.UserUpdateVo">
     update user
     set u_name = #{uName,jdbcType=VARCHAR},
-      u_password = #{uPassword,jdbcType=VARCHAR},
       u_sex = #{uSex,jdbcType=INTEGER},
-      u_mobile_number = #{uMobileNumber,jdbcType=VARCHAR},
-      u_role = #{uRole,jdbcType=INTEGER},
-      u_salt = #{uSalt,jdbcType=VARCHAR}
+      u_mobile_number = #{uMobileNumber,jdbcType=VARCHAR}
     where u_id = #{uId,jdbcType=BIGINT}
   </update>
 </mapper>

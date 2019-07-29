@@ -1,6 +1,7 @@
 package com.emall.dao;
 
 import com.emall.entity.User;
+import com.emall.vo.UserUpdateVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
@@ -14,7 +15,7 @@ public interface UserMapper {
 
     User selectByUserName(@Param("uName") String uName);
 
-    int updateByPrimaryKeySelective(User record);
+    int updateByUserId(UserUpdateVo record);
 
     int updateByPrimaryKey(User record);
 }

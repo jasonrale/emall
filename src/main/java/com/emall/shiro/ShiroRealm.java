@@ -39,12 +39,12 @@ public class ShiroRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        logger.info("角色添加");
+        logger.info("角色验证");
         //获得登录的对象
         User user = (User) principalCollection.getPrimaryPrincipal();
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加角色
-        info.addRole(user.getUId() == GENERAL_USER ? "普通用户" : user.getUId() == SYSTEM_ADMIN ? "系统管理员" : "业务管理员");
+        info.addRole(user.getURole() == GENERAL_USER ? "user" : user.getUId() == SYSTEM_ADMIN ? "sysAdmin" : "serAdmin");
         return info;
     }
 

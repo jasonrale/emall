@@ -86,7 +86,7 @@ $(document).ready(function () {
 
             showLoading();
             $.ajax({
-                type : "post",
+                type : "PUT",
                 url : "/user/registerValidate",
                 dataType : "json",
                 data : submit,

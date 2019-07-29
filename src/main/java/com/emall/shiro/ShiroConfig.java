@@ -1,6 +1,5 @@
 package com.emall.shiro;
 
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.emall.redis.RedisConfig;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSecurityManager;
@@ -14,11 +13,14 @@ import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
+import javax.servlet.Filter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
@@ -34,16 +36,6 @@ public class ShiroConfig {
     @Bean
     public static LifecycleBeanPostProcessor getLifecycleBeanPostProcessor() {
         return new LifecycleBeanPostProcessor();
-    }
-
-    /**
-     * ShiroDialect，为了在thymeleaf里使用shiro的标签的bean
-     *
-     * @return
-     */
-    @Bean
-    public ShiroDialect shiroDialect() {
-        return new ShiroDialect();
     }
 
     /**
@@ -66,7 +58,7 @@ public class ShiroConfig {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(shiroRealm());
         // 自定义缓存实现 使用redis
-        //securityManager.setCacheManager(cacheManager());
+        securityManager.setCacheManager(cacheManager());
         // 自定义session管理 使用redis
         securityManager.setSessionManager(sessionManager());
         return securityManager;
@@ -93,14 +85,19 @@ public class ShiroConfig {
     public ShiroFilterFactoryBean shiroFilterFactoryBean(DefaultSecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
+
         Map<String, String> filterChainDefinitionMap = new HashMap<>();
+
+        filterChainDefinitionMap.put("/authenticated/**","authc");
+
+        filterChainDefinitionMap.put("/authenticated/admin/**","roles[sysAdmin, serAdmin]");
+        filterChainDefinitionMap.put("/authenticated/user/**","roles[user]");
         //静态资源无需认证
-        filterChainDefinitionMap .put("/static/**","anon");
+        filterChainDefinitionMap.put("/static/afrontfiles/**","anon");
         //登出
-        filterChainDefinitionMap .put("/logout","logout");
+        filterChainDefinitionMap.put("/logout","logout");
         //登录
-        shiroFilterFactoryBean.setLoginUrl("user/login");
-        //shiroFilterFactoryBean.setSuccessUrl("/index");
+        shiroFilterFactoryBean.setLoginUrl("/user/authenticate.html");
         //错误页面，认证不通过跳转
         //shiroFilterFactoryBean.setUnauthorizedUrl("/error");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
