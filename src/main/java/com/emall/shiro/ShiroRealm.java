@@ -29,6 +29,9 @@ public class ShiroRealm extends AuthorizingRealm {
     @Resource
     private UserService userService;
 
+    @Resource
+    private ClassCastUtil castUtil;
+
     @Override
     public String getName() {
         return "shiroRealm";
@@ -42,13 +45,12 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         logger.info("角色验证");
-        ClassCastUtil castUtil = new ClassCastUtil();
         //获得登录的对象
         User user;
         try {
             user = castUtil.classCast(principalCollection.getPrimaryPrincipal(), User.class);
         } catch (IllegalAccessException | InstantiationException e) {
-            throw new GeneralException("登录时间过期");
+            throw new GeneralException("登录已过期");
         }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加角色

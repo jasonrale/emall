@@ -40,7 +40,7 @@ $(document).ready(function () {
 function userUpdateInit() {
     $.ajax({
         type: "GET",
-        url: "/user/isLogin",
+        url: "/user/userInfo",
         success: function (data) {
             if (data.status === true) {
                 $("#login").css("display", "none");

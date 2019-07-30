@@ -43,7 +43,7 @@ $(document).ready(function () {
 function userPwdInit() {
     $.ajax({
         type: "GET",
-        url: "/user/isLogin",
+        url: "/user/userInfo",
         success: function (data) {
             if (data.status === true) {
 

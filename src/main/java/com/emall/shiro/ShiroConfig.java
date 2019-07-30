@@ -1,6 +1,7 @@
 package com.emall.shiro;
 
 import com.emall.redis.RedisConfig;
+import com.emall.utils.ClassCastUtil;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.DefaultSecurityManager;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
@@ -92,6 +93,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/user/**","anon");
         filterChainDefinitionMap.put("/result/**","anon");
 
+        //先登录认证，再角色验证
         filterChainDefinitionMap.put("/authenticated/user/**","authc,roles[customer]");
         filterChainDefinitionMap.put("/authenticated/admin/**","authc,roles[admin]");
 
@@ -180,5 +182,14 @@ public class ShiroConfig {
         DefaultWebSessionManager sessionManager = new DefaultWebSessionManager();
         sessionManager.setSessionDAO(redisSessionDAO());
         return sessionManager;
+    }
+
+
+    /**
+     * 获取类型转换工具
+     */
+    @Bean
+    protected ClassCastUtil getClassCastUtil() {
+        return new ClassCastUtil();
     }
 }

@@ -1,5 +1,8 @@
 package com.emall.utils;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
@@ -8,7 +11,7 @@ import java.lang.reflect.Modifier;
  */
 public class ClassCastUtil {
     /**
-     * 将初始对象转换成目标对象
+     * 通过反射将初始对象转换成目标对象
      *
      * @param source
      * @param clazz

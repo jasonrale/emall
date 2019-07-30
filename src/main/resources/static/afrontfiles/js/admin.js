@@ -1,4 +1,6 @@
 $(window).ready(function () {
+    adminInfo();
+
     //商品管理跳转
     $("#goods").click(function () {
         $("#goods").attr("class", "active");
@@ -120,3 +122,18 @@ $(window).ready(function () {
     });
 
 });
+
+/**
+ * 获取管理员信息
+ */
+function adminInfo() {
+    $.ajax({
+        type: "GET",
+        url: "/admin/adminInfo",
+        success: function (data) {
+            if (data.status === true) {
+                $("#adminName").html(data.obj.uname);
+            }
+        }
+    });
+}

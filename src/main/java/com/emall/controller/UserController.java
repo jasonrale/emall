@@ -12,6 +12,7 @@ import com.emall.vo.UserUpdateVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
+import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
@@ -31,6 +32,9 @@ public class UserController {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private ClassCastUtil castUtil;
 
     /**
      * 登录认证
@@ -73,17 +77,24 @@ public class UserController {
     }
 
     /**
-     * 登录认证
+     * 获取用户登录信息
      * @param
      * @return Result
      */
-    @GetMapping("/isLogin")
+    @GetMapping("/userInfo")
     @ResponseBody
-    public Result<Object> isLogin() {
-        logger.info("获取登录用户中......");
-        Object object = SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
+    public Result<Object> userInfo() {
+        logger.info("获取用户登录信息中......");
 
-        return object != null ? Result.success("已登录", object) : Result.error("未登录");
+        User userInfo;
+        try {
+            Object object = SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
+            userInfo = castUtil.classCast(object, User.class);
+        } catch (IllegalAccessException | InstantiationException | UnknownSessionException e) {
+            throw new GeneralException("登录已过期");
+        }
+
+        return userInfo != null ? Result.success("用户" + userInfo.getUName() + "已登录", userInfo) : Result.error("用户未登录");
     }
 
     /**
@@ -127,12 +138,11 @@ public class UserController {
         if (result.isStatus()) {
             Session session = SecurityUtils.getSubject().getSession();
             Object object = session.getAttribute("CurrentUser");
-            ClassCastUtil castUtil = new ClassCastUtil();
             User user;
             try {
                 user = castUtil.classCast(object, User.class);
             } catch (IllegalAccessException | InstantiationException e) {
-                return Result.error("登录时间过期");
+                throw new GeneralException("登录已过期");
             }
             if (user != null) {
                 user.setUName(userUpdateVo.getUName());
