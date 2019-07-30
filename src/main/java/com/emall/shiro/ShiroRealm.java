@@ -1,7 +1,9 @@
 package com.emall.shiro;
 
 import com.emall.entity.User;
+import com.emall.exception.GeneralException;
 import com.emall.service.UserService;
+import com.emall.utils.ClassCastUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -40,11 +42,17 @@ public class ShiroRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         logger.info("角色验证");
+        ClassCastUtil castUtil = new ClassCastUtil();
         //获得登录的对象
-        User user = (User) principalCollection.getPrimaryPrincipal();
+        User user;
+        try {
+            user = castUtil.classCast(principalCollection.getPrimaryPrincipal(), User.class);
+        } catch (IllegalAccessException | InstantiationException e) {
+            throw new GeneralException("登录时间过期");
+        }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加角色
-        info.addRole(user.getURole() == GENERAL_USER ? "user" : user.getURole() == SYSTEM_ADMIN ? "sysAdmin" : "serAdmin");
+        info.addRole(user.getURole() == CUSTOMER ? "customer" : user.getURole() == ADMIN ? "admin" : "");
         return info;
     }
 
@@ -76,7 +84,8 @@ public class ShiroRealm extends AuthorizingRealm {
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, byteSalt, getName());
             //认证通过后将用户信息放在session里
             Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute("CurrentUser", user);
+            session.setAttribute(user.getURole() == 0 ? "CurrentUser" : user.getURole() == 1 ? "SysAdmin" : "", user);
+
             return info;
         } catch (IncorrectCredentialsException exception) {
             throw new IncorrectCredentialsException("用户名或密码错误");

@@ -15,7 +15,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateVo {
-    private Long uId;               //用户id
+    private String uId;               //用户id
 
     @NotEmpty(message = "用户名不能为空")
     @Size(min = 3, message = "用户名长度不小于三个字符")

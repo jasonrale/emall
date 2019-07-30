@@ -1,6 +1,7 @@
 package com.emall.dao;
 
 import com.emall.entity.User;
+import com.emall.vo.PasswordVo;
 import com.emall.vo.UserUpdateVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,4 +21,5 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
+    int pwdById(PasswordVo passwordVo);
 }

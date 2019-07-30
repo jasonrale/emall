@@ -5,6 +5,7 @@ import com.emall.entity.User;
 import com.emall.exception.GeneralException;
 import com.emall.result.Result;
 import com.emall.utils.SnowflakeIdWorker;
+import com.emall.vo.PasswordVo;
 import com.emall.vo.UserUpdateVo;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class UserService {
      * @param user
      * @return Result
      */
-    public Result<User> registerValidate(User user) {
+    public boolean registerValidate(User user) {
         String uName = user.getUName();
         String uPassword = user.getUPassword();
 
@@ -53,8 +54,8 @@ public class UserService {
             user.setUSalt(salt);
             //设置为普通用户
             user.setURole(0);
-            userMapper.insert(user);
-            return Result.success("注册成功！", user);
+
+            return userMapper.insert(user) != 0;
         }
     }
 
@@ -63,10 +64,11 @@ public class UserService {
      * @param userUpdateVo
      * @return
      */
-    public Result userUpdate(@Valid UserUpdateVo userUpdateVo) {
-        if (userMapper.updateByUserId(userUpdateVo) == 0) {
-            throw new GeneralException("用户信息修改失败");
-        }
-        return Result.success("用户信息修改成功", userUpdateVo);
+    public boolean userUpdate(@Valid UserUpdateVo userUpdateVo) {
+        return userMapper.updateByUserId(userUpdateVo) != 0;
+    }
+
+    public boolean password(PasswordVo passwordVo) {
+        return userMapper.pwdById(passwordVo) != 0;
     }
 }

@@ -13,13 +13,10 @@ import org.crazycake.shiro.RedisManager;
 import org.crazycake.shiro.RedisSessionDAO;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.Resource;
-import javax.servlet.Filter;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -86,20 +83,24 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
-        Map<String, String> filterChainDefinitionMap = new HashMap<>();
+        //过滤链从上到下过滤
+        Map<String, String> filterChainDefinitionMap = new LinkedHashMap<>();
 
-        filterChainDefinitionMap.put("/authenticated/**","authc");
+        filterChainDefinitionMap.put("/afrontfiles/**","anon");
+        filterChainDefinitionMap.put("/*","anon");
+        filterChainDefinitionMap.put("/goods/**","anon");
+        filterChainDefinitionMap.put("/user/**","anon");
+        filterChainDefinitionMap.put("/result/**","anon");
 
-        filterChainDefinitionMap.put("/authenticated/admin/**","roles[sysAdmin, serAdmin]");
-        filterChainDefinitionMap.put("/authenticated/user/**","roles[user]");
-        //静态资源无需认证
-        filterChainDefinitionMap.put("/static/afrontfiles/**","anon");
-        //登出
+        filterChainDefinitionMap.put("/authenticated/user/**","authc,roles[customer]");
+        filterChainDefinitionMap.put("/authenticated/admin/**","authc,roles[admin]");
+
         filterChainDefinitionMap.put("/logout","logout");
-        //登录
+        filterChainDefinitionMap.put("/**","authc");
+
+        shiroFilterFactoryBean.setUnauthorizedUrl("/result/result.html?resultType=403");
         shiroFilterFactoryBean.setLoginUrl("/user/authenticate.html");
-        //错误页面，认证不通过跳转
-        //shiroFilterFactoryBean.setUnauthorizedUrl("/error");
+
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }

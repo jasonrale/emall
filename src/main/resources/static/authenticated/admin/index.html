@@ -1,16 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv=x-ua-compatible content="ie=edge">
     <meta name="description" content="EMall后台管理">
     <title>EMall Admin</title>
-    <link rel="shortcut icon" th:href="@{/favicon.ico}" type="image/x-icon" />
-    <link rel="icon" th:href="@{/favicon.ico}" type="image/x-icon">
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
-    <script th:src="@{http://code.jquery.com/jquery-3.4.1.min.js}"></script>
-    <script th:src="@{/js/admin.js}"></script>
-    <script th:src="@{/js/common.js}"></script>
+    <link rel="shortcut icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../afrontfiles/css/admin.css">
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../afrontfiles/js/admin.js"></script>
+    <script src="../../afrontfiles/js/common.js"></script>
 </head>
 <body>
 <div id="app">
@@ -18,10 +18,10 @@
         <nav class="navbar navbar-default navbar-static-top" role="navigation">
             <div>
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="admin.html">EMall admin</a>
+                    <a class="navbar-brand" href="index.html">EMall admin</a>
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
-                    <li class="dropDown"><span>欢迎，admin</span></li>
+                    <li class="dropDown"><span>欢迎</span><span id="userName"></span></li>
                     <li class="dropDown"><a id="exit" class="btn-logout">退出</a></li>
                 </ul>
             </div>

@@ -6,12 +6,12 @@
     <meta name="keywords" content="EMall网上商城">
     <meta name="description" content="EMall网上商城">
     <title>商品详情 - EMall</title>
-    <link rel="shortcut icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="${pageContext.request.contextPath}/images/favicon.ico" type="image/x-icon">
-    <link href="${pageContext.request.contextPath}/css/common.css" rel="stylesheet">
-    <link href="${pageContext.request.contextPath}/css/detail.css" rel="stylesheet">
-    <script th:src="@{http://code.jquery.com/jquery-3.4.1.min.js}"></script>
-    <script src="${pageContext.request.contextPath}/js/common.js"></script>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+    <link href="/css/common.css" rel="stylesheet">
+    <link href="/css/detail.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="/js/common.js"></script>
 </head>
 <body>
 <div class="nav">
@@ -30,16 +30,16 @@
                 <a class="link" href="">我的订单</a>
             </li>
             <li class="nav-item">
-                <a class="link" href="${pageContext.request.contextPath}/views/back/user/userCenter.jsp">我的EMall</a>
+                <a class="link" href="/views/back/user/userCenter.jsp">我的EMall</a>
             </li>
         </ul>
     </div>
 </div>
 <div class="header">
     <div class="w">
-        <a class="logo" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+        <a class="logo" href="/views/back/index.jsp">EMall</a>
         <div class="search-con">
-            <form action="${pageContext.request.contextPath}/goods/keyWord" method="post">
+            <form action="/goods/keyWord" method="post">
                 <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
                 <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
             </form>
@@ -49,7 +49,7 @@
 <div class="crumb">
     <div class="w">
         <div class="crumb-con">
-            <a class="link" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+            <span class="link" id="emall">EMall</span>
             <span>&gt;</span>
             <span class="link-text">商品详情页</span>
         </div>

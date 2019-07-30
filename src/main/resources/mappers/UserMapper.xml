@@ -98,4 +98,10 @@
       u_mobile_number = #{uMobileNumber,jdbcType=VARCHAR}
       where u_id = #{uId,jdbcType=VARCHAR}
   </update>
+
+  <update id="pwdById" parameterType="com.emall.vo.PasswordVo">
+    update user
+    set u_password = #{passwordNew,jdbcType=VARCHAR}
+    where u_id = #{uId,jdbcType=VARCHAR}
+  </update>
 </mapper>

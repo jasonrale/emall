@@ -18,11 +18,9 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Repository
 public class User implements Serializable {
-    public static final int GENERAL_USER = 0;
+    public static final int CUSTOMER = 0;
 
-    public static final int SYSTEM_ADMIN = 1;
-
-    public static final int SERVICE_ADMIN = 2;
+    public static final int ADMIN = 1;
 
 
     private String uId;               //用户id
@@ -40,7 +38,7 @@ public class User implements Serializable {
     @IsMobile
     private String uMobileNumber;  //用户手机号码
 
-    private Integer uRole;          //用户角色--普通用户 ：0，系统管理员 ：1，业务管理员 ：2
+    private Integer uRole;          //用户角色--普通用户 ：0，系统管理员 ：1
 
     private String uSalt;           //用户密码盐值
 }

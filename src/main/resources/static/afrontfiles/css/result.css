@@ -30,7 +30,8 @@
     font-size: 26px;
     font-weight: 700;
     color: #c60023;
-    text-decoration: none
+    text-decoration: none;
+    cursor: pointer;
 }
 
 .register-success {
@@ -50,5 +51,9 @@
 }
 
 .payment-success {
+    display: none;
+}
+
+.permission-denied {
     display: none;
 }

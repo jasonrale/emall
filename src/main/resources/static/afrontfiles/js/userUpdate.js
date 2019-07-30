@@ -30,14 +30,14 @@ $(document).ready(function () {
         });
     });
 
-    userInfoInit();
+    userUpdateInit();
 
 });
 
 /**
  * 用户个人信息初始化
  */
-function userInfoInit() {
+function userUpdateInit() {
     $.ajax({
         type: "GET",
         url: "/user/isLogin",

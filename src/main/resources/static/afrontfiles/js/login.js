@@ -13,18 +13,18 @@ $(document).ready(function () {
             $(".error-item").css("display", "block")
         } else {
             var login = {"uName" : username, "uPassword" : password};
+            showLoading();
             $.ajax({
                 type : "POST",
                 url : "/user/loginValidate",
                 data : login,
                 success : function (data) {
                     if (data.status === true) {
-                        showLoading();
                         layer.msg(data.msg);
                         if (data.obj.urole === 0) {
                             $(window).attr("location", "/index.html");
                         } else {
-                            $(window).attr("location","/admin/index");
+                            $(window).attr("location","/authenticated/admin/index.html");
                         }
                     } else{
                         $(".err-msg").html("用户名或密码错误！");

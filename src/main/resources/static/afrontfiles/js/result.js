@@ -9,6 +9,8 @@ $(document).ready(function () {
         $(".cart-add-success").css("display", "block");
     } else if (resultType === "payment") {
         $(".payment-success").css("display", "block");
+    } else if (resultType === "403"){
+        $(".permission-denied").css("display", "block");
     } else {
         $(".default-success").css("display", "block");
     }

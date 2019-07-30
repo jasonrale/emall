@@ -1,38 +1,61 @@
 ﻿/*密码修改验证*/
 $(document).ready(function () {
+    userPwdInit();
+
     //验证密码
     $("#submit").click(function () {
+        var userId = $("#userId").val();
+        var salt = $("#salt").val();
         var passwordReal = $("#passwordReal").val();
         var passwordOld = $("#passwordOld").val();
         var passwordNew = $("#passwordNew").val();
         var pwdConfirm = $("#pwdConfirm").val();
 
-        if (passwordOld !== passwordReal) {
-            $(".err-msg").html("原密码错误！");
-            $(".password-error").css("display", "block");
-        } else if (pwdConfirm.length < 6 || passwordNew.length < 6) {
-            $(".err-msg").html("密码长度不能少于6位！");
-            $(".password-error").css("display", "block");
-        } else if (passwordNew !== pwdConfirm) {
-            $(".err-msg").html("两次密码输入不一致！");
-            $(".password-error").css("display", "block");
-        } else {
-            $(".password-error").css("display", "none");
+        var passwordVo = {"uId" : userId,
+                          "salt" : salt,
+                          "passwordReal" : passwordReal,
+                          "passwordOld" : passwordOld,
+                          "passwordNew" : passwordNew,
+                          "pwdConfirm" : pwdConfirm
+                         };
 
-            var password = {"uPassword" : pwdConfirm};
-
-            $.ajax({
-                type : "post",
-                url : "/emall/user/password",
-                dataType : "json",
-                data : password,
-                success : function (msg) {
-                    if (msg === 1) {
-                        alert("密码修改成功，请重新登录！");
-                        $(window).attr("location","/emall/views/user/login.jsp");
-                    }
+        showLoading();
+        $.ajax({
+            type : "POST",
+            url : "/user/password",
+            dataType : "json",
+            data : passwordVo,
+            success : function (data) {
+                if (data.status === true) {
+                    layer.msg(data.msg);
+                    $(window).attr("location","/user/logout");
+                } else {
+                    layer.msg(data.msg);
                 }
-            });
-        }
+            }
+        });
     });
 });
+
+/**
+ * 用户信息初始化
+ */
+function userPwdInit() {
+    $.ajax({
+        type: "GET",
+        url: "/user/isLogin",
+        success: function (data) {
+            if (data.status === true) {
+
+                $("#login").css("display", "none");
+                $("#welcome").css("display", "inline");
+                $("#loginName").css("display", "inline").html(data.obj.uname);
+                $("#logout").css("display", "inline");
+
+                $("#userId").val(data.obj.uid);
+                $("#salt").val(data.obj.usalt);
+                $("#passwordReal").val(data.obj.upassword);
+            }
+        }
+    });
+}
