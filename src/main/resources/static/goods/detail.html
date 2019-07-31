@@ -1,25 +1,29 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv=x-ua-compatible content="ie=edge">
     <meta name="keywords" content="EMall网上商城">
     <meta name="description" content="EMall网上商城">
     <title>商品详情 - EMall</title>
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <link href="/css/common.css" rel="stylesheet">
-    <link href="/css/detail.css" rel="stylesheet">
+    <link rel="shortcut icon" href="../afrontfiles/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="../afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../afrontfiles/css/common.css">
+    <link rel="stylesheet" href="../afrontfiles/css/detail.css">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/js/common.js"></script>
+    <script src="../afrontfiles/js/common.js"></script>
+    <script src="../afrontfiles/js/detail.js"></script>
 </head>
 <body>
 <div class="nav">
     <div class="w">
         <div class="user-info">
             <span class="user login">
-                <span class="link-text"> 欢迎 <span class="username">${user.getuName()}，</span> </span>
-                <span class="link js-logout" id="exit">退出</span>
+                <span class="link login" id="login" style="display: block">&nbsp;登录</span>
+                <span class="link-text" id="welcome" style="display: none">欢迎
+                    <span id="loginName" style="display: none"></span>，
+                </span>
+                <span class="link js-logout" id="logout" style="display: none">退出</span>
             </span>
         </div>
         <ul class="nav-list">
@@ -30,16 +34,16 @@
                 <a class="link" href="">我的订单</a>
             </li>
             <li class="nav-item">
-                <a class="link" href="/views/back/user/userCenter.jsp">我的EMall</a>
+                <a class="link" href="../authenticated/user/userCenter.html">我的EMall</a>
             </li>
         </ul>
     </div>
 </div>
 <div class="header">
     <div class="w">
-        <a class="logo" href="/views/back/index.jsp">EMall</a>
+        <a class="logo">EMall</a>
         <div class="search-con">
-            <form action="/goods/keyWord" method="post">
+            <form action="" method="GET">
                 <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
                 <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
             </form>
@@ -63,19 +67,19 @@
             </div>
         </div>
         <div class="p-info-con">
-            <h1 class="p-name">${goods.gName}</h1>
-            <p class="p-subtitle">${goods.gDescribe}</p>
+            <h1 class="p-name"></h1>
+            <p class="p-subtitle"></p>
             <div class="p-info-item p-price-con">
                 <span class="label">价格:</span>
-                <span class="info">￥${goods.gPrice}</span>
+                <span class="info"></span>
             </div>
             <div class="p-info-item">
                 <span class="label">库存:</span>
-                <span class="info">${goods.gStock}</span>
+                <span class="info"></span>
             </div>
             <div class="p-info-item p-count-con">
-                <span class="label">数量:</span>
-                <input type="text" class="p-count" value="1">
+                <label class="label" for="count">数量:</label>
+                <input type="text" class="p-count" id="count" value="1">
             </div>
             <div class="p-info-item">
                 <a class="btn cart-add">加入购物车</a>
@@ -89,7 +93,7 @@
             </ul>
         </div>
         <div class="detail-con">
-            <p>${goods.gDetails}</p>
+            <p></p>
         </div>
     </div>
 </div>

@@ -175,6 +175,4 @@ public class UserController {
 
         return userService.password(passwordVo) ? Result.success("密码修改成功，请重新登录", null) : Result.error("密码修改失败");
     }
-
-
 }

@@ -21,7 +21,7 @@
     <div class="w">
         <div class="user-info">
             <span class="user login">
-                <span class="link login" id="login" style="display: block">&nbsp登录</span>
+                <span class="link login" id="login" style="display: block">&nbsp;登录</span>
                 <span class="link-text" id="welcome" style="display: none">欢迎
                     <span id="loginName" style="display: none"></span>，
                 </span>
@@ -80,21 +80,20 @@
                 <div class="user-info">
                     <input type="hidden" id="userId">
                     <div class="form-line">
-                        <span class="label">用户名：</span>
-                        <input class="input" type="text" id="userName" value="" autocomplete="off" autofocus>
+                        <label class="label" for="userName">用户名：</label>
+                        <input class="input" type="text" id="userName" autocomplete="off" autofocus>
                     </div>
                     <span class="uName-error">
                         <p class="uName-msg"></p>
                     </span>
                     <div class="form-line">
-                        <span class="label">性 别：</span>
-                        <input type="radio" name="sex" id="male" value="1">男
-                        <input type="radio" name="sex" id="female" value="0"/>女
+                        <label class="label">性别：</label>
+                        <input type="radio" name="sex" id="male" value="1"><label class="label" for="male">男</label>
+                        <input type="radio" name="sex" id="female" value="0"><label class="label" for="female">女</label>
                     </div>
                     <div class="form-line">
-                        <span class="label">手机号：</span>
-                        <input class="input" type="text" name="mobileNumber" id="mobileNumber" value=""
-                               autocomplete="off">
+                        <label class="label" for="mobileNumber">手机号：</label>
+                        <input class="input" type="text" name="mobileNumber" id="mobileNumber" autocomplete="off">
                     </div>
                     <span class="phone-error">
                         <p class="phone-msg"></p>

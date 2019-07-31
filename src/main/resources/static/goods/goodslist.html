@@ -6,22 +6,26 @@
     <meta name="keywords" content="EMall网上商城">
     <meta name="description" content="EMall网上商城">
     <title>商品列表 - EMall</title>
-    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
-    <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
-    <link href="/css/common.css" rel="stylesheet">
-    <link href="/css/list.css" rel="stylesheet">
+    <title>首页 - EMall</title>
+    <link rel="shortcut icon" href="../afrontfiles/images/favicon.ico" type="image/x-icon"/>
+    <link rel="icon" href="../afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../afrontfiles/css/common.css">
+    <link rel="stylesheet" href="../afrontfiles/css/list.css">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/js/common.js"></script>
-    <script src="/js/goodslist.js"></script>
     <script src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
+    <script src="../afrontfiles/js/common.js"></script>
+    <script src="../afrontfiles/js/goodslist.js"></script>
 </head>
 <body>
 <div class="nav">
     <div class="w">
         <div class="user-info">
             <span class="user login">
-                <span class="link-text"> 欢迎 <span class="username">${user.getuName()}，</span> </span>
-                <span class="link js-logout" id="exit">退出</span>
+                <span class="link login" id="login" style="display: block">&nbsp;登录</span>
+                <span class="link-text" id="welcome" style="display: none">欢迎
+                    <span id="loginName" style="display: none"></span>，
+                </span>
+                <span class="link js-logout" id="logout" style="display: none">退出</span>
             </span>
         </div>
         <ul class="nav-list">
@@ -32,16 +36,16 @@
                 <a class="link" href="">我的订单</a>
             </li>
             <li class="nav-item">
-                <a class="link" href="${pageContext.request.contextPath}/views/back/user/userCenter.jsp">我的EMall</a>
+                <a class="link" href="../authenticated/user/userCenter.html">我的EMall</a>
             </li>
         </ul>
     </div>
 </div>
 <div class="header">
     <div class="w">
-        <span class="link" id="emall">EMall</span>
+        <a class="logo">EMall</a>
         <div class="search-con">
-            <form action="${pageContext.request.contextPath}/goods/keyWord" method="post">
+            <form action="" method="GET">
                 <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称" />
                 <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
             </form>
@@ -51,7 +55,7 @@
 <div class="crumb">
     <div class="w">
         <div class="crumb-con">
-            <a class="link" href="${pageContext.request.contextPath}/views/back/index.jsp">EMall</a>
+            <span class="link" id="emall">EMall</span>
             <span>&gt;</span>
             <span class="link-text">商品列表页</span>
         </div>
@@ -64,30 +68,22 @@
     </ul>
     <!-- list 容器 -->
     <div id="list">
-        <c:choose>
-            <c:when test="${glist != null}">
-                <ul class="p-list-con">
-                    <c:forEach items="${glist}" var="goods">
-                        <li class="p-item">
-                            <div class="p-img-con">
-                                <a class="link" href="${pageContext.request.contextPath}/goods/detail?gId=${goods.gId}">
-                                    <img class="p-img" src="${goods.gPicture}" alt="${goods.gName}">
-                                </a>
-                            </div>
-                            <div class="p-price-con">
-                                <span class="p-price">${goods.gPrice}</span>
-                            </div>
-                            <div class="p-name-con">
-                                <a class="p-name" href="${pageContext.request.contextPath}/goods/detail?gId=${goods.gId}">${goods.gName}</a>
-                            </div>
-                        </li>
-                    </c:forEach>
-                </ul>
-            </c:when>
-            <c:otherwise>
-                <ul class="p-list-con">  <p class="err-tip">很抱歉，实在找不到您要的商品。</p> </ul>
-            </c:otherwise>
-        </c:choose>
+        <ul class="p-list-con">
+            <li class="p-item">
+                <div class="p-img-con">
+                    <a class="link" href="">
+                        <img class="p-img" src="" alt="">
+                    </a>
+                </div>
+                <div class="p-price-con">
+                    <span class="p-price"></span>
+                </div>
+                <div class="p-name-con">
+                    <a class="p-name" href=""></a>
+                </div>
+            </li>
+        </ul>
+        <ul class="p-list-con"><p class="err-tip">很抱歉，实在找不到您要的商品。</p></ul>
     </div>
     <!-- 分页容器 -->
     <div class="pagination"></div>

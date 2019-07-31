@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv=x-ua-compatible content="ie=edge">
     <meta name="description" content="商品管理">
     <title>商品管理</title>
     <link href="../../afrontfiles/css/admin.css" rel="stylesheet">
-    <script src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
     <script src="../../afrontfiles/js/admin.js"></script>
     <script src="../../afrontfiles/js/common.js"></script>
 </head>
@@ -15,13 +15,14 @@
     <div class="row">
         <div class="col-lg-12">
             <h1 class="page-header">商品管理</h1>
-            <div class="page-header-right"><a class="btn btn-primary" href="#/product/save">添加商品</a></div>
+            <div class="page-header-right"><a class="btn btn-primary" href="">添加商品</a></div>
         </div>
     </div>
     <div class="row">
         <div class="search-wrap col-md-12">
             <div class="form-inline">
                 <div class="form-group">
+                    <label for="select"></label>
                     <select id="select" class="form-control">
                         <option value="goodId">按商品id查询</option>
                         <option value="goodName">按商品名称查询</option>
@@ -34,36 +35,30 @@
             </div>
         </div>
         <div class="table-wrap col-lg-12">
-            <c:choose>
-                <c:when test="${page.list != null}">
-                    <table class="table table-striped table-bordered table-hover">
-                        <thead>
-                        <tr>
-                            <th>id</th>
-                            <th>信息</th>
-                            <th>价格</th>
-                            <th>库存</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <c:forEach items="${page.list}" var="goods">
-                            <tr>
-                                <td>${goods.gId}</td>
-                                <td>${goods.gDescribe}</td>
-                                <td>${goods.gPrice}</td>
-                                <td>${goods.gStock}</td>
-                                <td><a class="btn btn-xs btn-warning opear">下架</a></td>
-                                <td>
-                                    <a class="opear" href="">编辑</a>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                        </tbody>
-                    </table>
-                </c:when>
-            </c:choose>
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>信息</th>
+                    <th>价格</th>
+                    <th>库存</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>${goods.gId}</td>
+                    <td>${goods.gDescribe}</td>
+                    <td>${goods.gPrice}</td>
+                    <td>${goods.gStock}</td>
+                    <td><a class="btn btn-xs btn-warning opear">下架</a></td>
+                    <td>
+                        <a class="opear" href="">编辑</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <input type="hidden" id="type" value="${page.type}"/>
         <input type="hidden" id="key" value="${page.key}"/>
