@@ -1,5 +1,7 @@
 ﻿//登录验证
 $(document).ready(function () {
+    layer.msg("您的登录已过期，请重新登录");
+
     $("#register").click(function () {
         $(window).attr("location", "/user/register.html");
     });

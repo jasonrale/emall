@@ -15,7 +15,7 @@ $(document).ready(function () {
         showLoading();
         $.ajax({
             type : "POST",
-            url : "/user/userUpdate",
+            url : "/user/userInfo",
             dataType : "json",
             data : update,
             success : function (data) {

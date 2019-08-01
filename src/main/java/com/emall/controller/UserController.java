@@ -86,10 +86,12 @@ public class UserController {
     public Result<Object> userInfo() {
         logger.info("获取用户登录信息中......");
 
-        User userInfo;
+        User userInfo = null;
         try {
             Object object = SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
-            userInfo = castUtil.classCast(object, User.class);
+            if (object != null) {
+                userInfo = castUtil.classCast(object, User.class);
+            }
         } catch (IllegalAccessException | InstantiationException | UnknownSessionException e) {
             throw new GeneralException("登录已过期");
         }
@@ -126,7 +128,7 @@ public class UserController {
      * @param userUpdateVo
      * @return Result
      */
-    @PostMapping("/userUpdate")
+    @PostMapping("/userInfo")
     @ResponseBody
     public Result userUpdate(@Valid UserUpdateVo userUpdateVo) {
         logger.info("修改用户信息--" + "用户名：" + userUpdateVo.getUName() + "  性别：" + userUpdateVo.getUSex()

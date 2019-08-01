@@ -1,8 +1,14 @@
 package com.emall.dao;
 
 import com.emall.entity.Goods;
+import com.emall.utils.PageModel;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface GoodsMapper {
+
+    List<Goods> selectAllGoods(@Param("limit") long limit, @Param("offset") long offset);
 
     int deleteByPrimaryKey(String gId);
 
@@ -15,5 +21,4 @@ public interface GoodsMapper {
     int updateByPrimaryKeySelective(Goods record);
 
     int updateByPrimaryKey(Goods record);
-
 }

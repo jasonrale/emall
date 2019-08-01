@@ -2,10 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.GoodsMapper">
   <resultMap id="BaseResultMap" type="com.emall.entity.Goods">
-      <id column="g_id" jdbcType="VARCHAR" property="gId"/>
+    <id column="g_id" jdbcType="VARCHAR" property="gId"/>
     <result column="g_name" jdbcType="VARCHAR" property="gName" />
     <result column="g_describe" jdbcType="VARCHAR" property="gDescribe" />
-      <result column="c_id" jdbcType="VARCHAR" property="cId"/>
+    <result column="c_id" jdbcType="VARCHAR" property="cId"/>
     <result column="g_stock" jdbcType="INTEGER" property="gStock" />
     <result column="g_price" jdbcType="DECIMAL" property="gPrice" />
     <result column="g_image" jdbcType="VARCHAR" property="gImage" />
@@ -17,11 +17,19 @@
     g_id, g_name, g_describe, c_id, g_stock, g_price, g_image, g_details, g_status
   </sql>
 
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectAllGoods" parameterType="com.emall.utils.PageModel" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from goods
+    inner join (select g_id from goods limit #{limit} offset #{offset}) as ids
+    on goods.g_id = ids.g_id
+  </select>
+
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from goods
-        where g_id = #{gId,jdbcType=VARCHAR}
+    where g_id = #{gId,jdbcType=VARCHAR}
   </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

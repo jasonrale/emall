@@ -34,10 +34,13 @@ public class AdminController {
     public Result<Object> adminInfo() {
         logger.info("获取管理员登录信息中......");
 
-        User adminInfo;
+        User adminInfo = null;
         try {
             Object object = SecurityUtils.getSubject().getSession().getAttribute("SysAdmin");
-            adminInfo = castUtil.classCast(object, User.class);
+            if (object != null) {
+                adminInfo = castUtil.classCast(object, User.class);
+            }
+
         } catch (IllegalAccessException | InstantiationException | UnknownSessionException e) {
             throw new GeneralException("登录已过期");
         }
