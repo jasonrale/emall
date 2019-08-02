@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
@@ -30,6 +31,7 @@ public class GoodsController {
      * @return
      */
     @GetMapping(value = "/allGoods")
+    @ResponseBody
     public Result<PageModel> selectByGoodsId(PageModel<Goods> pageModel) {
         logger.info("查询所有商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
         return Result.success("查询所有商品成功", goodsService.selectAllGoods(pageModel));

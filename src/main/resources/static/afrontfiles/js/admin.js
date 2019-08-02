@@ -1,35 +1,8 @@
-$(window).ready(function () {
+$(document).ready(function () {
     adminInfo();
 
-    //商品管理跳转
-    $("#goods").click(function () {
-        $("#goods").attr("class", "active");
-        $("#category").attr("class", "");
-        $("#order").attr("class", "");
-        $("#page-wrapper").empty();
-        $.ajax({
-            type : "post",
-            url : "/goods/allGoods",
-            data : "currentNo=1&pageSize=10",
-            dataType: "json",
-            success : function (data) {
-                var goodslist = data.obj.list;
-                for (var i = 0; i < goodslist.size(); i++) {
-                    var tbody = $("#tableBody").find("tr");
-                    var element = "<tr>\n" +
-                                  "    <td>" + goodslist[i].gId + "</td>\n" +
-                                  "    <td>" + goodslist[i].gDescribe + "</td>\n" +
-                                  "    <td>" + goodslist[i].gPrice + "</td>\n" +
-                                  "    <td>" + goodslist[i].gStock + "</td>\n" +
-                                  '    <td><a class="btn btn-xs btn-warning opear">下架</a></td>\n' +
-                                  "    <td>\n" +
-                                  '        <a class="opear" href="">编辑</a>\n' +
-                                  "    </td>\n" +
-                                  "</tr>";
-                    tbody.after(element);
-                }
-            }
-        });
+    $("#goodsSkip").click(function () {
+        $(window).attr("location", "goodsmanage.html");
     });
 
     //商品管理-上一页
@@ -137,17 +110,3 @@ $(window).ready(function () {
 
 });
 
-/**
- * 获取管理员信息
- */
-function adminInfo() {
-    $.ajax({
-        type: "GET",
-        url: "/admin/adminInfo",
-        success: function (data) {
-            if (data.status === true) {
-                $("#adminName").html(data.obj.uname);
-            }
-        }
-    });
-}

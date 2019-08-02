@@ -30,6 +30,21 @@ function userInfo() {
     });
 }
 
+/**
+ * 获取管理员信息
+ */
+function adminInfo() {
+    $.ajax({
+        type: "GET",
+        url: "/admin/adminInfo",
+        success: function (data) {
+            if (data.status === true) {
+                $("#adminName").html(data.obj.uname);
+            }
+        }
+    });
+}
+
 $(document).ready(function () {
     $("#login").click(function () {
         $(window).attr('location', '/user/login.html');

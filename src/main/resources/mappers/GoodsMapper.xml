@@ -19,10 +19,10 @@
 
   <select id="selectAllGoods" parameterType="com.emall.utils.PageModel" resultMap="BaseResultMap">
     select
-    <include refid="Base_Column_List" />
-    from goods
-    inner join (select g_id from goods limit #{limit} offset #{offset}) as ids
-    on goods.g_id = ids.g_id
+      g.g_id, g.g_name, g.g_describe, g.c_id, g.g_stock, g.g_price, g.g_image, g.g_details, g.g_status
+    from goods g
+    inner join (select g_id from goods limit #{limit} offset #{offset}) ids
+    on g.g_id = ids.g_id
   </select>
 
   <select id="selectByPrimaryKey" resultMap="BaseResultMap">
