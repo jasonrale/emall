@@ -6,20 +6,19 @@ import com.emall.vo.UserUpdateVo;
 import org.apache.ibatis.annotations.Param;
 
 public interface UserMapper {
+    int deleteByPrimaryKey(@Param("userId") String userId);
 
-    int deleteByPrimaryKey(String uId);
+    int insert(User user);
 
-    int insert(User record);
+    User selectByPrimaryKey(@Param("userId") String userId);
 
-    int insertSelective(User record);
+    int updateByUserId(UserUpdateVo userUpdateVo);
 
-    User selectByPrimaryKey(String uId);
-
-    User selectByUserName(@Param("uName") String uName);
-
-    int updateByUserId(UserUpdateVo record);
+    int pwdById(PasswordVo passwordVo);
 
     int updateByPrimaryKey(User record);
 
-    int pwdById(PasswordVo passwordVo);
+    User selectByUserName(@Param("userName") String userName);
+
+    boolean isExistByName(@Param("userName") String userName);
 }

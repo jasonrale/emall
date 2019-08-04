@@ -8,17 +8,17 @@
 function userInfoInit() {
     $.ajax({
         type: "GET",
-        url: "/user/userInfo",
+        url: "/user",
         success: function (data) {
             if (data.status === true) {
                 $("#login").css("display", "none");
                 $("#welcome").css("display", "inline");
-                $("#loginName").css("display", "inline").html(data.obj.uname);
+                $("#loginName").css("display", "inline").html(data.obj.userName);
                 $("#logout").css("display", "inline");
 
-                $("#userName").html(data.obj.uname);
-                $("#sex").html(data.obj.usex === 1 ? "男" : "女");
-                $("#mobileNumber").html(data.obj.umobileNumber);
+                $("#userName").html(data.obj.userName);
+                $("#sex").html(data.obj.userSex === 1 ? "男" : "女");
+                $("#mobileNumber").html(data.obj.userMobileNumber);
             }
         }
     });

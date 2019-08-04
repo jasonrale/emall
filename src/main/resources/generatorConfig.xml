@@ -78,12 +78,12 @@
         <table tableName="category" domainObjectName="Category" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
         <table tableName="order_item" domainObjectName="OrderItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
-        <table tableName="seckill_goods" domainObjectName="SeckillGoods" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
-        <table tableName="seckill_order" domainObjectName="SeckillOrder" enableCountByExample="false"
-               enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
-               selectByExampleQueryId="false"/>
+		<table tableName="seckill_goods" domainObjectName="SeckillGoods" enableCountByExample="false"
+			   enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false"/>
+		<table tableName="seckill_order" domainObjectName="SeckillOrder" enableCountByExample="false"
+			   enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+			   selectByExampleQueryId="false"/>
         <table tableName="shipping" domainObjectName="Shipping" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
     </context>
 </generatorConfiguration>

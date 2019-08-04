@@ -54,7 +54,8 @@ public class ShiroRealm extends AuthorizingRealm {
         }
         SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
         //添加角色
-        info.addRole(user.getURole() == CUSTOMER ? "customer" : user.getURole() == ADMIN ? "admin" : "");
+        int role = user.getUserRole();
+        info.addRole(role == CUSTOMER ? "customer" : role == ADMIN ? "admin" : "");
         return info;
     }
 
@@ -68,25 +69,25 @@ public class ShiroRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         //获取token中的用户信息
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
-        String tName = token.getUsername();
-        logger.info("开始认证--username : " + tName);
+        String tokenName = token.getUsername();
+        logger.info("开始认证--username : " + tokenName);
 
         //查询是否存在该用户
-        User user = userService.selectByUsername(tName);
+        User user = userService.selectByUsername(tokenName);
         if (user == null) {
             logger.error("用户名不存在");
             throw new UnknownAccountException("用户名或密码错误");
         }
         //从数据库取出密码并转换成字符数组
-        char[] password = user.getUPassword().toCharArray();
+        char[] password = user.getUserPassword().toCharArray();
         //从数据库取出盐转换为byte类型的盐
-        ByteSource byteSalt = ByteSource.Util.bytes(user.getUSalt());
+        ByteSource byteSalt = ByteSource.Util.bytes(user.getUserSalt());
         //这里验证authenticationToken和simpleAuthenticationInfo的信息
         try {
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, byteSalt, getName());
             //认证通过后将用户信息放在session里
             Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute(user.getURole() == 0 ? "CurrentUser" : user.getURole() == 1 ? "SysAdmin" : "", user);
+            session.setAttribute(user.getUserRole() == 0 ? "CurrentUser" : user.getUserRole() == 1 ? "SysAdmin" : "", user);
 
             return info;
         } catch (IncorrectCredentialsException exception) {

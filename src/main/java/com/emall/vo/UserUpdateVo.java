@@ -15,14 +15,14 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserUpdateVo {
-    private String uId;               //用户id
+    private String userId;               //用户id
 
     @NotEmpty(message = "用户名不能为空")
     @Size(min = 3, message = "用户名长度不小于三个字符")
-    private String uName;          //用户名称
+    private String userName;          //用户名称
 
-    private Integer uSex;           //用户性别--男 ：1，女 ：0
+    private Integer userSex;           //用户性别--男 ：1，女 ：0
 
     @IsMobile
-    private String uMobileNumber;  //用户手机号码
+    private String userMobileNumber;  //用户手机号码
 }

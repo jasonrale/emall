@@ -9,22 +9,30 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * 秒杀商品实体类
+ *   秒杀商品实体类。
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Repository
 public class SeckillGoods {
-    private String sgId;            //秒杀商品id
+    private String seckillGoodsId;          //秒杀商品id
 
-    private String gId;             //商品id
+    private String seckillGoodsName;        //秒杀商品名称
 
-    private BigDecimal sgPrice;     //秒杀商品价格
+    private String seckillGoodsDescribe;    //秒杀商品描述
 
-    private Integer sgStock;        //秒杀商品库存
+    private Integer seckillGoodsStock;      //秒杀商品库存
 
-    private Date sgStartTime;       //秒杀开始时间
+    private BigDecimal seckillGoodsPrice;   //秒杀商品价格
 
-    private Date sgEndTime;         //秒杀结束时间
+    private String seckillGoodsImage;       //秒杀商品图片
+
+    private String seckillGoodsDetails;     //秒杀商品详情
+
+    private Date seckillGoodsStartTime;     //秒杀开始时间
+
+    private Date seckillGoodsEndTime;       //秒杀结束时间
+
+    private String seckillGoodsStatus;      //秒杀商品状态
 }

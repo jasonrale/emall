@@ -1,107 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.UserMapper">
-  <resultMap id="BaseResultMap" type="com.emall.entity.User">
-      <id column="u_id" jdbcType="VARCHAR" property="uId"/>
-    <result column="u_name" jdbcType="VARCHAR" property="uName" />
-    <result column="u_password" jdbcType="VARCHAR" property="uPassword" />
-    <result column="u_sex" jdbcType="INTEGER" property="uSex" />
-    <result column="u_mobile_number" jdbcType="VARCHAR" property="uMobileNumber" />
-    <result column="u_role" jdbcType="INTEGER" property="uRole" />
-    <result column="u_salt" jdbcType="VARCHAR" property="uSalt" />
-  </resultMap>
-
-  <sql id="Base_Column_List">
-    u_id, u_name, u_password, u_sex, u_mobile_number, u_role, u_salt
-  </sql>
-
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user
-        where u_id = #{uId,jdbcType=VARCHAR}
-  </select>
-
-  <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-    <include refid="Base_Column_List" />
-    from user
-    where u_name = #{uName,jdbcType=VARCHAR}
-  </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from user
-        where u_id = #{uId,jdbcType=VARCHAR}
-  </delete>
-
-  <insert id="insert" parameterType="com.emall.entity.User">
-      insert into user (u_id, u_name, u_password, u_sex, u_mobile_number, u_role, u_salt)
-      values (#{uId,jdbcType=VARCHAR}, #{uName,jdbcType=VARCHAR}, #{uPassword,jdbcType=VARCHAR},
-              #{uSex,jdbcType=INTEGER}, #{uMobileNumber,jdbcType=VARCHAR}, #{uRole,jdbcType=INTEGER},
-              #{uSalt,jdbcType=VARCHAR})
-  </insert>
-
-  <insert id="insertSelective" parameterType="com.emall.vo.UserUpdateVo">
-    insert into user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="uId != null">
-        u_id,
-      </if>
-      <if test="uName != null">
-        u_name,
-      </if>
-      <if test="uPassword != null">
-        u_password,
-      </if>
-      <if test="uSex != null">
-        u_sex,
-      </if>
-      <if test="uMobileNumber != null">
-        u_mobile_number,
-      </if>
-      <if test="uRole != null">
-        u_role,
-      </if>
-      <if test="uSalt != null">
-        u_salt,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="uId != null">
-          #{uId,jdbcType=VARCHAR},
-      </if>
-      <if test="uName != null">
-        #{uName,jdbcType=VARCHAR},
-      </if>
-      <if test="uPassword != null">
-        #{uPassword,jdbcType=VARCHAR},
-      </if>
-      <if test="uSex != null">
-        #{uSex,jdbcType=INTEGER},
-      </if>
-      <if test="uMobileNumber != null">
-        #{uMobileNumber,jdbcType=VARCHAR},
-      </if>
-      <if test="uRole != null">
-        #{uRole,jdbcType=INTEGER},
-      </if>
-      <if test="uSalt != null">
-        #{uSalt,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateByUserId" parameterType="com.emall.vo.UserUpdateVo">
-      update user
-      set u_name = #{uName,jdbcType=VARCHAR},
-      u_sex = #{uSex,jdbcType=INTEGER},
-      u_mobile_number = #{uMobileNumber,jdbcType=VARCHAR}
-      where u_id = #{uId,jdbcType=VARCHAR}
-  </update>
-
-  <update id="pwdById" parameterType="com.emall.vo.PasswordVo">
-    update user
-    set u_password = #{passwordNew,jdbcType=VARCHAR}
-    where u_id = #{uId,jdbcType=VARCHAR}
-  </update>
+	<resultMap id="BaseResultMap" type="com.emall.entity.User">
+		<id column="user_id" jdbcType="VARCHAR" property="userId"/>
+		<result column="user_name" jdbcType="VARCHAR" property="userName"/>
+		<result column="user_password" jdbcType="VARCHAR" property="userPassword"/>
+		<result column="user_sex" jdbcType="INTEGER" property="userSex"/>
+		<result column="user_mobile_number" jdbcType="VARCHAR" property="userMobileNumber"/>
+		<result column="user_role" jdbcType="INTEGER" property="userRole"/>
+		<result column="user_salt" jdbcType="VARCHAR" property="userSalt"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		user_id, user_name, user_password, user_sex, user_mobile_number, user_role, user_salt
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from user
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from user
+		where user_name = #{userName,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="isExistByName" parameterType="java.lang.String" resultType="java.lang.Boolean">
+		select count(1)
+		from user
+		where user_name = #{userName,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete
+		from user
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="com.emall.entity.User">
+		insert into user (user_id, user_name, user_password, user_sex, user_mobile_number, user_role, user_salt)
+		values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR},
+				#{userSex,jdbcType=INTEGER}, #{userMobileNumber,jdbcType=VARCHAR}, #{userRole,jdbcType=INTEGER},
+				#{userSalt,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateByUserId" parameterType="com.emall.vo.UserUpdateVo">
+		update user
+		set user_name          = #{userName,jdbcType=VARCHAR},
+			user_sex           = #{userSex,jdbcType=INTEGER},
+			user_mobile_number = #{userMobileNumber,jdbcType=VARCHAR}
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="pwdById" parameterType="com.emall.vo.PasswordVo">
+		update user
+		set user_password = #{passwordNew,jdbcType=VARCHAR}
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</update>
 </mapper>

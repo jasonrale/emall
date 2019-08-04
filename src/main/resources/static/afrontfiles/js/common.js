@@ -8,8 +8,7 @@
 
 //展示loading
 function showLoading(){
-    var idx = layer.msg('处理中...', {icon: 16,shade: [0.5, '#f5f5f5'],scrollbar: false,offset: '0px', time:10000}) ;
-    return idx;
+    return layer.msg('处理中...', {icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '0px', time: 5000});
 }
 
 /**
@@ -18,12 +17,12 @@ function showLoading(){
 function userInfo() {
     $.ajax({
         type: "GET",
-        url: "/user/userInfo",
+        url: "/user",
         success: function (data) {
             if (data.status === true) {
                 $("#login").css("display", "none");
                 $("#welcome").css("display", "inline");
-                $("#loginName").css("display", "inline").html(data.obj.uname);
+                $("#loginName").css("display", "inline").html(data.obj.userName);
                 $("#logout").css("display", "inline");
             }
         }
@@ -36,10 +35,10 @@ function userInfo() {
 function adminInfo() {
     $.ajax({
         type: "GET",
-        url: "/admin/adminInfo",
+        url: "/admin",
         success: function (data) {
             if (data.status === true) {
-                $("#adminName").html(data.obj.uname);
+                $("#adminName").html(data.obj.userName);
             }
         }
     });
@@ -60,5 +59,18 @@ $(document).ready(function () {
 
     $("#emall").click(function () {
         $(window).attr('location', '/index.html');
+    });
+
+    //后台管理
+    $("#goodsSkip").click(function () {
+        $(window).attr("location", "goodsmanage.html");
+    });
+
+    $("#categorySkip").click(function () {
+        $(window).attr("location", "categorymanage.html");
+    });
+
+    $("#orderSkip").click(function () {
+        $(window).attr("location", "ordermanage.html");
     });
 });

@@ -29,7 +29,7 @@ public class AdminController {
      * @param
      * @return Result
      */
-    @GetMapping("/adminInfo")
+    @GetMapping("")
     @ResponseBody
     public Result<Object> adminInfo() {
         logger.info("获取管理员登录信息中......");
@@ -45,6 +45,6 @@ public class AdminController {
             throw new GeneralException("登录已过期");
         }
 
-        return adminInfo != null ? Result.success("管理员" + adminInfo.getUName() + "已登录", adminInfo) : null;
+        return adminInfo != null ? Result.success("管理员" + adminInfo.getUserName() + "已登录", adminInfo) : null;
     }
 }

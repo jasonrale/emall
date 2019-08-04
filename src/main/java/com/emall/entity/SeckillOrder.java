@@ -6,18 +6,18 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 /**
- * 秒杀订单实体类
+ *   秒杀订单实体类。
  */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Repository
 public class SeckillOrder {
-    private String soId;            //秒杀订单id
+    private String seckillOrderId;          //秒杀订单id
 
-    private Integer uId;            //秒杀用户id
+    private String orderId;                 //订单id
 
-    private Integer gId;            //秒杀商品id
+    private String userId;                  //秒杀订单用户id
 
-    private Integer oId;            //订单id
+    private String seckillGoodsId;          //秒杀商品id
 }

@@ -5,27 +5,28 @@ $(document).ready(function () {
     });
 
     $("#submit").click(function () {
-        var username = $("#username").val();
-        var password = $("#password").val();
+        var userName = $("#username").val();
+        var userPassword = $("#password").val();
 
         if (username === "" || password === "") {
             $(".err-msg").html("用户名或密码不能为空！");
             $(".error-item").css("display", "block")
         } else {
-            var login = {"uName" : username, "uPassword" : password};
-            showLoading();
+            var login = {"userName": userName, "userPassword": userPassword};
             $.ajax({
                 type : "POST",
                 url : "/user/loginValidate",
-                data : login,
+                data: JSON.stringify(login),
+                contentType: 'application/json;charset=UTF-8',
                 success : function (data) {
                     if (data.status === true) {
-                        layer.msg(data.msg);
-                        if (data.obj.urole === 0) {
-                            $(window).attr("location", "/index.html");
-                        } else {
-                            $(window).attr("location","/authenticated/admin/index.html");
-                        }
+                        layer.msg(data.msg, {time: 800}, function () {
+                            if (data.obj.userRole === 0) {
+                                $(window).attr("location", "/index.html");
+                            } else {
+                                $(window).attr("location", "/authenticated/admin/index.html");
+                            }
+                        });
                     } else{
                         $(".err-msg").html("用户名或密码错误！");
                         $(".error-item").css("display", "block")

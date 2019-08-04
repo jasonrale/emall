@@ -15,17 +15,17 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Repository
 public class CartItem {
-    private String ciId;              //购物车明细id
+    private String cartItemId;              //购物车明细id
 
-    private String uId;               //用户id
+    private String userId;                  //用户id
 
-    private String gId;               //商品id
+    private String goodsId;                 //商品id
 
-    private String gCount;          //商品数量
+    private String goodsCount;              //商品数量
 
-    private BigDecimal gPrice;      //商品价格
+    private BigDecimal goodsPrice;          //商品价格
 
-    private String gImage;          //商品图片地址
+    private String goodsImage;              //商品图片地址
 
-    private BigDecimal ciSubtotal;  //购物车明细小计
+    private BigDecimal cartItemSubtotal;    //购物车明细小计
 }

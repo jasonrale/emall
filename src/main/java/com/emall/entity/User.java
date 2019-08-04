@@ -23,22 +23,22 @@ public class User implements Serializable {
     public static final int ADMIN = 1;
 
 
-    private String uId;               //用户id
+    private String userId;               //用户id
 
     @NotEmpty(message = "用户名不能为空")
     @Size(min = 3, message = "用户名长度不小于三个字符")
-    private String uName;          //用户名称
+    private String userName;          //用户名称
 
     @NotEmpty(message = "用户密码不能为空")
     @Size(min = 6, message = "密码长度不能少于6位")
-    private String uPassword;       //用户密码
+    private String userPassword;       //用户密码
 
-    private Integer uSex;           //用户性别--男 ：1，女 ：0
+    private Integer userSex;           //用户性别--男 ：1，女 ：0
 
     @IsMobile
-    private String uMobileNumber;  //用户手机号码
+    private String userMobileNumber;  //用户手机号码
 
-    private Integer uRole;          //用户角色--普通用户 ：0，系统管理员 ：1
+    private Integer userRole;          //用户角色--普通用户 ：0，系统管理员 ：1
 
-    private String uSalt;           //用户密码盐值
+    private String userSalt;           //用户密码盐值
 }

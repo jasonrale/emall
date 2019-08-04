@@ -1,122 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.CartItemMapper">
-  <resultMap id="BaseResultMap" type="com.emall.entity.CartItem">
-      <id column="ci_id" jdbcType="VARCHAR" property="ciId"/>
-      <result column="u_id" jdbcType="VARCHAR" property="uId"/>
-      <result column="g_id" jdbcType="VARCHAR" property="gId"/>
-    <result column="g_count" jdbcType="VARCHAR" property="gCount" />
-    <result column="g_price" jdbcType="DECIMAL" property="gPrice" />
-    <result column="g_image" jdbcType="VARCHAR" property="gImage" />
-    <result column="ci_subtotal" jdbcType="DECIMAL" property="ciSubtotal" />
-  </resultMap>
-
-  <sql id="Base_Column_List">
-    ci_id, u_id, g_id, g_count, g_price, g_image, ci_subtotal
-  </sql>
-
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from cart_item
-        where ci_id = #{ciId,jdbcType=VARCHAR}
-  </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from cart_item
-        where ci_id = #{ciId,jdbcType=VARCHAR}
-  </delete>
-
-  <insert id="insert" parameterType="com.emall.entity.CartItem">
-      insert into cart_item (ci_id, u_id, g_id, g_count, g_price, g_image, ci_subtotal)
-      values (#{ciId,jdbcType=VARCHAR}, #{uId,jdbcType=VARCHAR}, #{gId,jdbcType=VARCHAR},
-              #{gCount,jdbcType=VARCHAR}, #{gPrice,jdbcType=DECIMAL}, #{gImage,jdbcType=VARCHAR},
-              #{ciSubtotal,jdbcType=DECIMAL})
-  </insert>
-
-  <insert id="insertSelective" parameterType="com.emall.entity.CartItem">
-    insert into cart_item
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="ciId != null">
-        ci_id,
-      </if>
-      <if test="uId != null">
-        u_id,
-      </if>
-      <if test="gId != null">
-        g_id,
-      </if>
-      <if test="gCount != null">
-        g_count,
-      </if>
-      <if test="gPrice != null">
-        g_price,
-      </if>
-      <if test="gImage != null">
-        g_image,
-      </if>
-      <if test="ciSubtotal != null">
-        ci_subtotal,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="ciId != null">
-          #{ciId,jdbcType=VARCHAR},
-      </if>
-      <if test="uId != null">
-          #{uId,jdbcType=VARCHAR},
-      </if>
-      <if test="gId != null">
-          #{gId,jdbcType=VARCHAR},
-      </if>
-      <if test="gCount != null">
-        #{gCount,jdbcType=VARCHAR},
-      </if>
-      <if test="gPrice != null">
-        #{gPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="gImage != null">
-        #{gImage,jdbcType=VARCHAR},
-      </if>
-      <if test="ciSubtotal != null">
-        #{ciSubtotal,jdbcType=DECIMAL},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.CartItem">
-    update cart_item
-    <set>
-      <if test="uId != null">
-          u_id = #{uId,jdbcType=VARCHAR},
-      </if>
-      <if test="gId != null">
-          g_id = #{gId,jdbcType=VARCHAR},
-      </if>
-      <if test="gCount != null">
-        g_count = #{gCount,jdbcType=VARCHAR},
-      </if>
-      <if test="gPrice != null">
-        g_price = #{gPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="gImage != null">
-        g_image = #{gImage,jdbcType=VARCHAR},
-      </if>
-      <if test="ciSubtotal != null">
-        ci_subtotal = #{ciSubtotal,jdbcType=DECIMAL},
-      </if>
-    </set>
-      where ci_id = #{ciId,jdbcType=VARCHAR}
-  </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.emall.entity.CartItem">
-      update cart_item
-      set u_id        = #{uId,jdbcType=VARCHAR},
-          g_id        = #{gId,jdbcType=VARCHAR},
-          g_count     = #{gCount,jdbcType=VARCHAR},
-          g_price     = #{gPrice,jdbcType=DECIMAL},
-          g_image     = #{gImage,jdbcType=VARCHAR},
-          ci_subtotal = #{ciSubtotal,jdbcType=DECIMAL}
-      where ci_id = #{ciId,jdbcType=VARCHAR}
+	<resultMap id="BaseResultMap" type="com.emall.entity.CartItem">
+		<id column="cart_item_id" jdbcType="VARCHAR" property="cartItemId"/>
+		<result column="user_id" jdbcType="VARCHAR" property="userId"/>
+		<result column="goods_id" jdbcType="VARCHAR" property="goodsId"/>
+		<result column="goods_count" jdbcType="VARCHAR" property="goodsCount"/>
+		<result column="goods_price" jdbcType="DECIMAL" property="goodsPrice"/>
+		<result column="goods_image" jdbcType="VARCHAR" property="goodsImage"/>
+		<result column="cart_item_subtotal" jdbcType="DECIMAL" property="cartItemSubtotal"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		cart_item_id, user_id, goods_id, goods_count, goods_price, goods_image, cart_item_subtotal
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from cart_item
+		where cart_item_id = #{cartItemId,jdbcType=VARCHAR}
+	</select>
+	
+	<insert id="insert" parameterType="com.emall.entity.CartItem">
+		insert into cart_item (cart_item_id, user_id, goods_id, goods_count, goods_price, goods_image,
+							   cart_item_subtotal)
+		values (#{cartItemId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR},
+				#{goodsCount,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, #{goodsImage,jdbcType=VARCHAR},
+				#{cartItemSubtotal,jdbcType=DECIMAL})
+	</insert>
+	
+	<update id="updateByPrimaryKey" parameterType="com.emall.entity.CartItem">
+		update cart_item
+		set user_id            = #{userId,jdbcType=VARCHAR},
+			goods_id           = #{goodsId,jdbcType=VARCHAR},
+			goods_count        = #{goodsCount,jdbcType=VARCHAR},
+			goods_price        = #{goodsPrice,jdbcType=DECIMAL},
+			goods_image        = #{goodsImage,jdbcType=VARCHAR},
+			cart_item_subtotal = #{cartItemSubtotal,jdbcType=DECIMAL}
+		where cart_item_id = #{cartItemId,jdbcType=VARCHAR}
   </update>
 </mapper>

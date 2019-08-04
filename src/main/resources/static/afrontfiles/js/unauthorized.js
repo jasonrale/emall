@@ -14,16 +14,18 @@ $(document).ready(function () {
             $(".err-msg").html("用户名或密码不能为空！");
             $(".error-item").css("display", "block")
         } else {
-            var login = {"uName" : username, "uPassword" : password};
+            var login = {"userName": username, "userPassword": password};
             $.ajax({
                 type : "POST",
-                url : "/user/authenticate",
-                data : login,
+                url: "/user/unauthorized",
+                data: JSON.stringify(login),
+                contentType: 'application/json;charset=UTF-8',
                 success : function (data) {
                     if (data.status === true) {
                         showLoading();
-                        layer.msg("登录成功");
-                        $(window).attr("location", data.msg);
+                        layer.msg("登录成功", {time: 800}, function () {
+                            $(window).attr("location", data.msg);
+                        });
                     } else{
                         $(".err-msg").html("用户名或密码错误！");
                         $(".error-item").css("display", "block")

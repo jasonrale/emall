@@ -15,21 +15,21 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Repository
 public class Goods {
-    private String gId;           //商品id
+    private String goodsId;         //商品id
 
-    private String gName;      //商品名称
+    private String goodsName;       //商品名称
 
-    private String gDescribe;    //商品描述
+    private String goodsDescribe;   //商品描述
 
-    private String cId;           //商品类别id
+    private String categoryId;       //商品类别id
 
-    private Integer gStock;     //商品库存
+    private Integer goodsStock;     //商品库存
 
-    private BigDecimal gPrice;   //商品价格
+    private BigDecimal goodsPrice;  //商品价格
 
-    private String gImage;       //商品图片地址
+    private String goodsImage;      //商品图片地址
 
-    private String gDetails;      //商品详情
+    private String goodsDetails;    //商品详情
 
-    private Integer gStatus;     //商品状态--已上架 ：1，已下架 ：0
+    private Integer goodsStatus;    //商品状态--已上架 ：1，已下架 ：0
 }

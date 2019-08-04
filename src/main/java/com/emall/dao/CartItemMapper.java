@@ -3,17 +3,11 @@ package com.emall.dao;
 import com.emall.entity.CartItem;
 
 public interface CartItemMapper {
-
-    int deleteByPrimaryKey(String ciId);
+    int deleteByPrimaryKey(String cartItemId);
 
     int insert(CartItem record);
 
-    int insertSelective(CartItem record);
-
-    CartItem selectByPrimaryKey(String ciId);
-
-    int updateByPrimaryKeySelective(CartItem record);
+    CartItem selectByPrimaryKey(String cartItemId);
 
     int updateByPrimaryKey(CartItem record);
-
 }

@@ -3,17 +3,11 @@ package com.emall.dao;
 import com.emall.entity.Order;
 
 public interface OrderMapper {
-
-    int deleteByPrimaryKey(String oId);
+    int deleteByPrimaryKey(String orderId);
 
     int insert(Order record);
 
-    int insertSelective(Order record);
-
-    Order selectByPrimaryKey(String oId);
-
-    int updateByPrimaryKeySelective(Order record);
+    Order selectByPrimaryKey(String orderId);
 
     int updateByPrimaryKey(Order record);
-
 }

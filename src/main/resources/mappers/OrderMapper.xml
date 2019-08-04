@@ -1,136 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.OrderMapper">
-  <resultMap id="BaseResultMap" type="com.emall.entity.Order">
-      <id column="o_id" jdbcType="VARCHAR" property="oId"/>
-      <result column="u_id" jdbcType="VARCHAR" property="uId"/>
-    <result column="o_payment" jdbcType="VARCHAR" property="oPayment" />
-    <result column="o_status" jdbcType="VARCHAR" property="oStatus" />
-    <result column="o_create_time" jdbcType="TIMESTAMP" property="oCreateTime" />
-    <result column="o_payment_time" jdbcType="TIMESTAMP" property="oPaymentTime" />
-    <result column="o_send_time" jdbcType="TIMESTAMP" property="oSendTime" />
-    <result column="o_end_time" jdbcType="TIMESTAMP" property="oEndTime" />
-  </resultMap>
-
-  <sql id="Base_Column_List">
-    o_id, u_id, o_payment, o_status, o_create_time, o_payment_time, o_send_time, o_end_time
-  </sql>
-
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-        from order
-        where o_id = #{oId,jdbcType=VARCHAR}
-  </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete
-        from order
-        where o_id = #{oId,jdbcType=VARCHAR}
-  </delete>
-
-  <insert id="insert" parameterType="com.emall.entity.Order">
-      insert into order (o_id, u_id, o_payment,
-                         o_status, o_create_time, o_payment_time,
-                         o_send_time, o_end_time)
-      values (#{oId,jdbcType=VARCHAR}, #{uId,jdbcType=VARCHAR}, #{oPayment,jdbcType=VARCHAR},
-      #{oStatus,jdbcType=VARCHAR}, #{oCreateTime,jdbcType=TIMESTAMP}, #{oPaymentTime,jdbcType=TIMESTAMP}, 
-      #{oSendTime,jdbcType=TIMESTAMP}, #{oEndTime,jdbcType=TIMESTAMP})
+	<resultMap id="BaseResultMap" type="com.emall.entity.Order">
+		<id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+		<result column="user_id" jdbcType="VARCHAR" property="userId"/>
+		<result column="order_payment" jdbcType="VARCHAR" property="orderPayment"/>
+		<result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+		<result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime"/>
+		<result column="order_payment_time" jdbcType="TIMESTAMP" property="orderPaymentTime"/>
+		<result column="order_send_time" jdbcType="TIMESTAMP" property="orderSendTime"/>
+		<result column="order_end_time" jdbcType="TIMESTAMP" property="orderEndTime"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		order_id, user_id, order_payment, order_status, order_create_time, order_payment_time, order_send_time, order_end_time
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from `order`
+		where order_id = #{orderId,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete
+		from `order`
+		where order_id = #{orderId,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="com.emall.entity.Order">
+		insert into `order` (order_id, user_id, order_payment, order_status, order_create_time, order_payment_time,
+							 order_send_time, order_end_time)
+		values (#{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{orderPayment,jdbcType=VARCHAR},
+				#{orderStatus,jdbcType=VARCHAR}, #{orderCreateTime,jdbcType=TIMESTAMP},
+				#{orderPaymentTime,jdbcType=TIMESTAMP},
+				#{orderSendTime,jdbcType=TIMESTAMP}, #{orderEndTime,jdbcType=TIMESTAMP})
   </insert>
-
-  <insert id="insertSelective" parameterType="com.emall.entity.Order">
-      insert into order
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="oId != null">
-        o_id,
-      </if>
-      <if test="uId != null">
-        u_id,
-      </if>
-      <if test="oPayment != null">
-        o_payment,
-      </if>
-      <if test="oStatus != null">
-        o_status,
-      </if>
-      <if test="oCreateTime != null">
-        o_create_time,
-      </if>
-      <if test="oPaymentTime != null">
-        o_payment_time,
-      </if>
-      <if test="oSendTime != null">
-        o_send_time,
-      </if>
-      <if test="oEndTime != null">
-        o_end_time,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="oId != null">
-          #{oId,jdbcType=VARCHAR},
-      </if>
-      <if test="uId != null">
-          #{uId,jdbcType=VARCHAR},
-      </if>
-      <if test="oPayment != null">
-        #{oPayment,jdbcType=VARCHAR},
-      </if>
-      <if test="oStatus != null">
-        #{oStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="oCreateTime != null">
-        #{oCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="oPaymentTime != null">
-        #{oPaymentTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="oSendTime != null">
-        #{oSendTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="oEndTime != null">
-        #{oEndTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.Order">
-      update order
-    <set>
-      <if test="uId != null">
-          u_id = #{uId,jdbcType=VARCHAR},
-      </if>
-      <if test="oPayment != null">
-        o_payment = #{oPayment,jdbcType=VARCHAR},
-      </if>
-      <if test="oStatus != null">
-        o_status = #{oStatus,jdbcType=VARCHAR},
-      </if>
-      <if test="oCreateTime != null">
-        o_create_time = #{oCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="oPaymentTime != null">
-        o_payment_time = #{oPaymentTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="oSendTime != null">
-        o_send_time = #{oSendTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="oEndTime != null">
-        o_end_time = #{oEndTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-      where o_id = #{oId,jdbcType=VARCHAR}
-  </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.emall.entity.Order">
-      update order
-      set u_id       = #{uId,jdbcType=VARCHAR},
-      o_payment = #{oPayment,jdbcType=VARCHAR},
-      o_status = #{oStatus,jdbcType=VARCHAR},
-      o_create_time = #{oCreateTime,jdbcType=TIMESTAMP},
-      o_payment_time = #{oPaymentTime,jdbcType=TIMESTAMP},
-      o_send_time = #{oSendTime,jdbcType=TIMESTAMP},
-      o_end_time = #{oEndTime,jdbcType=TIMESTAMP}
-      where o_id = #{oId,jdbcType=VARCHAR}
+	
+	<update id="updateByPrimaryKey" parameterType="com.emall.entity.Order">
+		update `order`
+		set user_id            = #{userId,jdbcType=VARCHAR},
+			order_payment      = #{orderPayment,jdbcType=VARCHAR},
+			order_status       = #{orderStatus,jdbcType=VARCHAR},
+			order_create_time  = #{orderCreateTime,jdbcType=TIMESTAMP},
+			order_payment_time = #{orderPaymentTime,jdbcType=TIMESTAMP},
+			order_send_time    = #{orderSendTime,jdbcType=TIMESTAMP},
+			order_end_time     = #{orderEndTime,jdbcType=TIMESTAMP}
+		where order_id = #{orderId,jdbcType=VARCHAR}
   </update>
 </mapper>

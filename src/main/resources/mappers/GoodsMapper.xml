@@ -1,152 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.GoodsMapper">
-  <resultMap id="BaseResultMap" type="com.emall.entity.Goods">
-    <id column="g_id" jdbcType="VARCHAR" property="gId"/>
-    <result column="g_name" jdbcType="VARCHAR" property="gName" />
-    <result column="g_describe" jdbcType="VARCHAR" property="gDescribe" />
-    <result column="c_id" jdbcType="VARCHAR" property="cId"/>
-    <result column="g_stock" jdbcType="INTEGER" property="gStock" />
-    <result column="g_price" jdbcType="DECIMAL" property="gPrice" />
-    <result column="g_image" jdbcType="VARCHAR" property="gImage" />
-    <result column="g_details" jdbcType="VARCHAR" property="gDetails" />
-    <result column="g_status" jdbcType="INTEGER" property="gStatus" />
-  </resultMap>
-
-  <sql id="Base_Column_List">
-    g_id, g_name, g_describe, c_id, g_stock, g_price, g_image, g_details, g_status
-  </sql>
-
-  <select id="selectAllGoods" parameterType="com.emall.utils.PageModel" resultMap="BaseResultMap">
-    select
-      g.g_id, g.g_name, g.g_describe, g.c_id, g.g_stock, g.g_price, g.g_image, g.g_details, g.g_status
-    from goods g
-    inner join (select g_id from goods limit #{limit} offset #{offset}) ids
-    on g.g_id = ids.g_id
-  </select>
-
-  <select id="selectByPrimaryKey" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from goods
-    where g_id = #{gId,jdbcType=VARCHAR}
-  </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from goods
-        where g_id = #{gId,jdbcType=VARCHAR}
-  </delete>
-
-  <insert id="insert" parameterType="com.emall.entity.Goods">
-      insert into goods (g_id, g_name, g_describe, c_id, g_stock, g_price, g_image, g_details, g_status)
-      values (#{gId,jdbcType=VARCHAR}, #{gName,jdbcType=VARCHAR}, #{gDescribe,jdbcType=VARCHAR},
-              #{cId,jdbcType=VARCHAR}, #{gStock,jdbcType=INTEGER}, #{gPrice,jdbcType=DECIMAL},
-              #{gImage,jdbcType=VARCHAR}, #{gDetails,jdbcType=VARCHAR}, #{gStatus,jdbcType=INTEGER})
-  </insert>
-
-  <insert id="insertSelective" parameterType="com.emall.entity.Goods">
-    insert into goods
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="gId != null">
-        g_id,
-      </if>
-      <if test="gName != null">
-        g_name,
-      </if>
-      <if test="gDescribe != null">
-        g_describe,
-      </if>
-      <if test="cId != null">
-        c_id,
-      </if>
-      <if test="gStock != null">
-        g_stock,
-      </if>
-      <if test="gPrice != null">
-        g_price,
-      </if>
-      <if test="gImage != null">
-        g_image,
-      </if>
-      <if test="gDetails != null">
-        g_details,
-      </if>
-      <if test="gStatus != null">
-        g_status,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="gId != null">
-          #{gId,jdbcType=VARCHAR},
-      </if>
-      <if test="gName != null">
-        #{gName,jdbcType=VARCHAR},
-      </if>
-      <if test="gDescribe != null">
-        #{gDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="cId != null">
-          #{cId,jdbcType=VARCHAR},
-      </if>
-      <if test="gStock != null">
-        #{gStock,jdbcType=INTEGER},
-      </if>
-      <if test="gPrice != null">
-        #{gPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="gImage != null">
-        #{gImage,jdbcType=VARCHAR},
-      </if>
-      <if test="gDetails != null">
-        #{gDetails,jdbcType=VARCHAR},
-      </if>
-      <if test="gStatus != null">
-        #{gStatus,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.Goods">
-    update goods
-    <set>
-      <if test="gName != null">
-        g_name = #{gName,jdbcType=VARCHAR},
-      </if>
-      <if test="gDescribe != null">
-        g_describe = #{gDescribe,jdbcType=VARCHAR},
-      </if>
-      <if test="cId != null">
-          c_id = #{cId,jdbcType=VARCHAR},
-      </if>
-      <if test="gStock != null">
-        g_stock = #{gStock,jdbcType=INTEGER},
-      </if>
-      <if test="gPrice != null">
-        g_price = #{gPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="gImage != null">
-        g_image = #{gImage,jdbcType=VARCHAR},
-      </if>
-      <if test="gDetails != null">
-        g_details = #{gDetails,jdbcType=VARCHAR},
-      </if>
-      <if test="gStatus != null">
-        g_status = #{gStatus,jdbcType=INTEGER},
-      </if>
-    </set>
-      where g_id = #{gId,jdbcType=VARCHAR}
-  </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.emall.entity.Goods">
-      update goods
-      set g_name     = #{gName,jdbcType=VARCHAR},
-          g_describe = #{gDescribe,jdbcType=VARCHAR},
-          c_id       = #{cId,jdbcType=VARCHAR},
-          g_stock    = #{gStock,jdbcType=INTEGER},
-          g_price    = #{gPrice,jdbcType=DECIMAL},
-          g_image    = #{gImage,jdbcType=VARCHAR},
-          g_details  = #{gDetails,jdbcType=VARCHAR},
-          g_status   = #{gStatus,jdbcType=INTEGER}
-      where g_id = #{gId,jdbcType=VARCHAR}
+	<resultMap id="BaseResultMap" type="com.emall.entity.Goods">
+		<id column="goods_id" jdbcType="VARCHAR" property="goodsId"/>
+		<result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+		<result column="goods_describe" jdbcType="VARCHAR" property="goodsDescribe"/>
+		<result column="category_id" jdbcType="VARCHAR" property="categoryId"/>
+		<result column="goods_price" jdbcType="DECIMAL" property="goodsPrice"/>
+		<result column="goods_stock" jdbcType="INTEGER" property="goodsStock"/>
+		<result column="goods_image" jdbcType="VARCHAR" property="goodsImage"/>
+		<result column="goods_details" jdbcType="VARCHAR" property="goodsDetails"/>
+		<result column="goods_status" jdbcType="INTEGER" property="goodsStatus"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		goods_id, goods_name, goods_describe, category_id, goods_price, goods_stock, goods_image,
+    	goods_details, goods_status
+	</sql>
+	
+	<select id="count" resultType="java.lang.Long">
+		select count(1)
+		from goods
+	</select>
+	
+	<select id="queryAll" parameterType="com.emall.utils.PageModel" resultMap="BaseResultMap">
+		select g.goods_id,
+			   g.goods_name,
+			   g.goods_describe,
+			   g.category_id,
+			   g.goods_price,
+			   g.goods_stock,
+			   g.goods_image,
+			   g.goods_details,
+			   g.goods_status
+		from goods g
+				 inner join (select goods_id from goods limit #{limit} offset #{offset}) ids
+							on g.goods_id = ids.goods_id
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from goods
+		where goods_id = #{goodsId,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete
+		from goods
+		where goods_id = #{goodsId,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="com.emall.entity.Goods">
+		insert into goods (goods_id, goods_name, goods_describe, category_id, goods_price, goods_stock, goods_image,
+						   goods_details, goods_status)
+		values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsDescribe,jdbcType=VARCHAR},
+				#{categoryId,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, #{goodsStock,jdbcType=INTEGER},
+				#{goodsImage,jdbcType=VARCHAR}, #{goodsDetails,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER})
+	</insert>
+	
+	<update id="updateByPrimaryKey" parameterType="com.emall.entity.Goods">
+		update goods
+		set goods_name     = #{goodsName,jdbcType=VARCHAR},
+			goods_describe = #{goodsDescribe,jdbcType=VARCHAR},
+			category_id    = #{categoryId,jdbcType=VARCHAR},
+			goods_price    = #{goodsPrice,jdbcType=DECIMAL},
+			goods_stock    = #{goodsStock,jdbcType=INTEGER},
+			goods_image    = #{goodsImage,jdbcType=VARCHAR},
+			goods_details  = #{goodsDetails,jdbcType=VARCHAR},
+			goods_status   = #{goodsStatus,jdbcType=INTEGER}
+		where goods_id = #{goodsId,jdbcType=VARCHAR}
   </update>
 </mapper>

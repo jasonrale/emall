@@ -2,13 +2,12 @@ package com.emall.service;
 
 import com.emall.dao.UserMapper;
 import com.emall.entity.User;
-import com.emall.exception.GeneralException;
-import com.emall.result.Result;
-import com.emall.utils.SnowflakeIdWorker;
+import com.emall.utils.SnowFlakeConfig;
 import com.emall.vo.PasswordVo;
 import com.emall.vo.UserUpdateVo;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -21,16 +20,16 @@ public class UserService {
     private UserMapper userMapper;
 
     @Resource
-    private SnowflakeIdWorker snowflakeIdWorker;
+    private SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 根据用户名查询用户对象
      *
-     * @param uName
+     * @param userName
      * @return User
      */
-    public User selectByUsername(String uName) {
-        return userMapper.selectByUserName(uName);
+    public User selectByUsername(String userName) {
+        return userMapper.selectByUserName(userName);
     }
 
     /**
@@ -40,23 +39,20 @@ public class UserService {
      * @return Result
      */
     public boolean registerValidate(User user) {
-        String uName = user.getUName();
-        String uPassword = user.getUPassword();
+        String userName = user.getUserName();
+        String userPassword = user.getUserPassword();
 
-        User userInfo = selectByUsername(uName);
-        if (userInfo != null) {
-            throw new GeneralException("用户名已存在");
-        } else {
-            String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
-            uPassword = shiroEncrypt(uPassword, salt);
-            user.setUId(String.valueOf(snowflakeIdWorker.nextId()));
-            user.setUPassword(uPassword);
-            user.setUSalt(salt);
-            //设置为普通用户
-            user.setURole(0);
+        Assert.isTrue(!userMapper.isExistByName(userName), "用户名已存在");
 
-            return userMapper.insert(user) != 0;
-        }
+        String salt = new SecureRandomNumberGenerator().nextBytes().toHex();
+        userPassword = shiroEncrypt(userPassword, salt);
+        user.setUserId(String.valueOf(snowflakeIdWorker.nextId()));
+        user.setUserPassword(userPassword);
+        user.setUserSalt(salt);
+        //设置为普通用户
+        user.setUserRole(0);
+
+        return userMapper.insert(user) != 0;
     }
 
     /**

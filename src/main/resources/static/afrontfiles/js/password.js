@@ -1,22 +1,23 @@
 ﻿/*密码修改验证*/
 $(document).ready(function () {
-    userPwdInit();
+    userPasswordInit();
 
     //验证密码
     $("#submit").click(function () {
         var userId = $("#userId").val();
-        var salt = $("#salt").val();
+        var userSalt = $("#userSalt").val();
         var passwordReal = $("#passwordReal").val();
         var passwordOld = $("#passwordOld").val();
         var passwordNew = $("#passwordNew").val();
-        var pwdConfirm = $("#pwdConfirm").val();
+        var passwordConfirm = $("#passwordConfirm").val();
 
-        var passwordVo = {"uId" : userId,
-                          "salt" : salt,
+        var passwordVo = {
+            "userId": userId,
+            "userSalt": userSalt,
                           "passwordReal" : passwordReal,
                           "passwordOld" : passwordOld,
                           "passwordNew" : passwordNew,
-                          "pwdConfirm" : pwdConfirm
+            "passwordConfirm": passwordConfirm
                          };
 
         showLoading();
@@ -24,11 +25,14 @@ $(document).ready(function () {
             type : "POST",
             url : "/user/password",
             dataType : "json",
-            data : passwordVo,
+            data: JSON.stringify(passwordVo),
+            contentType: 'application/json;charset=UTF-8',
             success : function (data) {
                 if (data.status === true) {
-                    layer.msg(data.msg);
-                    $(window).attr("location","/user/logout");
+                    layer.msg(data.msg, {time: 800}, function () {
+                        $(window).attr("location", "/user/logout");
+                    });
+
                 } else {
                     layer.msg(data.msg);
                 }
@@ -40,21 +44,21 @@ $(document).ready(function () {
 /**
  * 用户信息初始化
  */
-function userPwdInit() {
+function userPasswordInit() {
     $.ajax({
         type: "GET",
-        url: "/user/userInfo",
+        url: "/user",
         success: function (data) {
             if (data.status === true) {
 
                 $("#login").css("display", "none");
                 $("#welcome").css("display", "inline");
-                $("#loginName").css("display", "inline").html(data.obj.uname);
+                $("#loginName").css("display", "inline").html(data.obj.userName);
                 $("#logout").css("display", "inline");
 
-                $("#userId").val(data.obj.uid);
-                $("#salt").val(data.obj.usalt);
-                $("#passwordReal").val(data.obj.upassword);
+                $("#userId").val(data.obj.userId);
+                $("#userSalt").val(data.obj.userSalt);
+                $("#passwordReal").val(data.obj.userPassword);
             }
         }
     });

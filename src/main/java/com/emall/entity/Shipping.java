@@ -13,11 +13,13 @@ import org.springframework.stereotype.Repository;
 @AllArgsConstructor
 @Repository
 public class Shipping {
-    private String sId;               //收货地址id
+    private String shippingId;              //收货信息id
 
-    private String sName;          //收货人名称
+    private String userId;                  //收货地址用户id
 
-    private Integer sMobileNumber; //收货人手机号码
+    private String shippingName;            //收货人名称
 
-    private String sAddress;        //收获详细地址
+    private Integer shippingMobileNumber;   //收货人手机号码
+
+    private String shippingAddress;         //收货详细地址
 }

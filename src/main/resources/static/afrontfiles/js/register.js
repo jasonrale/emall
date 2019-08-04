@@ -2,7 +2,7 @@
 $(document).ready(function () {
     var getUserName = $("#username");
     var getPassword = $("#password");
-    var getConfirm = $("#pwdConfirm");
+    var getConfirm = $("#passwordConfirm");
     var getSex = $(".sex:checked");
     var getMobile = $("#mobile");
 
@@ -44,9 +44,9 @@ $(document).ready(function () {
     function pwdConfirmValid() {
         var result = true;
         var password = getPassword.val();
-        var pwdConfirm = getConfirm.val();
+        var passwordConfirm = getConfirm.val();
 
-        if (password !== pwdConfirm) {
+        if (password !== passwordConfirm) {
             $(".err-msg").html("两次密码输入不一致！");
             $(".error-item").css("display", "block");
             result = false;
@@ -82,18 +82,25 @@ $(document).ready(function () {
             var sex = getSex.val();
             var mobileNumber = getMobile.val();
 
-            var submit = {"uName" : userName, "uPassword" : password, "uSex" : sex, "uMobileNumber" : mobileNumber};
+            var submit = {
+                "userName": userName,
+                "userPassword": password,
+                "userSex": sex,
+                "userMobileNumber": mobileNumber
+            };
 
             showLoading();
             $.ajax({
                 type : "PUT",
-                url : "/user/registerValidate",
+                url: "/user",
                 dataType : "json",
-                data : submit,
+                data: JSON.stringify(submit),
+                contentType: 'application/json;charset=UTF-8',
                 success : function (data) {
                     if (data.status === true) {
-                        layer.msg("注册成功");
-                        $(window).attr("location", "/result/result.html?resultType=register");
+                        layer.msg("注册成功", {time: 800}, function () {
+                            $(window).attr("location", "/result/result.html?resultType=register");
+                        });
                     } else {
                         layer.msg(data.msg)
                     }

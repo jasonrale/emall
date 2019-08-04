@@ -3,17 +3,11 @@ package com.emall.dao;
 import com.emall.entity.SeckillOrder;
 
 public interface SeckillOrderMapper {
-
-    int deleteByPrimaryKey(String soId);
+    int deleteByPrimaryKey(String seckillOrderId);
 
     int insert(SeckillOrder record);
 
-    int insertSelective(SeckillOrder record);
-
-    SeckillOrder selectByPrimaryKey(String soId);
-
-    int updateByPrimaryKeySelective(SeckillOrder record);
+    SeckillOrder selectByPrimaryKey(String seckillOrderId);
 
     int updateByPrimaryKey(SeckillOrder record);
-
 }

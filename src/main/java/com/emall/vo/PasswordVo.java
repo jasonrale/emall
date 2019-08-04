@@ -12,9 +12,9 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 public class PasswordVo {
-    private String uId;               //用户id
+    private String userId;               //用户id
 
-    private String salt;              //用户密码盐值
+    private String userSalt;              //用户密码盐值
 
     private String passwordReal;      //正确原密码
 
@@ -27,5 +27,5 @@ public class PasswordVo {
 
     @NotEmpty(message = "用户密码不能为空")
     @Size(min = 6, message = "密码长度不能少于6位")
-    private String pwdConfirm;        //确认密码
+    private String passwordConfirm;        //确认密码
 }

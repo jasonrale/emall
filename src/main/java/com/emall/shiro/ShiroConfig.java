@@ -101,7 +101,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/**","authc");
 
         shiroFilterFactoryBean.setUnauthorizedUrl("/result/result.html?resultType=403");
-        shiroFilterFactoryBean.setLoginUrl("/user/authenticate.html");
+        shiroFilterFactoryBean.setLoginUrl("/user/unauthorized.html");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;

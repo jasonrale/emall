@@ -35,4 +35,10 @@ public class GlobalExceptionHandler {
     public Result ExceptionHandler(HttpServletRequest request, IncorrectCredentialsException exception) {
         return Result.error(exception.getMessage());
     }
+
+    @ExceptionHandler(value = IllegalArgumentException.class)
+    public Result ExceptionHandler(HttpServletRequest request, IllegalArgumentException exception) {
+        return Result.error(exception.getMessage());
+    }
+
 }

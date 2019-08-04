@@ -1,65 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.CategoryMapper">
-  <resultMap id="BaseResultMap" type="com.emall.entity.Category">
-      <id column="c_id" jdbcType="VARCHAR" property="cId"/>
-    <result column="c_name" jdbcType="VARCHAR" property="cName" />
-  </resultMap>
-
-  <sql id="Base_Column_List">
-    c_id, c_name
-  </sql>
-
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from category
-        where c_id = #{cId,jdbcType=VARCHAR}
-  </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from category
-        where c_id = #{cId,jdbcType=VARCHAR}
-  </delete>
-
-  <insert id="insert" parameterType="com.emall.entity.Category">
-      insert into category (c_id, c_name)
-      values (#{cId,jdbcType=VARCHAR}, #{cName,jdbcType=VARCHAR})
-  </insert>
-
-  <insert id="insertSelective" parameterType="com.emall.entity.Category">
-    insert into category
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="cId != null">
-        c_id,
-      </if>
-      <if test="cName != null">
-        c_name,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="cId != null">
-          #{cId,jdbcType=VARCHAR},
-      </if>
-      <if test="cName != null">
-        #{cName,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.Category">
-    update category
-    <set>
-      <if test="cName != null">
-        c_name = #{cName,jdbcType=VARCHAR},
-      </if>
-    </set>
-      where c_id = #{cId,jdbcType=VARCHAR}
-  </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.emall.entity.Category">
-      update category
-      set c_name = #{cName,jdbcType=VARCHAR}
-      where c_id = #{cId,jdbcType=VARCHAR}
-  </update>
+	<resultMap id="BaseResultMap" type="com.emall.entity.Category">
+		<id column="category_id" jdbcType="VARCHAR" property="categoryId"/>
+		<result column="category_name" jdbcType="VARCHAR" property="categoryName"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		category_id, category_name
+	</sql>
+	
+	<select id="count" resultType="java.lang.Long">
+		select count(1)
+		from category
+	</select>
+	
+	<select id="queryAll" parameterType="com.emall.utils.PageModel" resultMap="BaseResultMap">
+		select c.category_id,
+			   c.category_name
+		from category c
+				 inner join (select category_id from category limit #{limit} offset #{offset}) ids
+							on c.category_id = ids.category_id
+	</select>
+	
+	<select id="isExistByName" parameterType="java.lang.String" resultType="java.lang.Boolean">
+		select count(1)
+		from category
+		where category_name = #{categoryName,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List"/>
+		from category
+		where category_id = #{categoryId,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteByCategoryId" parameterType="java.lang.String">
+		delete
+		from category
+		where category_id = #{categoryId,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="com.emall.entity.Category">
+		insert into category (category_id, category_name)
+		values (#{categoryId,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateByPrimaryKey" parameterType="com.emall.entity.Category">
+		update category
+		set category_name = #{categoryName,jdbcType=VARCHAR}
+		where category_id = #{categoryId,jdbcType=VARCHAR}
+	</update>
 </mapper>

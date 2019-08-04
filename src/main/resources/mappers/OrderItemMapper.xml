@@ -1,144 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.emall.dao.OrderItemMapper">
-  <resultMap id="BaseResultMap" type="com.emall.entity.OrderItem">
-      <id column="oi_id" jdbcType="VARCHAR" property="oiId"/>
-      <result column="o_id" jdbcType="VARCHAR" property="oId"/>
-      <result column="u_id" jdbcType="VARCHAR" property="uId"/>
-      <result column="g_id" jdbcType="VARCHAR" property="gId"/>
-    <result column="g_name" jdbcType="VARCHAR" property="gName" />
-    <result column="g_image" jdbcType="VARCHAR" property="gImage" />
-    <result column="g_price" jdbcType="DECIMAL" property="gPrice" />
-    <result column="g_count" jdbcType="VARCHAR" property="gCount" />
-    <result column="oi_subtotal" jdbcType="DECIMAL" property="oiSubtotal" />
-  </resultMap>
-
-  <sql id="Base_Column_List">
-    oi_id, o_id, u_id, g_id, g_name, g_image, g_price, g_count, oi_subtotal
-  </sql>
-
-    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from order_item
-        where oi_id = #{oiId,jdbcType=VARCHAR}
-  </select>
-
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-        delete from order_item
-        where oi_id = #{oiId,jdbcType=VARCHAR}
-  </delete>
-
-  <insert id="insert" parameterType="com.emall.entity.OrderItem">
-      insert into order_item (oi_id, o_id, u_id, g_id, g_name, g_image, g_price, g_count, oi_subtotal)
-      values (#{oiId,jdbcType=VARCHAR}, #{oId,jdbcType=VARCHAR}, #{uId,jdbcType=VARCHAR},
-              #{gId,jdbcType=VARCHAR}, #{gName,jdbcType=VARCHAR}, #{gImage,jdbcType=VARCHAR},
-              #{gPrice,jdbcType=DECIMAL}, #{gCount,jdbcType=VARCHAR}, #{oiSubtotal,jdbcType=DECIMAL})
-  </insert>
-
-  <insert id="insertSelective" parameterType="com.emall.entity.OrderItem">
-    insert into order_item
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="oiId != null">
-        oi_id,
-      </if>
-      <if test="oId != null">
-        o_id,
-      </if>
-      <if test="uId != null">
-        u_id,
-      </if>
-      <if test="gId != null">
-        g_id,
-      </if>
-      <if test="gName != null">
-        g_name,
-      </if>
-      <if test="gImage != null">
-        g_image,
-      </if>
-      <if test="gPrice != null">
-        g_price,
-      </if>
-      <if test="gCount != null">
-        g_count,
-      </if>
-      <if test="oiSubtotal != null">
-        oi_subtotal,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="oiId != null">
-          #{oiId,jdbcType=VARCHAR},
-      </if>
-      <if test="oId != null">
-          #{oId,jdbcType=VARCHAR},
-      </if>
-      <if test="uId != null">
-          #{uId,jdbcType=VARCHAR},
-      </if>
-      <if test="gId != null">
-          #{gId,jdbcType=VARCHAR},
-      </if>
-      <if test="gName != null">
-        #{gName,jdbcType=VARCHAR},
-      </if>
-      <if test="gImage != null">
-        #{gImage,jdbcType=VARCHAR},
-      </if>
-      <if test="gPrice != null">
-        #{gPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="gCount != null">
-        #{gCount,jdbcType=VARCHAR},
-      </if>
-      <if test="oiSubtotal != null">
-        #{oiSubtotal,jdbcType=DECIMAL},
-      </if>
-    </trim>
-  </insert>
-
-  <update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.OrderItem">
-    update order_item
-    <set>
-      <if test="oId != null">
-          o_id = #{oId,jdbcType=VARCHAR},
-      </if>
-      <if test="uId != null">
-          u_id = #{uId,jdbcType=VARCHAR},
-      </if>
-      <if test="gId != null">
-          g_id = #{gId,jdbcType=VARCHAR},
-      </if>
-      <if test="gName != null">
-        g_name = #{gName,jdbcType=VARCHAR},
-      </if>
-      <if test="gImage != null">
-        g_image = #{gImage,jdbcType=VARCHAR},
-      </if>
-      <if test="gPrice != null">
-        g_price = #{gPrice,jdbcType=DECIMAL},
-      </if>
-      <if test="gCount != null">
-        g_count = #{gCount,jdbcType=VARCHAR},
-      </if>
-      <if test="oiSubtotal != null">
-        oi_subtotal = #{oiSubtotal,jdbcType=DECIMAL},
-      </if>
-    </set>
-      where oi_id = #{oiId,jdbcType=VARCHAR}
-  </update>
-
-  <update id="updateByPrimaryKey" parameterType="com.emall.entity.OrderItem">
-      update order_item
-      set o_id        = #{oId,jdbcType=VARCHAR},
-          u_id        = #{uId,jdbcType=VARCHAR},
-          g_id        = #{gId,jdbcType=VARCHAR},
-          g_name      = #{gName,jdbcType=VARCHAR},
-          g_image     = #{gImage,jdbcType=VARCHAR},
-          g_price     = #{gPrice,jdbcType=DECIMAL},
-          g_count     = #{gCount,jdbcType=VARCHAR},
-          oi_subtotal = #{oiSubtotal,jdbcType=DECIMAL}
-      where oi_id = #{oiId,jdbcType=VARCHAR}
+	<resultMap id="BaseResultMap" type="com.emall.entity.OrderItem">
+		<id column="order_item_id" jdbcType="VARCHAR" property="orderItemId"/>
+		<result column="order_id" jdbcType="VARCHAR" property="orderId"/>
+		<result column="goods_id" jdbcType="VARCHAR" property="goodsId"/>
+		<result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+		<result column="goods_image" jdbcType="VARCHAR" property="goodsImage"/>
+		<result column="goods_price" jdbcType="DECIMAL" property="goodsPrice"/>
+		<result column="goods_count" jdbcType="VARCHAR" property="goodsCount"/>
+		<result column="order_item_subtotal" jdbcType="DECIMAL" property="orderItemSubtotal"/>
+	</resultMap>
+	
+	<sql id="Base_Column_List">
+		order_item_id, order_id, goods_id, goods_name, goods_image, goods_price, goods_count, order_item_subtotal
+	</sql>
+	
+	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from order_item
+		where order_item_id = #{orderItemId,jdbcType=VARCHAR}
+	</select>
+	
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete
+		from order_item
+		where order_item_id = #{orderItemId,jdbcType=VARCHAR}
+	</delete>
+	
+	<insert id="insert" parameterType="com.emall.entity.OrderItem">
+		insert into order_item (order_item_id, order_id, goods_id, goods_name, goods_image, goods_price, goods_count,
+								order_item_subtotal)
+		values (#{orderItemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR},
+				#{goodsName,jdbcType=VARCHAR}, #{goodsImage,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL},
+				#{goodsCount,jdbcType=VARCHAR}, #{orderItemSubtotal,jdbcType=DECIMAL})
+	</insert>
+	
+	<update id="updateByPrimaryKey" parameterType="com.emall.entity.OrderItem">
+		update order_item
+		set order_id            = #{orderId,jdbcType=VARCHAR},
+			goods_id            = #{goodsId,jdbcType=VARCHAR},
+			goods_name          = #{goodsName,jdbcType=VARCHAR},
+			goods_image         = #{goodsImage,jdbcType=VARCHAR},
+			goods_price         = #{goodsPrice,jdbcType=DECIMAL},
+			goods_count         = #{goodsCount,jdbcType=VARCHAR},
+			order_item_subtotal = #{orderItemSubtotal,jdbcType=DECIMAL}
+		where order_item_id = #{orderItemId,jdbcType=VARCHAR}
   </update>
 </mapper>

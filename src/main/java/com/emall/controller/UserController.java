@@ -43,7 +43,7 @@ public class UserController {
      */
     @PostMapping("/loginValidate")
     @ResponseBody
-    public Result<User> loginValidate(@Valid LoginVo loginVo) {
+    public Result<User> loginValidate(@Valid @RequestBody LoginVo loginVo) {
         //认证
         User user = login(loginVo);
         return Result.success("登录成功", user);
@@ -55,9 +55,9 @@ public class UserController {
      * @param request
      * @return
      */
-    @PostMapping("/authenticate")
+    @PostMapping("/unauthorized")
     @ResponseBody
-    public Result<User> authenticate(@Valid LoginVo loginVo, ServletRequest request) {
+    public Result<User> authenticate(@Valid @RequestBody LoginVo loginVo, ServletRequest request) {
         //认证
         User user = login(loginVo);
         SavedRequest saveRequest = WebUtils.getSavedRequest(request);
@@ -66,11 +66,11 @@ public class UserController {
     }
 
     public User login(LoginVo loginVo) {
-        logger.info("登录验证--" + "用户名：" + loginVo.getUName());
+        logger.info("登录验证--" + "用户名：" + loginVo.getUserName());
         //获得Subject对象
         Subject subject = SecurityUtils.getSubject();
         //将用户输入的用户名写密码封装到一个UsernamePasswordToken对象中
-        UsernamePasswordToken token = new UsernamePasswordToken(loginVo.getUName(), loginVo.getUPassword());
+        UsernamePasswordToken token = new UsernamePasswordToken(loginVo.getUserName(), loginVo.getUserPassword());
         subject.login(token);
 
         return (User) subject.getPrincipal();
@@ -81,7 +81,7 @@ public class UserController {
      * @param
      * @return Result
      */
-    @GetMapping("/userInfo")
+    @GetMapping("")
     @ResponseBody
     public Result<Object> userInfo() {
         logger.info("获取用户登录信息中......");
@@ -96,7 +96,7 @@ public class UserController {
             throw new GeneralException("登录已过期");
         }
 
-        return userInfo != null ? Result.success("用户" + userInfo.getUName() + "已登录", userInfo) : Result.error("用户未登录");
+        return userInfo != null ? Result.success("用户" + userInfo.getUserName() + "已登录", userInfo) : Result.error("用户未登录");
     }
 
     /**
@@ -104,11 +104,10 @@ public class UserController {
      * @param user
      * @return Result
      */
-    @PutMapping("/registerValidate")
+    @PutMapping("")
     @ResponseBody
-    public Result registerValidate(@Valid User user) {
-        logger.info("注册验证--" + "用户名：" + user.getUName() + "  性别：" + user.getUSex()
-                + "  手机号码：" + user.getUMobileNumber());
+    public Result registerValidate(@Valid @RequestBody User user) {
+        logger.info("注册验证");
         return userService.registerValidate(user) ?
                 Result.success("注册成功", null) : Result.error("注册失败");
     }
@@ -128,11 +127,10 @@ public class UserController {
      * @param userUpdateVo
      * @return Result
      */
-    @PostMapping("/userInfo")
+    @PostMapping("")
     @ResponseBody
-    public Result userUpdate(@Valid UserUpdateVo userUpdateVo) {
-        logger.info("修改用户信息--" + "用户名：" + userUpdateVo.getUName() + "  性别：" + userUpdateVo.getUSex()
-                + "  手机号码：" + userUpdateVo.getUMobileNumber());
+    public Result userUpdate(@Valid @RequestBody UserUpdateVo userUpdateVo) {
+        logger.info("修改用户信息");
 
         Result result = userService.userUpdate(userUpdateVo) ?
                 Result.success("用户信息修改成功", null) : Result.error("用户信息修改失败");
@@ -147,8 +145,8 @@ public class UserController {
                 throw new GeneralException("登录已过期");
             }
             if (user != null) {
-                user.setUName(userUpdateVo.getUName());
-                user.setUMobileNumber(userUpdateVo.getUMobileNumber());
+                user.setUserName(userUpdateVo.getUserName());
+                user.setUserMobileNumber(userUpdateVo.getUserMobileNumber());
             } else {
                 session.removeAttribute("CurrentUser");
             }
@@ -161,19 +159,19 @@ public class UserController {
 
     @PostMapping("/password")
     @ResponseBody
-    public Result password(@Valid PasswordVo passwordVo) {
+    public Result password(@Valid @RequestBody PasswordVo passwordVo) {
         //输入原密码加密验证
-        String pwdOld = ShiroEncrypt.shiroEncrypt(passwordVo.getPasswordOld(), passwordVo.getSalt());
+        String pwdOld = ShiroEncrypt.shiroEncrypt(passwordVo.getPasswordOld(), passwordVo.getUserSalt());
         //密码校验
         if (! pwdOld.equals(passwordVo.getPasswordReal())) {
             throw new GeneralException("原密码输入错误");
-        } else if (! passwordVo.getPasswordNew().equals(passwordVo.getPwdConfirm())) {
+        } else if (!passwordVo.getPasswordNew().equals(passwordVo.getPasswordConfirm())) {
             throw new GeneralException("两次输入密码不一致");
         }
 
-        String pwdNew = ShiroEncrypt.shiroEncrypt(passwordVo.getPasswordNew(), passwordVo.getSalt());
+        String pwdNew = ShiroEncrypt.shiroEncrypt(passwordVo.getPasswordNew(), passwordVo.getUserSalt());
         passwordVo.setPasswordNew(pwdNew);
-        passwordVo.setPwdConfirm(pwdNew);
+        passwordVo.setPasswordConfirm(pwdNew);
 
         return userService.password(passwordVo) ? Result.success("密码修改成功，请重新登录", null) : Result.error("密码修改失败");
     }

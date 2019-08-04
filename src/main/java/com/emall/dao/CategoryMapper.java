@@ -1,19 +1,22 @@
 package com.emall.dao;
 
 import com.emall.entity.Category;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CategoryMapper {
+    int deleteByCategoryId(@Param("categoryId") String categoryId);
 
-    int deleteByPrimaryKey(String cId);
+    boolean isExistByName(@Param("categoryName") String categoryName);
+
+    List<Category> queryAll(@Param("limit") long limit, @Param("offset") long offset);
 
     int insert(Category record);
 
-    int insertSelective(Category record);
-
-    Category selectByPrimaryKey(String cId);
-
-    int updateByPrimaryKeySelective(Category record);
+    Category selectByPrimaryKey(String categoryId);
 
     int updateByPrimaryKey(Category record);
 
+    long count();
 }
