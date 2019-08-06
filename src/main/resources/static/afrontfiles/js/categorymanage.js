@@ -20,7 +20,7 @@ function queryAll(currentNo, pageSize, totalPages) {
 
     $.ajax({
         type: "GET",
-        url: "/category",
+        url: "/admin/category",
         data: pageModel,
         success: function (data) {
             var categorylist = data.obj.list;
@@ -107,7 +107,7 @@ function insert() {
                 } else {
                     $.ajax({
                         type: "PUT",
-                        url: "/category",
+                        url: "/admin/category",
                         data: {"categoryName": categoryName},
                         success: function (data) {
                             if (data.status === true) {
@@ -158,7 +158,7 @@ function update(categoryId) {
             } else {
                 $.ajax({
                     type: "POST",
-                    url: "/category",
+                    url: "/admin/category",
                     data: JSON.stringify(category),
                     contentType: 'application/json;charset=UTF-8',
                     success: function (data) {
@@ -191,7 +191,7 @@ function del(categoryId) {
 
             $.ajax({
                 type: "DELETE",
-                url: "/category",
+                url: "/admin/category",
                 data: categoryId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {

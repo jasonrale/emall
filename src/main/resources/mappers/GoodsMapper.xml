@@ -22,23 +22,28 @@
 		select count(1)
 		from goods
 	</select>
-	
-	<select id="queryAll" parameterType="com.emall.utils.PageModel" resultMap="BaseResultMap">
-		select g.goods_id,
-			   g.goods_name,
-			   g.goods_describe,
-			   g.category_id,
-			   g.goods_price,
-			   g.goods_stock,
-			   g.goods_image,
-			   g.goods_details,
-			   g.goods_status
-		from goods g
-				 inner join (select goods_id from goods limit #{limit} offset #{offset}) ids
-							on g.goods_id = ids.goods_id
+
+	<select id="countByKeyWord" parameterType="java.lang.String" resultType="java.lang.Long">
+		select count(1)
+		from goods
+		where g_name like #{keyWord,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="queryAll" parameterType="com.emall.utils.PageModel" resultMap="BaseResultMap">
+		select g.goods_id, g.goods_name, g.goods_describe, g.category_id, g.goods_price, g.goods_stock, g.goods_image, g.goods_details, g.goods_status
+		from goods g
+		inner join (select goods_id from goods limit #{limit} offset #{offset}) ids
+		on g.goods_id = ids.goods_id
+	</select>
+
+	<select id="selectByKeyWord" resultMap="BaseResultMap">
+		select g.goods_id, g.goods_name, g.goods_describe, g.category_id, g.goods_price, g.goods_stock, g.goods_image, g.goods_details, g.goods_status
+		from goods g
+		inner join (select goods_id from goods where g_name like #{keyWord,jdbcType=VARCHAR} limit #{limit} offset #{offset}) ids
+		on g.goods_id = ids.goods_id
+	</select>
+	
+	<select id="selectByGoodsId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from goods

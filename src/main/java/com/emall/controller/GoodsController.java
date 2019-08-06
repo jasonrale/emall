@@ -1,6 +1,5 @@
 package com.emall.controller;
 
-import com.emall.entity.Goods;
 import com.emall.result.Result;
 import com.emall.service.GoodsService;
 import com.emall.utils.PageModel;
@@ -12,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/goods")
@@ -22,20 +22,44 @@ public class GoodsController {
     private GoodsService goodsService;
 
     /**
-     * 后台管理-分页查询所有商品
+     * 根据关键字分页查询商品
      * @return
      */
-    @GetMapping(value = "/allGoods")
+    @GetMapping(value = "/selectByKeyWord")
     @ResponseBody
-    public Result<PageModel> selectByGoodsId(PageModel<Goods> pageModel) {
-        logger.info("查询所有商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
-        return Result.success("查询所有商品成功", goodsService.queryAll(pageModel));
+    public Result<PageModel> selectByKeyWord(String keyWord, @Valid PageModel pageModel) {
+        logger.info("根据关键字'" + keyWord + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+        keyWord = "%" + keyWord + "%";
+        return Result.success("查询商品成功", goodsService.selectByKeyWord(keyWord, pageModel));
+    }
+
+    /**
+     * 根据商品id查询商品
+     * @return
+     */
+    @GetMapping(value = "/selectByGoodsId")
+    @ResponseBody
+    public Result<PageModel> selectByGoodsId(String categoryId, @Valid PageModel pageModel) {
+        logger.info("根据商品类别'" + categoryId + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+        return Result.success("查询商品成功", goodsService.selectByCategoryId(categoryId, pageModel));
+    }
+
+    /**
+     * 根据商品类别分页查询商品
+     * @return
+     */
+    @GetMapping(value = "/selectByKeyWord")
+    @ResponseBody
+    public Result<PageModel> selectByCategoryId(String categoryId, @Valid PageModel pageModel) {
+        logger.info("根据商品类别'" + categoryId + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+        return Result.success("查询商品成功", goodsService.selectByCategoryId(categoryId, pageModel));
     }
 
 
+
 //    //根据商品关键字查询到前台
-//    @RequestMapping("/goods/keyWord")
-//    public ModelAndView selectByKeyWordToTheStage(String keyWord, HttpSession session) {
+//    @GetMapping("/keyWord")
+//    public Result<Goods> selectByKeyWordToTheStage(String keyWord, HttpSession session) {
 //        ModelAndView mv = new ModelAndView("goods/goodslist");
 //        glist = goodsService.selectByKeyWord(keyWord);
 //        session.setAttribute("glist", glist);

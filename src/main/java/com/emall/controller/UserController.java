@@ -157,6 +157,11 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 修改密码
+     * @param passwordVo
+     * @return
+     */
     @PostMapping("/password")
     @ResponseBody
     public Result password(@Valid @RequestBody PasswordVo passwordVo) {

@@ -6,15 +6,23 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface GoodsMapper {
-    int deleteByPrimaryKey(String goodsId);
-
     int insert(Goods record);
 
-    List<Goods> queryAll(@Param("limit") long limit, @Param("offset") long offset);
-
-    Goods selectByPrimaryKey(String goodsId);
+    int deleteByPrimaryKey(String goodsId);
 
     int updateByPrimaryKey(Goods record);
 
+    Goods selectByGoodsId(@Param("goodsId") String goodsId);
+
+    List<Goods> queryAll(@Param("limit") long limit, @Param("offset") long offset);
+
+    List<Goods> selectByKeyWord(@Param("keyWord") String keyWord, @Param("limit") long limit, @Param("offset") long offset);
+
+    List<Goods> selectByCategoryId(@Param("categoryId") String categoryId, @Param("limit") long limit, @Param("offset") long offset);
+
     long count();
+
+    long countByKeyWord(@Param("keyWord") String keyWord);
+
+    long countByCategoryId(@Param("categoryId") String categoryId);
 }

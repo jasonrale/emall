@@ -31,7 +31,8 @@ public class CategoryService {
         long limit = pageModel.getPageSize();
         long offset = (pageModel.getCurrentNo() - 1) * limit;
 
-        List<Category> categoryList = categoryMapper.queryAll(limit, offset);
+        List<Category> categoryList;
+        categoryList = categoryMapper.queryAll(limit, offset);
         long count = categoryMapper.count();
 
         pageModel.setList(categoryList);
