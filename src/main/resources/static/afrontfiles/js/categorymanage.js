@@ -20,20 +20,20 @@ function queryAll(currentNo, pageSize, totalPages) {
 
     $.ajax({
         type: "GET",
-        url: "/admin/category",
+        url: "/category",
         data: pageModel,
         success: function (data) {
-            var categorylist = data.obj.list;
+            var categoryList = data.obj.list;
 
             var tbody = $("#tableBody");
             tbody.empty();
-            for (var i = 0; i < categorylist.length; i++) {
+            for (var i = 0; i < categoryList.length; i++) {
                 var element = "<tr>\n" +
-                    "<td>" + categorylist[i].categoryId + "</td>\n" +
-                    "<td>" + categorylist[i].categoryName + "</td>\n" +
+                    "<td>" + categoryList[i].categoryId + "</td>\n" +
+                    "<td>" + categoryList[i].categoryName + "</td>\n" +
                     "<td>" +
-                    '<a class="opera" onclick="update(' + "'" + categorylist[i].categoryId + "'" + ')">修改名称</a>' +
-                    '<a class="opera" onclick="del(' + "'" + categorylist[i].categoryId + "'" + ')">删除品类</a>' +
+                    '<a class="opera" onclick="update(' + "'" + categoryList[i].categoryId + "'" + ')">修改名称</a>' +
+                    '<a class="opera" onclick="del(' + "'" + categoryList[i].categoryId + "'" + ')">删除品类</a>' +
                     "</td>\n" +
                     "</tr>";
                 tbody.append(element);
@@ -107,7 +107,7 @@ function insert() {
                 } else {
                     $.ajax({
                         type: "PUT",
-                        url: "/admin/category",
+                        url: "/category",
                         data: {"categoryName": categoryName},
                         success: function (data) {
                             if (data.status === true) {
@@ -158,7 +158,7 @@ function update(categoryId) {
             } else {
                 $.ajax({
                     type: "POST",
-                    url: "/admin/category",
+                    url: "/category",
                     data: JSON.stringify(category),
                     contentType: 'application/json;charset=UTF-8',
                     success: function (data) {
@@ -191,7 +191,7 @@ function del(categoryId) {
 
             $.ajax({
                 type: "DELETE",
-                url: "/admin/category",
+                url: "/category",
                 data: categoryId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {

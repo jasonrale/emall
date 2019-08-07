@@ -37,6 +37,53 @@ public class UserController {
     private ClassCastUtil castUtil;
 
     /**
+     * 获取用户登录信息
+     * @param
+     * @return Result
+     */
+    @GetMapping("")
+    @ResponseBody
+    public Result<Object> userInfo() {
+        logger.info("获取用户登录信息中......");
+
+        User userInfo = null;
+        try {
+            Object object = SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
+            if (object != null) {
+                userInfo = castUtil.classCast(object, User.class);
+            }
+        } catch (IllegalAccessException | InstantiationException | UnknownSessionException e) {
+            throw new GeneralException("登录已过期");
+        }
+
+        return userInfo != null ? Result.success("用户" + userInfo.getUserName() + "已登录", userInfo) : Result.error("用户未登录");
+    }
+
+    /**
+     * 获取管理员登录信息
+     * @param
+     * @return Result
+     */
+    @GetMapping("/admin")
+    @ResponseBody
+    public Result<Object> adminInfo() {
+        logger.info("获取管理员登录信息中......");
+
+        User adminInfo = null;
+        try {
+            Object object = SecurityUtils.getSubject().getSession().getAttribute("SysAdmin");
+            if (object != null) {
+                adminInfo = castUtil.classCast(object, User.class);
+            }
+
+        } catch (IllegalAccessException | InstantiationException | UnknownSessionException e) {
+            throw new GeneralException("登录已过期");
+        }
+
+        return adminInfo != null ? Result.success("管理员" + adminInfo.getUserName() + "已登录", adminInfo) : null;
+    }
+
+    /**
      * 登录认证
      * @param loginVo
      * @return Result
@@ -74,29 +121,6 @@ public class UserController {
         subject.login(token);
 
         return (User) subject.getPrincipal();
-    }
-
-    /**
-     * 获取用户登录信息
-     * @param
-     * @return Result
-     */
-    @GetMapping("")
-    @ResponseBody
-    public Result<Object> userInfo() {
-        logger.info("获取用户登录信息中......");
-
-        User userInfo = null;
-        try {
-            Object object = SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
-            if (object != null) {
-                userInfo = castUtil.classCast(object, User.class);
-            }
-        } catch (IllegalAccessException | InstantiationException | UnknownSessionException e) {
-            throw new GeneralException("登录已过期");
-        }
-
-        return userInfo != null ? Result.success("用户" + userInfo.getUserName() + "已登录", userInfo) : Result.error("用户未登录");
     }
 
     /**

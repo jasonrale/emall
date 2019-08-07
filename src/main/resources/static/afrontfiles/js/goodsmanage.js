@@ -47,32 +47,64 @@ function addGoods() {
 }
 
 /**
+ * 商品图片预览
+ */
+function viewImage() {
+    var image = $("#uploadImage");
+    var path = image.val();
+    var extStart = path.lastIndexOf("."), ext = path.substring(extStart, path.length).toUpperCase();
+    if (ext !== ".PNG" && ext !== ".JPG" && ext !== ".JPEG" && ext !== ".GIF") {
+        layer.msg("请上传正确格式的图片");
+        image.val("");
+        return false;
+    }
+
+    var fileObj = image[0].files[0];
+    $("#viewImage").attr("src", URL.createObjectURL(fileObj)).css("display", "block");
+    $("#imageNotice").attr("class", "hiddenNotice")
+}
+
+/**
+ * 商品详情预览
+ */
+function viewDetail() {
+    var detail = $("#uploadDetail");
+    var path = detail.val();
+    var extStart = path.lastIndexOf("."), ext = path.substring(extStart, path.length).toUpperCase();
+    if (ext !== ".PNG" && ext !== ".JPG" && ext !== ".JPEG" && ext !== ".GIF") {
+        layer.msg("请上传正确格式的图片");
+        detail.val("");
+        return false;
+    }
+
+    var fileObj = detail[0].files[0];
+    $("#viewDetail").attr("src", URL.createObjectURL(fileObj)).css("display", "block");
+    $("#detailNotice").attr("class", "hiddenNotice")
+}
+
+/**
  * 商品管理--添加上传
  */
 function addSubmit() {
-    var goods = {
-        "gName": $("name").val(),
-        "gDescribe": $("describe").val(),
-        "cId": $("category").val(),
-        "gStock": $("stock").val(),
-        "gPrice": $("price").val(),
-        "gStatus": 1
-    };
-
-    var fileObj = $("#uploadImage").file[0]; // js 获取文件对象
+    var imageFile = $("#uploadImage")[0].file[0];
+    var detailFile = $("#uploadDetail")[0].file[0];
     var formData = new FormData();
-    formData.append("file", fileObj); //加入文件对象
 
-    var data = {
-        "goods": goods,
-        "fileData": formData
-    };
+    formData.append("goodsName", $("name").val());
+    formData.append("goodsDescribe", $("describe").val());
+    formData.append("categoryId", $("category").val());
+    formData.append("goodsStock", $("stock").val());
+    formData.append("goodsPrice", $("price").val());
+    formData.append("imageFile", imageFile);
+    formData.append("detailFile", detailFile);
+    formData.append("goodsStatus", "1");
 
     $.ajax({
         type: "PUT",
         url: "",
-        data: data,
-        contentType: 'application/json;charset=UTF-8',
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function () {
             console.log("success");
         },

@@ -9,6 +9,7 @@
     <link rel="icon" href="http://192.168.153.130/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../afrontfiles/css/admin.css">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
     <script src="../../afrontfiles/js/goodsmanage.js"></script>
     <script src="../../afrontfiles/js/common.js"></script>
 </head>
@@ -155,13 +156,15 @@
                     <div class="form-group">
                         <label class="col-md-2 control-label">商品图片</label>
                         <div class="img-con col-md-10">
-                            <div class="notice">点击上传</div>
+                            <div id="imageNotice">点击上传</div>
                         </div>
                         <div class="col-md-offset-2 col-md-10">
                             <div>
                                 <div style="overflow: hidden; display: inline-block;">
-                                    <input type="file" id="uploadImage"
-                                           accept="image/gif,image/jpeg,image/jpg,image/png" style="display: block;">
+                                    <input type="file" id="uploadImage" accept="image/gif,image/jpeg,image/jpg,image/png" onchange="viewImage(this)">
+                                </div>
+                                <div style="float: left; display: inline-block;">
+                                    <input type="image" class="preview" id="viewImage" alt="商品图片预览">
                                 </div>
                             </div>
                         </div>
@@ -169,14 +172,15 @@
                     <div class="form-group">
                         <label class="col-md-2 control-label">商品详情</label>
                         <div class="img-con col-md-10">
-                            <div class="notice">点击上传</div>
+                            <div id="detailNotice">点击上传</div>
                         </div>
                         <div class="col-md-offset-2 col-md-10">
                             <div>
                                 <div style="overflow: hidden; display: inline-block;">
-                                    <input type="file" id="uploadDetail"
-                                           accept="image/gif,image/jpeg,image/jpg,image/png" multiple="multiple"
-                                           style="display: block;">
+                                    <input type="file" id="uploadDetail" accept="image/gif,image/jpeg,image/jpg,image/png" onchange="viewDetail(this)">
+                                </div>
+                                <div style="float: left; display: inline-block;">
+                                    <input type="image" class="preview" id="viewDetail" alt="商品详情预览">
                                 </div>
                             </div>
                         </div>

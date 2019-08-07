@@ -1,5 +1,6 @@
 package com.emall.controller;
 
+import com.emall.entity.Goods;
 import com.emall.result.Result;
 import com.emall.service.GoodsService;
 import com.emall.utils.PageModel;
@@ -7,8 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
@@ -48,13 +51,24 @@ public class GoodsController {
      * 根据商品类别分页查询商品
      * @return
      */
-    @GetMapping(value = "/selectByKeyWord")
+    @GetMapping(value = "/selectByCategoryId")
     @ResponseBody
     public Result<PageModel> selectByCategoryId(String categoryId, @Valid PageModel pageModel) {
         logger.info("根据商品类别'" + categoryId + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
         return Result.success("查询商品成功", goodsService.selectByCategoryId(categoryId, pageModel));
     }
 
+    /**
+     * 添加商品
+     * @return
+     */
+    @PutMapping(value = "")
+    @ResponseBody
+    public Result<PageModel> insert(Goods goods, MultipartFile[] files) {
+        logger.info("添加商品");
+
+        return Result.success("sad", null);
+    }
 
 
 //    //根据商品关键字查询到前台

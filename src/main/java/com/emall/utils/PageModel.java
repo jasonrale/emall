@@ -2,12 +2,12 @@ package com.emall.utils;
 
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
 public class PageModel<T> {
-    @NotEmpty(message = "页码不能为空")
+    @NotNull(message = "页码不能为空")
     private int currentNo;          //当前页数
 
     private int totalPages;         //总页数

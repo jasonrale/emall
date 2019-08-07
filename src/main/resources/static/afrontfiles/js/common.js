@@ -35,7 +35,7 @@ function userInfo() {
 function adminInfo() {
     $.ajax({
         type: "GET",
-        url: "/admin",
+        url: "/user/admin",
         success: function (data) {
             if (data.status === true) {
                 $("#adminName").html(data.obj.userName);

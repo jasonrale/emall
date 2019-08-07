@@ -10,10 +10,6 @@ public class RedisKeyUtil {
         return GOODS_PREFIX + goods.getGoodsId();
     }
 
-    public static String goodsCountByKeyWord(String keyWord) {
-        return GOODS_PREFIX + keyWord;
-    }
-
     public static String goodsByKeyWord(String keyWord, int currentNo, int pageSize) {
         return GOODS_PREFIX + keyWord + ":" + currentNo + ":" + pageSize;
     }
@@ -21,5 +17,4 @@ public class RedisKeyUtil {
     public static String goodsByCategoryId(String categoryId, int currentNo, int pageSize) {
         return GOODS_PREFIX + categoryId + ":" + currentNo + ":" + pageSize;
     }
-
 }
