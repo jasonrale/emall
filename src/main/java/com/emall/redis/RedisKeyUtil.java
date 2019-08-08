@@ -6,6 +6,10 @@ public class RedisKeyUtil {
 
     public static final String GOODS_PREFIX = "Goods:";
 
+    public static String goodsAll(int currentNo, int pageSize) {
+        return GOODS_PREFIX + currentNo + ":" + pageSize;
+    }
+
     public static String goodsByGoodsId(Goods goods) {
         return GOODS_PREFIX + goods.getGoodsId();
     }

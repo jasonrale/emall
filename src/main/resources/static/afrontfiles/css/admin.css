@@ -2435,10 +2435,16 @@ pre code {
     display: none;
 }
 
-.preview {
+.imagePreview {
+    display: none;
+    width: 250px;
+    height: 250px
+}
+
+.detailPreview {
     display: none;
     width: 300px;
-    height: 185px
+    height: 900px
 }
 
 @media (min-width: 1200px) {
@@ -2713,6 +2719,10 @@ caption, th {
 
 .table-hover > tbody > tr:hover {
     background-color: #f5f5f5
+}
+
+.goodsTable {
+    text-align: center;
 }
 
 table col[class*=col-] {

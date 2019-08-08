@@ -10,7 +10,9 @@ public interface CategoryMapper {
 
     boolean isExistByName(@Param("categoryName") String categoryName);
 
-    List<Category> queryAll(@Param("limit") long limit, @Param("offset") long offset);
+    List<Category> queryAll();
+
+    List<Category> adminQueryAll(@Param("limit") long limit, @Param("offset") long offset);
 
     int insert(Category record);
 

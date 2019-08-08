@@ -16,10 +16,16 @@
 	</select>
 	
 	<select id="queryAll" resultMap="BaseResultMap">
+		select category_id, category_name
+		from category c
+		order by category_id
+	</select>
+	
+	<select id="adminQueryAll" resultMap="BaseResultMap">
 		select c.category_id, c.category_name
 		from category c
-		inner join (select category_id from category limit #{limit} offset #{offset}) ids
-		on c.category_id = ids.category_id
+				 inner join (select category_id from category order by category_id limit #{limit} offset #{offset}) ids
+							on c.category_id = ids.category_id
 	</select>
 	
 	<select id="isExistByName" parameterType="java.lang.String" resultType="java.lang.Boolean">

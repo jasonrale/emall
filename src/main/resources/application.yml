@@ -73,6 +73,12 @@ spring:
         multiplier: 1
     publisher-confirms: true
 
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 100MB
+      enabled: true
+
 # mybatis
 mybatis:
   type-aliases-package: com.emall.dao

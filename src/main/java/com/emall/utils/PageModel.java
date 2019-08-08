@@ -21,5 +21,4 @@ public class PageModel<T> {
     public void setTotalPages() {
         totalPages = (int) (count % pageSize > 0 ? (count / pageSize) + 1 : count / pageSize);
     }
-
 }

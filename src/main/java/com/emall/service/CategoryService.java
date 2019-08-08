@@ -19,6 +19,10 @@ public class CategoryService {
     @Resource
     CategoryMapper categoryMapper;
 
+    public List<Category> QueryAll() {
+        return categoryMapper.queryAll();
+    }
+
     public boolean insert(String categoryName) throws GeneralException {
         Assert.isTrue(!categoryMapper.isExistByName(categoryName), "商品类别已存在");
 
@@ -27,12 +31,12 @@ public class CategoryService {
         return categoryMapper.insert(category) != 0;
     }
 
-    public PageModel<Category> queryAll(PageModel<Category> pageModel) {
+    public PageModel<Category> adminQueryAll(PageModel<Category> pageModel) {
         long limit = pageModel.getPageSize();
         long offset = (pageModel.getCurrentNo() - 1) * limit;
 
         List<Category> categoryList;
-        categoryList = categoryMapper.queryAll(limit, offset);
+        categoryList = categoryMapper.adminQueryAll(limit, offset);
         long count = categoryMapper.count();
 
         pageModel.setList(categoryList);

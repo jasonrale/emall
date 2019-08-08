@@ -1,7 +1,7 @@
 $(document).ready(function () {
     adminInfo();
 
-    queryAll(1, 10);
+    adminQueryAll(1, 10);
 
     turn();
 
@@ -11,7 +11,7 @@ $(document).ready(function () {
 /**
  * 商品类别--分页
  */
-function queryAll(currentNo, pageSize, totalPages) {
+function adminQueryAll(currentNo, pageSize, totalPages) {
     var pageModel = {
         "currentNo": currentNo,
         "pageSize": pageSize,
@@ -20,7 +20,7 @@ function queryAll(currentNo, pageSize, totalPages) {
 
     $.ajax({
         type: "GET",
-        url: "/category",
+        url: "/category/admin",
         data: pageModel,
         success: function (data) {
             var categoryList = data.obj.list;
@@ -107,7 +107,7 @@ function insert() {
                 } else {
                     $.ajax({
                         type: "PUT",
-                        url: "/category",
+                        url: "/category/admin",
                         data: {"categoryName": categoryName},
                         success: function (data) {
                             if (data.status === true) {
@@ -158,7 +158,7 @@ function update(categoryId) {
             } else {
                 $.ajax({
                     type: "POST",
-                    url: "/category",
+                    url: "/category/admin",
                     data: JSON.stringify(category),
                     contentType: 'application/json;charset=UTF-8',
                     success: function (data) {
@@ -191,7 +191,7 @@ function del(categoryId) {
 
             $.ajax({
                 type: "DELETE",
-                url: "/category",
+                url: "/category/admin",
                 data: categoryId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {
