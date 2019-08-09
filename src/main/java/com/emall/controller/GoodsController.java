@@ -38,15 +38,21 @@ public class GoodsController {
     }
 
     /**
-     * 分页查询所有商品
+     * 后台管理--分页查询商品
      *
      * @return
      */
-    @GetMapping(value = "/admin/queryAll")
+    @GetMapping(value = "/admin/queryByType")
     @ResponseBody
-    public Result<PageModel> queryAll(@Valid PageModel<Goods> pageModel) {
-        logger.info("'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
-        return Result.success("查询商品成功", goodsService.queryAll(pageModel));
+    public Result queryByType(@Valid PageModel<Goods> pageModel, String listType, String param) {
+        logger.info("查询商品--By " + listType);
+        if (listType.equals("all")) {
+            return Result.success("分页查询所有商品", goodsService.queryAll(pageModel));
+        } else if (listType.equals("goodsName")) {
+            return Result.success("根据关键字分页查询商品", goodsService.selectByKeyWord(param, pageModel));
+        } else {
+            return Result.success("根据商品id查询商品", goodsService.selectByGoodsId(param));
+        }
     }
 
     /**

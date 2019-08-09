@@ -2443,8 +2443,7 @@ pre code {
 
 .detailPreview {
     display: none;
-    width: 300px;
-    height: 900px
+    width: 400px
 }
 
 @media (min-width: 1200px) {
@@ -2453,7 +2452,7 @@ pre code {
     }
 
     .col-lg-12 {
-        width: 100%
+        width: 100%;
     }
 
     .col-lg-11 {
@@ -2674,7 +2673,7 @@ caption, th {
 .table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 20px
+    margin-bottom: 20px;
 }
 
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
@@ -2710,7 +2709,8 @@ caption, th {
 }
 
 .table-bordered > thead > tr > td, .table-bordered > thead > tr > th {
-    border-bottom-width: 2px
+    border-bottom-width: 2px;
+    text-align: center
 }
 
 .table-striped > tbody > tr:nth-of-type(odd) {

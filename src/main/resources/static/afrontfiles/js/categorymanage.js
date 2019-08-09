@@ -11,11 +11,10 @@ $(document).ready(function () {
 /**
  * 商品类别--分页
  */
-function adminQueryAll(currentNo, pageSize, totalPages) {
+function adminQueryAll(currentNo, pageSize) {
     var pageModel = {
         "currentNo": currentNo,
         "pageSize": pageSize,
-        "totalPages": totalPages
     };
 
     $.ajax({
@@ -47,13 +46,13 @@ function adminQueryAll(currentNo, pageSize, totalPages) {
             var lastPage = currentNo - 1;
             if (currentNo === 1) {
                 $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link'></a>");
-                $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' onclick='queryAll(" + nextPage + ", 10)'></a>");
+                $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + nextPage + ", 10)'></a>");
             } else if (currentNo === totalPages) {
                 $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link'></a>");
-                $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' onclick='queryAll(" + lastPage + ", 10)'></a>");
+                $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + lastPage + ", 10)'></a>");
             } else {
-                $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' onclick='queryAll(" + lastPage + ", 10)'></a>");
-                $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' onclick='queryAll(" + nextPage + ", 10)'></a>");
+                $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + lastPage + ", 10)'></a>");
+                $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + nextPage + ", 10)'></a>");
             }
         }
     });
@@ -74,8 +73,7 @@ function turn() {
 
     $("#turn").click(function () {
         var currentNo = parseInt($("#currentNo").val());
-        var totalPages = parseInt($("#totalPages").html());
-        isNaN(currentNo) ? layer.msg("页码不能为空") : queryAll(currentNo, 10, totalPages);
+        isNaN(currentNo) ? layer.msg("页码不能为空") : adminQueryAll(currentNo, 10);
     });
 }
 

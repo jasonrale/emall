@@ -81,6 +81,7 @@ public class GoodsService {
         long limit = pageModel.getPageSize();
         long offset = (pageModel.getCurrentNo() - 1) * limit;
 
+        keyWord = '%' + keyWord + '%';
         List<Goods> goodsList = goodsMapper.selectByKeyWord(keyWord, limit, offset);
         long count = goodsMapper.countByKeyWord(keyWord);
 
@@ -143,7 +144,7 @@ public class GoodsService {
         String tmpPath = "E:/ImageTemp" + path;
         String imageFileName = imageFile.getOriginalFilename();
         String detailFileName = detailFile.getOriginalFilename();
-        File dir = new File(path);
+        File dir = new File(tmpPath);
         if (!dir.exists()) {
             dir.mkdirs();
         }

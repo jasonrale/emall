@@ -39,10 +39,7 @@
 	<select id="selectByKeyWord" resultMap="BaseResultMap">
 		select g.goods_id, g.goods_name, g.goods_describe, g.category_id, g.goods_price, g.goods_stock, g.goods_image, g.goods_details, g.goods_status
 		from goods g
-				 inner join (select goods_id
-							 from goods
-							 where goods_name like #{keyWord,jdbcType=VARCHAR}
-							 limit #{limit} offset #{offset}) ids
+		inner join (select goods_id from goods where goods_name like #{keyWord,jdbcType=VARCHAR} order by goods_id limit #{limit} offset #{offset}) ids
 		on g.goods_id = ids.goods_id
 	</select>
 	

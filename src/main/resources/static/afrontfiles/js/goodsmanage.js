@@ -1,48 +1,127 @@
 $(document).ready(function () {
     adminInfo();
 
-    adminQueryAll(1, 10);
+    adminQuery(1, 10, "all", "none");
+
+    queryType();
+
+    turn();
 
     addGoods();
 });
 
 /**
- * 商品管理--分页
+ * 商品管理--根据查询类型传参
  */
-function adminQueryAll(currentNo, pageSize, totalPages) {
+function queryType() {
+    $("#queryType").click(function () {
+        var listType = $("#listType").val();
+        var param = $("#param").val();
+
+        adminQuery(1, 10, listType, param);
+    });
+
+}
+/**
+ * 商品管理--分页查询
+ */
+function adminQuery(currentNo, pageSize, listType, param) {
     var pageModel = {
         "currentNo": currentNo,
-        "pageSize": pageSize,
-        "totalPages": totalPages
+        "pageSize": pageSize
     };
 
     $.ajax({
         type : "GET",
-        url: "/goods/admin/queryAll",
+        url: "/goods/admin/queryByType?listType=" + listType + "&param=" + param,
         data: pageModel,
         success : function (data) {
-            var goodslist = data.obj.list;
-
             var tbody = $(".goodsTable");
             tbody.empty();
-            for (var i = 0; i < goodslist.length; i++) {
-                var element = "<tr>\n" +
-                    "    <td>" + goodslist[i].goodsId + "</td>\n" +
-                    "    <td><p>" + goodslist[i].goodsName + "</p><p>" + goodslist[i].goodsDescribe + "</p></td>\n" +
-                    "    <td>" + goodslist[i].goodsPrice + "</td>\n" +
-                    "    <td>" + goodslist[i].goodsStock + "</td>\n" +
+
+            if (listType === "goodsId") {
+                var goods = data.obj;
+
+                var goodsEle = "<tr>\n" +
+                    "    <td>" + goods.goodsId + "</td>\n" +
+                    "    <td><p>" + goods.goodsName + "</p><p>" + goods.goodsDescribe + "</p></td>\n" +
+                    "    <td>" + goods.goodsPrice + "</td>\n" +
+                    "    <td>" + goods.goodsStock + "</td>\n" +
                     '    <td><a class="btn btn-xs btn-warning opear">下架</a></td>\n' +
                     "    <td>\n" +
                     '        <a class="opear" href="">编辑</a>\n' +
                     "    </td>\n" +
                     "</tr>";
-                tbody.append(element);
-            }
+                tbody.append(goodsEle);
 
-            var totalPages = data.obj.totalPages;
-            $("#currentNo").val(currentNo);
-            $("#totalPages").html(totalPages);
+                $("#pageControl").css("display", "none")
+            } else {
+                var goodslist = data.obj.list;
+
+                for (var i = 0; i < goodslist.length; i++) {
+                    var element = "<tr>\n" +
+                        "    <td>" + goodslist[i].goodsId + "</td>\n" +
+                        "    <td><p>" + goodslist[i].goodsName + "</p><p>" + goodslist[i].goodsDescribe + "</p></td>\n" +
+                        "    <td>" + goodslist[i].goodsPrice + "</td>\n" +
+                        "    <td>" + goodslist[i].goodsStock + "</td>\n" +
+                        '    <td><a class="btn btn-xs btn-warning opear">下架</a></td>\n' +
+                        "    <td>\n" +
+                        '        <a class="opear" href="">编辑</a>\n' +
+                        "    </td>\n" +
+                        "</tr>";
+                    tbody.append(element);
+                }
+
+                var totalPages = data.obj.totalPages;
+                $("#currentNo").val(currentNo);
+                $("#totalPages").html(totalPages);
+
+                var nextPage = currentNo + 1;
+                var lastPage = currentNo - 1;
+
+                $("#type").val(listType);
+                $("#word").val(param);
+
+                listType = "'" + listType + "'";
+                param = "'" + param + "'";
+                if (currentNo === 1) {
+                    $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link'></a>");
+                    $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' " +
+                        'onclick="adminQuery(' + nextPage + ", " + pageSize + ", " + listType + ", " + param + ')"></a>');
+                } else if (currentNo === totalPages) {
+                    $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link'></a>");
+                    $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' " +
+                        'onclick="adminQuery(' + lastPage + ", " + pageSize + ", " + listType + ", " + param + ')"></a>');
+                } else {
+                    $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' " +
+                        'onclick="adminQuery(' + lastPage + ", " + pageSize + ", " + listType + ", " + param + ')"></a>');
+                    $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' " +
+                        'onclick="adminQuery(' + nextPage + ", " + pageSize + ", " + listType + ", " + param + ')"></a>');
+                }
+            }
         }
+    });
+}
+
+/**
+ * 商品类别管理--分页跳转
+ */
+function turn() {
+    var element = document.getElementById("currentNo");
+    element.onkeyup = function () {
+        this.value = this.value.replace(/^(0+)|[^\d]+/g, '');
+        var totalPages = parseInt($("#totalPages").html());
+        if (element.value > totalPages) {
+            element.value = totalPages;
+        }
+    };
+
+    $("#turn").click(function () {
+        var listType = $("#type").val();
+        var param = $("#word").val();
+
+        var currentNo = parseInt($("#currentNo").val());
+        isNaN(currentNo) ? layer.msg("页码不能为空") : adminQuery(currentNo, 10, listType, param);
     });
 }
 

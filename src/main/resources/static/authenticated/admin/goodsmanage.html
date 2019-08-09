@@ -5,8 +5,7 @@
     <meta http-equiv=x-ua-compatible content="ie=edge">
     <meta name="description" content="EMall后台管理">
     <title>商品管理</title>
-    <link rel="shortcut icon" href="http://192.168.153.130/images/favicon.ico" type="image/x-icon"/>
-    <link rel="icon" href="http://192.168.153.130/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="../../afrontfiles/css/admin.css">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
@@ -58,16 +57,16 @@
             <div class="search-wrap col-md-12">
                 <div class="form-inline">
                     <div class="form-group">
-                        <label for="select"></label>
-                        <select id="select" class="form-control">
-                            <option value="goodId">按商品id查询</option>
-                            <option value="goodName">按商品名称查询</option>
+                        <label for="listType"></label>
+                        <select id="listType" class="form-control">
+                            <option value="goodsId">按商品id查询</option>
+                            <option value="goodsName">按商品名称查询</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <input type="text" class="form-control" placeholder="关键词" id="keyWord">
+                        <input type="text" class="form-control" placeholder="关键词" id="param">
                     </div>
-                    <input type="button" class="btn btn-default" value="查询" id="sbtn"/>
+                    <input type="button" class="btn btn-default" value="查询" id="queryType"/>
                 </div>
             </div>
             <div class="table-wrap col-lg-12">
@@ -75,7 +74,6 @@
                     <thead>
                     <tr>
                         <th>id</th>
-                        <th>名称</th>
                         <th>信息</th>
                         <th>价格</th>
                         <th>库存</th>
@@ -87,7 +85,7 @@
                     </tbody>
                 </table>
             </div>
-            <ul class="rc-pagination">
+            <ul id="pageControl" class="rc-pagination">
                 <li title="上一页" class=" rc-pagination-prev" aria-disabled="false" tabindex="0">
                     <a id="lastPage" class="rc-pagination-item-link"></a>
                 </li>
@@ -104,7 +102,9 @@
                     <a id="nextPage" class="rc-pagination-item-link"></a>
                 </li>
                 <li title="跳转" tabindex="0" class=" rc-pagination-item" id="skip">
-                    <a class="rc-pagination-item-link" id="get">跳转</a>
+                    <a id="turn" class="rc-pagination-item-link">跳转</a>
+                    <input type="hidden" id="type">
+                    <input type="hidden" id="word">
                 </li>
             </ul>
         </div>
