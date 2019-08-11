@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface CategoryMapper {
+    Category selectByCategoryId(@Param("categoryId") String categoryId);
+
     int deleteByCategoryId(@Param("categoryId") String categoryId);
 
     boolean isExistByName(@Param("categoryName") String categoryName);
@@ -15,8 +17,6 @@ public interface CategoryMapper {
     List<Category> adminQueryAll(@Param("limit") long limit, @Param("offset") long offset);
 
     int insert(Category record);
-
-    Category selectByPrimaryKey(String categoryId);
 
     int updateByPrimaryKey(Category record);
 

@@ -4,36 +4,13 @@ $(document).ready(function () {
         $(window).attr("location","../../authenticated/user/userCenter.html");
     });
 
-    $("#submit").click(function () {
-        var userId = $("#userId").val();
-        var userName = $("#userName").val();
-        var userSex = $("input[name='sex']:checked").val();
-        var userMobileNumber = $("#mobileNumber").val();
-
-        var update = {"userId": userId, "userName": userName, "userSex": userSex, "userMobileNumber": userMobileNumber};
-
-        showLoading();
-        $.ajax({
-            type : "POST",
-            url: "/user",
-            dataType : "json",
-            data: JSON.stringify(update),
-            contentType: 'application/json;charset=UTF-8',
-            success : function (data) {
-                //用户已存在
-                if (data.status === false) {
-                    layer.msg(data.msg);
-                } else {
-                    layer.msg(data.msg, {time: 800}, function () {
-                        $(window).attr("location", "../../authenticated/user/userCenter.html");
-                    });
-                }
-            }
-        });
+    $(document).keyup(function (event) {
+        if (event.keyCode === 13) {
+            userUpdate();
+        }
     });
 
     userUpdateInit();
-
 });
 
 /**
@@ -64,3 +41,54 @@ function userUpdateInit() {
         }
     });
 }
+
+function userUpdate() {
+    var userId = $("#userId").val();
+    var userName = $("#userName").val();
+    var userSex = $("input[name='sex']:checked").val();
+    var userMobileNumber = $("#mobileNumber").val();
+
+    if (userName === undefined || userName.trim() === "") {
+        layer.msg("用户名称不能为空");
+        return false;
+    } else if (!mobileValid(userMobileNumber)) {
+        layer.msg("手机号码格式错误");
+        return false;
+    }
+    var update = {"userId": userId, "userName": userName, "userSex": userSex, "userMobileNumber": userMobileNumber};
+
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: "/user",
+        dataType: "json",
+        data: JSON.stringify(update),
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            //用户已存在
+            if (data.status === false) {
+                layer.msg(data.msg);
+            } else {
+                layer.msg(data.msg, {time: 800}, function () {
+                    $(window).attr("location", "../../authenticated/user/userCenter.html");
+                });
+            }
+        }
+    });
+}
+
+/**
+ * 验证手机号码
+ */
+function mobileValid(mobileNumber) {
+    var result = true;
+
+    var mobileValidate = /^(1[3-9])\d{9}$/;
+
+    if (!(mobileValidate.test(mobileNumber))) {
+        layer.msg("手机号码格式不正确！");
+        result = false;
+    }
+    return result;
+}
+

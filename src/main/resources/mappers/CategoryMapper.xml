@@ -34,7 +34,7 @@
 		where category_name = #{categoryName,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String">
+	<select id="selectByCategoryId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from category

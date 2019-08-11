@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv=x-ua-compatible content="ie=edge">
-    <meta name="description" content="商品类别管理">
-    <title>品类管理</title>
-    <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon">
-    <link href="../../afrontfiles/css/admin.css" rel="stylesheet">
+    <meta name="description" content="EMall后台管理">
+    <title>商品管理</title>
+    <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="../../afrontfiles/css/admin.css">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://www.layuicdn.com/layer-v3.1.1/layer.js"></script>
-    <script src="../../afrontfiles/js/categorymanage.js"></script>
+    <script src="https://www.layuicdn.com/layDate-v5.0.9/laydate.js"></script>
+    <script src="../../afrontfiles/js/goodsManage.js"></script>
     <script src="../../afrontfiles/js/common.js"></script>
 </head>
 <body>
@@ -29,8 +30,8 @@
                 <li>
                     <a><span>商品</span></a>
                     <ul class="nav nav-second-level collapse in">
-                        <li><a id="goodsSkip">商品管理</a></li>
-                        <li><a id="categorySkip" class="active">品类管理</a></li>
+                        <li><a id="goodsSkip" class="active">商品管理</a></li>
+                        <li><a id="categorySkip">品类管理</a></li>
                     </ul>
                 </li>
                 <li>
@@ -46,34 +47,51 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">类别管理</h1>
+            <h1 class="page-header">商品管理</h1>
             <div class="page-header-right">
-                <a class="btn btn-primary" id="insert">
-                    <span>添加品类</span>
-                </a>
+                <a class="btn btn-primary" href="goodsAdd.html">添加商品</a>
             </div>
         </div>
     </div>
     <div class="row">
+        <div class="search-wrap col-md-12">
+            <div class="form-inline">
+                <div class="form-group">
+                    <label for="listType"></label>
+                    <select id="listType" class="form-control">
+                        <option value="goodsId">按商品id查询</option>
+                        <option value="goodsName">按商品名称查询</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" placeholder="关键词" id="param">
+                </div>
+                <input type="button" class="btn btn-default" value="查询" id="queryType"/>
+            </div>
+        </div>
         <div class="table-wrap col-lg-12">
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th>品类ID</th>
-                    <th>品类名称</th>
+                    <th>id</th>
+                    <th>信息</th>
+                    <th>价格</th>
+                    <th>库存</th>
+                    <th>状态</th>
+                    <th>活动</th>
                     <th>操作</th>
                 </tr>
                 </thead>
-                <tbody id="tableBody">
+                <tbody class="goodsTable">
                 </tbody>
             </table>
         </div>
-        <ul class="rc-pagination">
+        <ul id="pageControl" class="rc-pagination">
             <li title="上一页" class=" rc-pagination-prev" aria-disabled="false" tabindex="0">
                 <a id="lastPage" class="rc-pagination-item-link"></a>
             </li>
             <li title="页数" tabindex="0">
-                <input type="text" id="currentNo" class="rc-pagination-item" placeholder=""/>
+                <input type="text" id="currentNo" value="" class="rc-pagination-item" placeholder=""/>
             </li>
             <li tabindex="0">
                 <label class="rc-pagination-disabled rc-pagination-item">/</label>
@@ -86,10 +104,11 @@
             </li>
             <li title="跳转" tabindex="0" class=" rc-pagination-item" id="skip">
                 <a id="turn" class="rc-pagination-item-link">跳转</a>
+                <input type="hidden" id="type">
+                <input type="hidden" id="word">
             </li>
         </ul>
     </div>
 </div>
 </body>
 </html>
-

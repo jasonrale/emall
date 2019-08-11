@@ -2,42 +2,10 @@
 $(document).ready(function () {
     userPasswordInit();
 
-    //验证密码
-    $("#submit").click(function () {
-        var userId = $("#userId").val();
-        var userSalt = $("#userSalt").val();
-        var passwordReal = $("#passwordReal").val();
-        var passwordOld = $("#passwordOld").val();
-        var passwordNew = $("#passwordNew").val();
-        var passwordConfirm = $("#passwordConfirm").val();
-
-        var passwordVo = {
-            "userId": userId,
-            "userSalt": userSalt,
-                          "passwordReal" : passwordReal,
-                          "passwordOld" : passwordOld,
-                          "passwordNew" : passwordNew,
-            "passwordConfirm": passwordConfirm
-                         };
-
-        showLoading();
-        $.ajax({
-            type : "POST",
-            url : "/user/password",
-            dataType : "json",
-            data: JSON.stringify(passwordVo),
-            contentType: 'application/json;charset=UTF-8',
-            success : function (data) {
-                if (data.status === true) {
-                    layer.msg(data.msg, {time: 800}, function () {
-                        $(window).attr("location", "/user/logout");
-                    });
-
-                } else {
-                    layer.msg(data.msg);
-                }
-            }
-        });
+    $(document).keyup(function (event) {
+        if (event.keyCode === 13) {
+            password();
+        }
     });
 });
 
@@ -59,6 +27,61 @@ function userPasswordInit() {
                 $("#userId").val(data.obj.userId);
                 $("#userSalt").val(data.obj.userSalt);
                 $("#passwordReal").val(data.obj.userPassword);
+            }
+        }
+    });
+}
+
+/**
+ * 密码验证
+ * @returns {boolean}
+ */
+function password() {
+    var userId = $("#userId").val();
+    var userSalt = $("#userSalt").val();
+    var passwordReal = $("#passwordReal").val();
+    var passwordOld = $("#passwordOld").val();
+    var passwordNew = $("#passwordNew").val();
+    var passwordConfirm = $("#passwordConfirm").val();
+
+    if (passwordOld === undefined || passwordOld.trim() === "") {
+        layer.msg("原密码不能为空");
+        return false;
+    } else if (passwordOld !== passwordReal) {
+        layer.msg("原密码输入错误");
+        return false;
+    } else if (passwordNew === undefined || passwordNew.trim() === "") {
+        layer.msg("新密码不能为空");
+        return false;
+    } else if (passwordConfirm === undefined || passwordConfirm.trim() === "" || passwordConfirm !== passwordNew) {
+        layer.msg("两次输入密码不一致");
+        return false;
+    }
+
+    var passwordVo = {
+        "userId": userId,
+        "userSalt": userSalt,
+        "passwordReal": passwordReal,
+        "passwordOld": passwordOld,
+        "passwordNew": passwordNew,
+        "passwordConfirm": passwordConfirm
+    };
+
+    showLoading();
+    $.ajax({
+        type: "POST",
+        url: "/user/password",
+        dataType: "json",
+        data: JSON.stringify(passwordVo),
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            if (data.status === true) {
+                layer.msg(data.msg, {time: 800}, function () {
+                    $(window).attr("location", "/user/logout");
+                });
+
+            } else {
+                layer.msg(data.msg);
             }
         }
     });

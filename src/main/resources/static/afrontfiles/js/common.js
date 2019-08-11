@@ -63,14 +63,14 @@ $(document).ready(function () {
 
     //后台管理
     $("#goodsSkip").click(function () {
-        $(window).attr("location", "goodsmanage.html");
+        $(window).attr("location", "goodsManage.html");
     });
 
     $("#categorySkip").click(function () {
-        $(window).attr("location", "categorymanage.html");
+        $(window).attr("location", "categoryManage.html");
     });
 
     $("#orderSkip").click(function () {
-        $(window).attr("location", "ordermanage.html");
+        $(window).attr("location", "orderManage.html");
     });
 });

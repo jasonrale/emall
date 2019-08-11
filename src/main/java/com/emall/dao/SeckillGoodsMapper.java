@@ -9,5 +9,5 @@ public interface SeckillGoodsMapper {
 
     SeckillGoods selectByPrimaryKey(String seckillGoodsId);
 
-    int updateByPrimaryKey(SeckillGoods record);
+    int updateByPrimaryKeySelective(SeckillGoods record);
 }

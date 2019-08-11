@@ -24,36 +24,42 @@ function adminQueryAll(currentNo, pageSize) {
         success: function (data) {
             var categoryList = data.obj.list;
 
-            var tbody = $("#tableBody");
-            tbody.empty();
-            for (var i = 0; i < categoryList.length; i++) {
-                var element = "<tr>\n" +
-                    "<td>" + categoryList[i].categoryId + "</td>\n" +
-                    "<td>" + categoryList[i].categoryName + "</td>\n" +
-                    "<td>" +
-                    '<a class="opera" onclick="update(' + "'" + categoryList[i].categoryId + "'" + ')">修改名称</a>' +
-                    '<a class="opera" onclick="del(' + "'" + categoryList[i].categoryId + "'" + ')">删除品类</a>' +
-                    "</td>\n" +
-                    "</tr>";
-                tbody.append(element);
-            }
+            if (categoryList.length !== 0) {
+                var tbody = $("#tableBody");
+                tbody.empty();
+                for (var i = 0; i < categoryList.length; i++) {
+                    var element = "<tr>" +
+                        "<td>" + categoryList[i].categoryId + "</td>" +
+                        "<td>" + categoryList[i].categoryName + "</td>" +
+                        "<td>" +
+                        '<a class="opera" onclick="update(' + "'" + categoryList[i].categoryId + "'" + ')">修改名称</a>' +
+                        '<a class="opera" onclick="del(' + "'" + categoryList[i].categoryId + "'" + ')">删除品类</a>' +
+                        "</td>" +
+                        "</tr>";
+                    tbody.append(element);
+                }
 
-            var totalPages = data.obj.totalPages;
-            $("#currentNo").val(currentNo);
-            $("#totalPages").html(totalPages);
+                var totalPages = data.obj.totalPages;
+                $("#currentNo").val(currentNo);
+                $("#totalPages").html(totalPages);
 
-            var nextPage = currentNo + 1;
-            var lastPage = currentNo - 1;
-            if (currentNo === 1) {
-                $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link'></a>");
-                $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + nextPage + ", 10)'></a>");
-            } else if (currentNo === totalPages) {
-                $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link'></a>");
-                $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + lastPage + ", 10)'></a>");
+                var nextPage = currentNo + 1;
+                var lastPage = currentNo - 1;
+                if (currentNo === 1) {
+                    $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link'></a>");
+                    $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + nextPage + ", 10)'></a>");
+                } else if (currentNo === totalPages) {
+                    $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link'></a>");
+                    $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + lastPage + ", 10)'></a>");
+                } else {
+                    $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + lastPage + ", 10)'></a>");
+                    $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + nextPage + ", 10)'></a>");
+                }
+                $("#pageControl").css("display", "block");
             } else {
-                $("#lastPage").replaceWith("<a id='lastPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + lastPage + ", 10)'></a>");
-                $("#nextPage").replaceWith("<a id='nextPage' class='rc-pagination-item-link' onclick='adminQueryAll(" + nextPage + ", 10)'></a>");
+                $("#pageControl").css("display", "none");
             }
+
         }
     });
 }

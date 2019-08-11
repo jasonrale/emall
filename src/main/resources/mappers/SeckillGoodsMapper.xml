@@ -3,6 +3,7 @@
 <mapper namespace="com.emall.dao.SeckillGoodsMapper">
 	<resultMap id="BaseResultMap" type="com.emall.entity.SeckillGoods">
 		<id column="seckill_goods_id" jdbcType="VARCHAR" property="seckillGoodsId"/>
+		<result column="goods_id" jdbcType="VARCHAR" property="goodsId"/>
 		<result column="seckill_goods_name" jdbcType="VARCHAR" property="seckillGoodsName"/>
 		<result column="seckill_goods_describe" jdbcType="VARCHAR" property="seckillGoodsDescribe"/>
 		<result column="seckill_goods_stock" jdbcType="INTEGER" property="seckillGoodsStock"/>
@@ -15,7 +16,7 @@
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		seckill_goods_id, seckill_goods_name, seckill_goods_describe, seckill_goods_stock,
+		seckill_goods_id, goods_id, seckill_goods_name, seckill_goods_describe, seckill_goods_stock,
     	seckill_goods_price, seckill_goods_image, seckill_goods_details, seckill_goods_start_time,
     	seckill_goods_end_time, seckill_goods_status
 	</sql>
@@ -34,10 +35,11 @@
 	</delete>
 	
 	<insert id="insert" parameterType="com.emall.entity.SeckillGoods">
-		insert into seckill_goods (seckill_goods_id, seckill_goods_name, seckill_goods_describe, seckill_goods_stock,
+		insert into seckill_goods (seckill_goods_id, goods_id, seckill_goods_name, seckill_goods_describe,
+								   seckill_goods_stock,
 								   seckill_goods_price, seckill_goods_image, seckill_goods_details,
 								   seckill_goods_start_time, seckill_goods_end_time, seckill_goods_status)
-		values (#{seckillGoodsId,jdbcType=VARCHAR}, #{seckillGoodsName,jdbcType=VARCHAR},
+		values (#{seckillGoodsId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{seckillGoodsName,jdbcType=VARCHAR},
 				#{seckillGoodsDescribe,jdbcType=VARCHAR}, #{seckillGoodsStock,jdbcType=INTEGER},
 				#{seckillGoodsPrice,jdbcType=DECIMAL}, #{seckillGoodsImage,jdbcType=VARCHAR},
 				#{seckillGoodsDetails,jdbcType=VARCHAR},
@@ -45,17 +47,40 @@
 				#{seckillGoodsStatus,jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="updateByPrimaryKey" parameterType="com.emall.entity.SeckillGoods">
+	<update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.SeckillGoods">
 		update seckill_goods
-		set seckill_goods_name       = #{seckillGoodsName,jdbcType=VARCHAR},
-			seckill_goods_describe   = #{seckillGoodsDescribe,jdbcType=VARCHAR},
-			seckill_goods_stock      = #{seckillGoodsStock,jdbcType=INTEGER},
-			seckill_goods_price      = #{seckillGoodsPrice,jdbcType=DECIMAL},
-			seckill_goods_image      = #{seckillGoodsImage,jdbcType=VARCHAR},
-			seckill_goods_details    = #{seckillGoodsDetails,jdbcType=VARCHAR},
-			seckill_goods_start_time = #{seckillGoodsStartTime,jdbcType=TIMESTAMP},
-			seckill_goods_end_time   = #{seckillGoodsEndTime,jdbcType=TIMESTAMP},
-			seckill_goods_status     = #{seckillGoodsStatus,jdbcType=VARCHAR}
+		<set>
+			<if test="goodsId != null">
+				goods_id = #{goodsId,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsName != null">
+				seckill_goods_name = #{seckillGoodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsDescribe != null">
+				seckill_goods_describe = #{seckillGoodsDescribe,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsStock != null">
+				seckill_goods_stock = #{seckillGoodsStock,jdbcType=INTEGER},
+			</if>
+			<if test="seckillGoodsPrice != null">
+				seckill_goods_price = #{seckillGoodsPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="seckillGoodsImage != null">
+				seckill_goods_image = #{seckillGoodsImage,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsDetails != null">
+				seckill_goods_details = #{seckillGoodsDetails,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsStartTime != null">
+				seckill_goods_start_time = #{seckillGoodsStartTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="seckillGoodsEndTime != null">
+				seckill_goods_end_time = #{seckillGoodsEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="seckillGoodsStatus != null">
+				seckill_goods_status = #{seckillGoodsStatus,jdbcType=VARCHAR},
+			</if>
+		</set>
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</update>
 </mapper>

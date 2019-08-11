@@ -28,9 +28,9 @@ public class CategoryController {
      */
     @GetMapping("")
     @ResponseBody
-    public Result<List<Category>> adminQueryAll() {
+    public Result<List<Category>> queryAll() {
         logger.info("查询所有商品类别");
-        return Result.success("查询所有品类成功", categoryService.QueryAll());
+        return Result.success("查询所有品类成功", categoryService.queryAll());
     }
 
     /**
@@ -46,12 +46,24 @@ public class CategoryController {
     }
 
     /**
+     * 根据商品类别id查询商品类别
+     *
+     * @return
+     */
+    @GetMapping("/{categoryId}/categoryId")
+    @ResponseBody
+    public Result<Category> selectByCategoryId(@PathVariable("categoryId") String categoryId) {
+        logger.info("根据商品类别id：" + categoryId + "查询商品类别");
+        return Result.success("查询商品类别成功", categoryService.selectByCategoryId(categoryId));
+    }
+
+    /**
      * 添加商品类别
      * @return
      */
     @PutMapping("/admin")
     @ResponseBody
-    public Result<String> insert(@RequestParam("categoryName") @RequestBody String categoryName) {
+    public Result<String> insert(@RequestBody String categoryName) {
         logger.info("添加商品类别--" + categoryName);
         if (StringUtils.isEmpty(categoryName)) {
             return Result.error("品类名称不能为空");

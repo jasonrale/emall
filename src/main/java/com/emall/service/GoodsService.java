@@ -1,7 +1,9 @@
 package com.emall.service;
 
 import com.emall.dao.GoodsMapper;
+import com.emall.dao.SeckillGoodsMapper;
 import com.emall.entity.Goods;
+import com.emall.entity.SeckillGoods;
 import com.emall.redis.RedisKeyUtil;
 import com.emall.result.Result;
 import com.emall.utils.PageModel;
@@ -29,6 +31,9 @@ import java.util.concurrent.TimeUnit;
 public class GoodsService {
     @Resource
     GoodsMapper goodsMapper;
+
+    @Resource
+    SeckillGoodsMapper seckillGoodsMapper;
 
     @Resource
     RedisTemplate redisTemplate;
@@ -133,6 +138,50 @@ public class GoodsService {
     }
 
     /**
+     * 商品修改
+     *
+     * @param goods
+     * @param imageFile
+     * @param detailFile
+     * @param path
+     * @return
+     */
+    @Transactional
+    public Result<Goods> update(Goods goods, MultipartFile imageFile, MultipartFile detailFile, String path) {
+        String goodsKey = RedisKeyUtil.goodsByGoodsId(goods);
+        if (redisTemplate.hasKey(goodsKey)) {
+            redisTemplate.delete(goodsKey);
+        }
+
+        if (imageFile == null && detailFile == null) {
+            if (goodsMapper.updateByGoodsIdSelective(goods) != 0) {
+                return Result.success("商品修改成功", goods);
+            }
+        } else if (imageFile != null && detailFile != null) {
+            List<String> urlList = upLoadToServer(imageFile, detailFile, path);
+            goods.setGoodsImage(urlList.get(0));
+            goods.setGoodsDetails(urlList.get(1));
+            if (goodsMapper.updateByGoodsIdSelective(goods) != 0) {
+                return Result.success("商品修改成功", goods);
+            }
+        } else if (imageFile != null) {
+            List<String> urlList = upLoadToServer(imageFile, null, path);
+            goods.setGoodsImage(urlList.get(0));
+            if (goodsMapper.updateByGoodsIdSelective(goods) != 0) {
+                return Result.success("商品修改成功", goods);
+            }
+        } else {
+            List<String> urlList = upLoadToServer(null, detailFile, path);
+            goods.setGoodsDetails(urlList.get(0));
+            if (goodsMapper.updateByGoodsIdSelective(goods) != 0) {
+                return Result.success("商品修改成功", goods);
+            }
+        }
+
+        return Result.error("商品修改失败");
+    }
+
+    /**
      * 上传到Ftp服务器
      *
      * @param imageFile
@@ -140,27 +189,21 @@ public class GoodsService {
      * @param path
      * @return
      */
+    @Transactional
     public List<String> upLoadToServer(MultipartFile imageFile, MultipartFile detailFile, String path) {
         String tmpPath = "E:/ImageTemp" + path;
-        String imageFileName = imageFile.getOriginalFilename();
-        String detailFileName = detailFile.getOriginalFilename();
+
         File dir = new File(tmpPath);
         if (!dir.exists()) {
             dir.mkdirs();
         }
-        File image = new File(path, imageFileName);
-        File detail = new File(path, detailFileName);
 
         FTPClient ftp = new FTPClient();
-        InputStream imageLocal = null;
-        InputStream detailLocal = null;
 
         List<String> urlList = new ArrayList<>();
-
+        InputStream imageLocal = null;
+        InputStream detailLocal = null;
         try {
-            imageFile.transferTo(image);
-            detailFile.transferTo(detail);
-
             ftp.connect("192.168.153.130", 21);
             ftp.login("ftpadmin", "123456");
             String ftpPath = "/home/ftpadmin/emall/images/";
@@ -179,20 +222,13 @@ public class GoodsService {
             //指定上传文件的类型  二进制文件
             ftp.setFileType(FTP.BINARY_FILE_TYPE);
 
-            File imageTmp = new File(tmpPath + imageFileName);
-            File detailTmp = new File(tmpPath + detailFileName);
-            imageLocal = new FileInputStream(imageTmp);
-            detailLocal = new FileInputStream(detailTmp);
+            if (imageFile != null) {
+                imageLocal = upload(imageFile, path, tmpPath, ftpPath, ftp, urlList);
+            }
 
-            String newImageName = getFileName(imageFileName);
-            String newDetailName = getFileName(detailFileName);
-            ftp.storeFile(newImageName, imageLocal);
-            ftp.storeFile(newDetailName, detailLocal);
-            String imageUrl = ftpPath.replace("/home/ftpadmin/emall", "http://192.168.153.130") + newImageName;
-            String detailUrl = ftpPath.replace("/home/ftpadmin/emall", "http://192.168.153.130") + newDetailName;
-
-            urlList.add(imageUrl);
-            urlList.add(detailUrl);
+            if (detailFile != null) {
+                detailLocal = upload(detailFile, path, tmpPath, ftpPath, ftp, urlList);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -200,8 +236,12 @@ public class GoodsService {
             delAllFile(del);
 
             try {
-                imageLocal.close();
-                detailLocal.close();
+                if (imageLocal != null) {
+                    imageLocal.close();
+                }
+                if (detailLocal != null) {
+                    detailLocal.close();
+                }
                 //退出
                 ftp.logout();
                 //断开连接
@@ -212,6 +252,37 @@ public class GoodsService {
         }
 
         return urlList;
+    }
+
+    @Transactional
+    public InputStream upload(MultipartFile clientFile, String path, String tmpPath, String ftpPath, FTPClient ftp, List<String> urlList) {
+        InputStream inputLocal = null;
+
+        try {
+            //文件名称
+            String clientFileName = clientFile.getOriginalFilename();
+            //临时图片文件路径
+            File client = new File(path, Objects.requireNonNull(clientFileName));
+
+            //浏览器端上传文件到临时文件夹
+            clientFile.transferTo(client);
+
+            //临时文件
+            File tmp = new File(tmpPath + clientFileName);
+            //ftp流
+            inputLocal = new FileInputStream(tmp);
+            //文件新名称
+            String newFileName = getFileName(clientFileName);
+            //临时文件再上传到图片服务器
+            ftp.storeFile(newFileName, inputLocal);
+            //图片在服务器上的url
+            String url = ftpPath.replace("/home/ftpadmin/emall", "http://192.168.153.130") + newFileName;
+            urlList.add(url);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return inputLocal;
     }
 
     /**
@@ -256,5 +327,21 @@ public class GoodsService {
             }
             temp.delete();
         }
+    }
+
+    public boolean pull(String goodsId) {
+        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
+        if (redisTemplate.hasKey(goodsKey)) {
+            redisTemplate.delete(goodsKey);
+        }
+        return goodsMapper.pull(goodsId) != 0;
+    }
+
+    public boolean put(String goodsId) {
+        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
+        if (redisTemplate.hasKey(goodsKey)) {
+            redisTemplate.delete(goodsKey);
+        }
+        return goodsMapper.put(goodsId) != 0;
     }
 }

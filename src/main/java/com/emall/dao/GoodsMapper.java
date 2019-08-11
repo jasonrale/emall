@@ -8,9 +8,7 @@ import java.util.List;
 public interface GoodsMapper {
     int insert(Goods record);
 
-    int deleteByPrimaryKey(String goodsId);
-
-    int updateByPrimaryKey(Goods record);
+    int deleteByGoodsId(String goodsId);
 
     Goods selectByGoodsId(@Param("goodsId") String goodsId);
 
@@ -25,4 +23,10 @@ public interface GoodsMapper {
     long countByKeyWord(@Param("keyWord") String keyWord);
 
     long countByCategoryId(@Param("categoryId") String categoryId);
+
+    int pull(@Param("goodsId") String goodsId);
+
+    int put(@Param("goodsId") String goodsId);
+
+    int updateByGoodsIdSelective(Goods goods);
 }

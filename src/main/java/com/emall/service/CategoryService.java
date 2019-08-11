@@ -19,16 +19,8 @@ public class CategoryService {
     @Resource
     CategoryMapper categoryMapper;
 
-    public List<Category> QueryAll() {
+    public List<Category> queryAll() {
         return categoryMapper.queryAll();
-    }
-
-    public boolean insert(String categoryName) throws GeneralException {
-        Assert.isTrue(!categoryMapper.isExistByName(categoryName), "商品类别已存在");
-
-        String categoryId = String.valueOf(snowflakeIdWorker.nextId());
-        Category category = new Category(categoryId, categoryName);
-        return categoryMapper.insert(category) != 0;
     }
 
     public PageModel<Category> adminQueryAll(PageModel<Category> pageModel) {
@@ -44,6 +36,18 @@ public class CategoryService {
         pageModel.setTotalPages();
 
         return pageModel;
+    }
+
+    public Category selectByCategoryId(String categoryId) {
+        return categoryMapper.selectByCategoryId(categoryId);
+    }
+
+    public boolean insert(String categoryName) throws GeneralException {
+        Assert.isTrue(!categoryMapper.isExistByName(categoryName), "商品类别已存在");
+
+        String categoryId = String.valueOf(snowflakeIdWorker.nextId());
+        Category category = new Category(categoryId, categoryName);
+        return categoryMapper.insert(category) != 0;
     }
 
     public boolean update(Category category) {
