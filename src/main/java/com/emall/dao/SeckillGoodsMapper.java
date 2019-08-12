@@ -3,11 +3,13 @@ package com.emall.dao;
 import com.emall.entity.SeckillGoods;
 
 public interface SeckillGoodsMapper {
-    int deleteByPrimaryKey(String seckillGoodsId);
+    int deleteBySeckillGoodsId(String seckillGoodsId);
 
-    int insert(SeckillGoods record);
+    int insert(SeckillGoods seckillGoods);
 
-    SeckillGoods selectByPrimaryKey(String seckillGoodsId);
+    int insertSelective(SeckillGoods seckillGoods);
 
-    int updateByPrimaryKeySelective(SeckillGoods record);
+    SeckillGoods selectBySeckillGoodsId(String seckillGoodsId);
+
+    int updateBySeckillGoodsIdSelective(SeckillGoods seckillGoods);
 }

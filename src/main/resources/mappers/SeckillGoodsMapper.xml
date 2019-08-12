@@ -21,14 +21,14 @@
     	seckill_goods_end_time, seckill_goods_status
 	</sql>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="selectBySeckillGoodsId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from seckill_goods
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</select>
 	
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+	<delete id="deleteBySeckillGoodsId" parameterType="java.lang.String">
 		delete
 		from seckill_goods
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
@@ -47,7 +47,81 @@
 				#{seckillGoodsStatus,jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.SeckillGoods">
+	<insert id="insertSelective" parameterType="com.emall.entity.SeckillGoods">
+		insert into seckill_goods
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+		  <if test="seckillGoodsId != null">
+			seckill_goods_id,
+		  </if>
+		  <if test="goodsId != null">
+			goods_id,
+		  </if>
+		  <if test="seckillGoodsName != null">
+			seckill_goods_name,
+		  </if>
+		  <if test="seckillGoodsDescribe != null">
+			seckill_goods_describe,
+		  </if>
+		  <if test="seckillGoodsStock != null">
+			seckill_goods_stock,
+		  </if>
+		  <if test="seckillGoodsPrice != null">
+			seckill_goods_price,
+		  </if>
+		  <if test="seckillGoodsImage != null">
+			seckill_goods_image,
+		  </if>
+		  <if test="seckillGoodsDetails != null">
+			seckill_goods_details,
+		  </if>
+		  <if test="seckillGoodsStartTime != null">
+			seckill_goods_start_time,
+		  </if>
+		  <if test="seckillGoodsEndTime != null">
+			seckill_goods_end_time,
+		  </if>
+		  <if test="seckillGoodsStatus != null">
+			seckill_goods_status,
+		  </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+		  <if test="seckillGoodsId != null">
+			#{seckillGoodsId,jdbcType=VARCHAR},
+		  </if>
+		  <if test="goodsId != null">
+			#{goodsId,jdbcType=VARCHAR},
+		  </if>
+		  <if test="seckillGoodsName != null">
+			#{seckillGoodsName,jdbcType=VARCHAR},
+		  </if>
+		  <if test="seckillGoodsDescribe != null">
+			#{seckillGoodsDescribe,jdbcType=VARCHAR},
+		  </if>
+		  <if test="seckillGoodsStock != null">
+			#{seckillGoodsStock,jdbcType=INTEGER},
+		  </if>
+		  <if test="seckillGoodsPrice != null">
+			#{seckillGoodsPrice,jdbcType=DECIMAL},
+		  </if>
+		  <if test="seckillGoodsImage != null">
+			#{seckillGoodsImage,jdbcType=VARCHAR},
+		  </if>
+		  <if test="seckillGoodsDetails != null">
+			#{seckillGoodsDetails,jdbcType=VARCHAR},
+		  </if>
+		  <if test="seckillGoodsStartTime != null">
+			#{seckillGoodsStartTime,jdbcType=TIMESTAMP},
+		  </if>
+		  <if test="seckillGoodsEndTime != null">
+			#{seckillGoodsEndTime,jdbcType=TIMESTAMP},
+		  </if>
+		  <if test="seckillGoodsStatus != null">
+			#{seckillGoodsStatus,jdbcType=VARCHAR},
+		  </if>
+		</trim>
+  	</insert>
+	
+	<update id="updateBySeckillGoodsIdSelective" parameterType="com.emall.entity.SeckillGoods">
 		update seckill_goods
 		<set>
 			<if test="goodsId != null">

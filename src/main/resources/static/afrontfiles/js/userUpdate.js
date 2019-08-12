@@ -49,10 +49,10 @@ function userUpdate() {
     var userMobileNumber = $("#mobileNumber").val();
 
     if (userName === undefined || userName.trim() === "") {
-        layer.msg("用户名称不能为空");
+        layer.msg("用户名称不能为空", {time : 1000});
         return false;
     } else if (!mobileValid(userMobileNumber)) {
-        layer.msg("手机号码格式错误");
+        layer.msg("手机号码格式错误", {time : 1000});
         return false;
     }
     var update = {"userId": userId, "userName": userName, "userSex": userSex, "userMobileNumber": userMobileNumber};
@@ -67,7 +67,7 @@ function userUpdate() {
         success: function (data) {
             //用户已存在
             if (data.status === false) {
-                layer.msg(data.msg);
+                layer.msg(data.msg, {time : 1000});
             } else {
                 layer.msg(data.msg, {time: 800}, function () {
                     $(window).attr("location", "../../authenticated/user/userCenter.html");
@@ -86,7 +86,7 @@ function mobileValid(mobileNumber) {
     var mobileValidate = /^(1[3-9])\d{9}$/;
 
     if (!(mobileValidate.test(mobileNumber))) {
-        layer.msg("手机号码格式不正确！");
+        layer.msg("手机号码格式不正确！", {time : 1000});
         result = false;
     }
     return result;

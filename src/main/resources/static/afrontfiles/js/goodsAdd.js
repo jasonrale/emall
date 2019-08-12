@@ -35,7 +35,7 @@ function viewImage() {
     var path = image.val();
     var extStart = path.lastIndexOf("."), ext = path.substring(extStart, path.length).toUpperCase();
     if (ext !== ".PNG" && ext !== ".JPG" && ext !== ".JPEG" && ext !== ".GIF") {
-        layer.msg("请上传正确格式的图片");
+        layer.msg("请上传正确格式的图片", {time : 1000});
         image.val("");
         return false;
     }
@@ -53,7 +53,7 @@ function viewDetail() {
     var path = detail.val();
     var extStart = path.lastIndexOf("."), ext = path.substring(extStart, path.length).toUpperCase();
     if (ext !== ".PNG" && ext !== ".JPG" && ext !== ".JPEG" && ext !== ".GIF") {
-        layer.msg("请上传正确格式的图片");
+        layer.msg("请上传正确格式的图片", {time : 1000});
         detail.val("");
         return false;
     }
@@ -77,25 +77,25 @@ function addSubmit() {
     var detail = $("#uploadDetail");
 
     if (goodsName === undefined || goodsName.trim() === "") {
-        layer.msg("商品名称不能为空");
+        layer.msg("商品名称不能为空", {time : 1000});
         return false;
     } else if (goodsDescribe === undefined || goodsDescribe.trim() === "") {
-        layer.msg("商品描述不能为空");
+        layer.msg("商品描述不能为空", {time : 1000});
         return false;
     } else if (categoryId === "none") {
-        layer.msg("商品类别不能为空");
+        layer.msg("商品类别不能为空", {time : 1000});
         return false;
     } else if (goodsStock === undefined) {
-        layer.msg("商品库存不能为空");
+        layer.msg("商品库存不能为空", {time : 1000});
         return false;
     } else if (goodsPrice === undefined) {
-        layer.msg("商品价格不能为空");
+        layer.msg("商品价格不能为空", {time : 1000});
         return false;
     } else if (image.val() === "") {
-        layer.msg("商品图片不能为空");
+        layer.msg("商品图片不能为空", {time : 1000});
         return false;
     } else if (detail.val() === "") {
-        layer.msg("商品详情图片不能为空");
+        layer.msg("商品详情图片不能为空", {time : 1000});
         return false;
     }
 
@@ -128,11 +128,11 @@ function addSubmit() {
                 });
 
             } else {
-                layer.msg(data.msg);
+                layer.msg(data.msg, {time : 1000});
             }
         },
         error: function () {
-            layer.msg("商品添加失败");
+            layer.msg("商品添加失败", {time : 1000});
         }
     });
 }

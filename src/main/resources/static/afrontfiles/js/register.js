@@ -108,7 +108,7 @@ function submitValid() {
                         $(window).attr("location", "/result/result.html?resultType=register");
                     });
                 } else {
-                    layer.msg(data.msg)
+                    layer.msg(data.msg, {time : 1000})
                 }
             }
         });

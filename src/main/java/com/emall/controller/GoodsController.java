@@ -100,12 +100,15 @@ public class GoodsController {
     @ResponseBody
     public Result queryByType(@Valid PageModel<Goods> pageModel, @PathVariable("listType") String listType, @PathVariable("param") String param) {
         logger.info("查询商品--By " + listType);
-        if (listType.equals("all")) {
-            return Result.success("分页查询所有商品", goodsService.queryAll(pageModel));
-        } else if (listType.equals("goodsName")) {
-            return Result.success("根据关键字分页查询商品", goodsService.selectByKeyWord(param, pageModel));
-        } else {
-            return Result.success("根据商品id查询商品", goodsService.selectByGoodsId(param));
+        switch (listType) {
+            case "all":
+                return Result.success("分页查询所有商品", goodsService.queryAll(pageModel));
+            case "goodsName":
+                return Result.success("根据关键字分页查询商品", goodsService.selectByKeyWord(param, pageModel));
+            case "goodsId":
+                return Result.success("根据商品id查询商品", goodsService.selectByGoodsId(param));
+            default:
+                return Result.error("查询失败");
         }
     }
 

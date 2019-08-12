@@ -45,16 +45,16 @@ function password() {
     var passwordConfirm = $("#passwordConfirm").val();
 
     if (passwordOld === undefined || passwordOld.trim() === "") {
-        layer.msg("原密码不能为空");
+        layer.msg("原密码不能为空", {time : 1000});
         return false;
     } else if (passwordOld !== passwordReal) {
-        layer.msg("原密码输入错误");
+        layer.msg("原密码输入错误", {time : 1000});
         return false;
     } else if (passwordNew === undefined || passwordNew.trim() === "") {
-        layer.msg("新密码不能为空");
+        layer.msg("新密码不能为空", {time : 1000});
         return false;
     } else if (passwordConfirm === undefined || passwordConfirm.trim() === "" || passwordConfirm !== passwordNew) {
-        layer.msg("两次输入密码不一致");
+        layer.msg("两次输入密码不一致", {time : 1000});
         return false;
     }
 
@@ -81,7 +81,7 @@ function password() {
                 });
 
             } else {
-                layer.msg(data.msg);
+                layer.msg(data.msg, {time : 1000});
             }
         }
     });

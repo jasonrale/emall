@@ -131,6 +131,13 @@ function adminQuery(currentNo, pageSize, listType, param) {
 }
 
 /**
+ * 商品类别管理--秒杀商品查询
+ */
+function querySeckillGoods() {
+    
+}
+
+/**
  * 商品类别管理--分页跳转
  */
 function turn() {
@@ -148,7 +155,7 @@ function turn() {
         var param = $("#word").val();
 
         var currentNo = parseInt($("#currentNo").val());
-        isNaN(currentNo) ? layer.msg("页码不能为空") : adminQuery(currentNo, 10, listType, param);
+        isNaN(currentNo) ? layer.msg("页码不能为空", {time : 1000}) : adminQuery(currentNo, 10, listType, param);
     });
 }
 
@@ -169,7 +176,7 @@ function pull(goodsId) {
                             $("#" + goodsId).replaceWith('<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="put(' + "'" + goodsId + "'" + ')">上架</a>');
                         });
                     } else {
-                        layer.msg(data.msg);
+                        layer.msg(data.msg, {time : 1000});
                     }
                 }
             });
@@ -198,7 +205,7 @@ function put(goodsId, goodsActivity) {
                                 $("#" + goodsId).replaceWith('<a id="' + goodsId + '" class="btn btn-xs btn-warning opear" onclick="pull(' + "'" + goodsId + "'" + ')">下架</a>');
                             });
                         } else {
-                            layer.msg(data.msg);
+                            layer.msg(data.msg, {time : 1000});
                         }
                     }
                 });
@@ -229,7 +236,36 @@ function put(goodsId, goodsActivity) {
                 + '</div>',
             btn: ['确定', '取消'],
             btn1: function (index) {
+                var start = $("#startTime").val() ;
+                var end = $("#endTime").val();
+                if (start === undefined || start.trim() === "" ) {
+                    layer.msg("开始时间不能为空", {time : 1000});
+                    return false;
+                } else if (end === undefined || end.trim() === "" ) {
+                    layer.msg("结束时间不能为空", {time : 1000});
+                    return false;
+                }
+                var startTime = new Date(Date.parse(start));
+                var endTime = new Date(Date.parse(end));
+                if (startTime > endTime) {
+                    layer.msg("开始时间不能大于结束时间", {time : 1000});
+                    return false;
+                }
 
+                var timeInfo = {"goodsId" : goodsId, "startTime" : startTime, "endTime" : endTime};
+                $.ajax({
+                    type: "PUT",
+                    url: "/seckillGoods",
+                    data: timeInfo,
+                    success: function (data) {
+                        if (data.status === true) {
+                            layer.msg("秒杀商品上架成功", {time : 800});
+                            layer.close(index);
+                        } else {
+                            layer.msg("秒杀商品上架失败", {time : 1000});
+                        }
+                    }
+                });
             },
             btn2: function (index) {
                 layer.close(index);
@@ -246,5 +282,4 @@ function put(goodsId, goodsActivity) {
             type: 'datetime'
         });
     }
-
 }

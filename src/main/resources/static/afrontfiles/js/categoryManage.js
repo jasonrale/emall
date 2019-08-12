@@ -79,7 +79,7 @@ function turn() {
 
     $("#turn").click(function () {
         var currentNo = parseInt($("#currentNo").val());
-        isNaN(currentNo) ? layer.msg("页码不能为空") : adminQueryAll(currentNo, 10);
+        isNaN(currentNo) ? layer.msg("页码不能为空", {time : 1000}) : adminQueryAll(currentNo, 10);
     });
 }
 
@@ -107,7 +107,7 @@ function insert() {
             btn1: function (index) {
                 var categoryName = $("#add").val();
                 if (categoryName === null || categoryName === "") {
-                    layer.msg("品类名称不能为空");
+                    layer.msg("品类名称不能为空", {time : 1000});
                 } else {
                     $.ajax({
                         type: "PUT",
@@ -120,7 +120,7 @@ function insert() {
                                     window.location.reload();
                                 });
                             } else {
-                                layer.msg(data.msg);
+                                layer.msg(data.msg, {time : 1000});
                             }
                         }
                     });
@@ -155,11 +155,11 @@ function update(categoryId) {
         btn: ['确定', '取消'],
         btn1: function (index) {
             var categoryName = $("#add").val();
-            var category = {"categoryId": categoryId, "categoryName": categoryName};
-
-            if (categoryName === null || categoryName === "") {
-                layer.msg("品类名称不能为空");
+alert(categoryName);
+            if (categoryName === undefined || categoryName.trim() === "") {
+                layer.msg("品类名称不能为空", {time : 1000});
             } else {
+                var category = {"categoryId": categoryId, "categoryName": categoryName};
                 $.ajax({
                     type: "POST",
                     url: "/category/admin",
@@ -172,7 +172,7 @@ function update(categoryId) {
                                 window.location.reload();
                             });
                         } else {
-                            layer.msg(data.msg);
+                            layer.msg(data.msg, {time : 1000});
                         }
                     }
                 });
@@ -205,7 +205,7 @@ function del(categoryId) {
                             window.location.reload();
                         });
                     } else {
-                        layer.msg(data.msg);
+                        layer.msg(data.msg, {time : 1000});
                     }
                 }
             });

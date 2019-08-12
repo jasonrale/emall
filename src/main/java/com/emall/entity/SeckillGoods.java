@@ -16,6 +16,11 @@ import java.util.Date;
 @AllArgsConstructor
 @Repository
 public class SeckillGoods {
+    public static final String OFFSHELF = "已下架";
+    public static final String PREPARING = "准备中";
+    public static final String ONGOING = "进行中";
+    public static final String COMPLETE = "已结束";
+
     private String seckillGoodsId;          //秒杀商品id
 
     private String goodsId;                 //商品id
@@ -36,5 +41,5 @@ public class SeckillGoods {
 
     private Date seckillGoodsEndTime;       //秒杀结束时间
 
-    private String seckillGoodsStatus;      //秒杀商品状态, 准备中：0，进行中：1，已结束：2
+    private String seckillGoodsStatus;      //秒杀商品状态
 }

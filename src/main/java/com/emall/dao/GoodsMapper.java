@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface GoodsMapper {
-    int insert(Goods record);
+    int insert(Goods goods);
 
     int deleteByGoodsId(String goodsId);
 
