@@ -28,5 +28,5 @@ public interface GoodsMapper {
 
     int put(@Param("goodsId") String goodsId);
 
-    int updateByGoodsIdSelective(Goods goods);
+    int updateByGoodsId(Goods goods);
 }

@@ -43,6 +43,7 @@ public class Goods {
     @NotEmpty(message = "商品状态不能为空")
     private Integer goodsStatus;    //商品状态--已上架 ：1，已下架 ：0
 
+    //非数据库字段，标识是否为普通商品
     @NotEmpty(message = "商品活动不能为空")
     private Integer goodsActivity;  //商品活动--无 ：0，秒杀 ：1
 }

@@ -41,7 +41,6 @@ function goodsInit(goodsId) {
                     }
                 }
             });
-            $("#activity").val(goods.goodsActivity);
             $("#submit").replaceWith('<input type="button" class="btn btn-xl btn-primary" id="submit" value="提交" onclick="updateSubmit(' + goodsId + ')">');
             $("#viewImage").attr("src", goods.goodsImage).css("display", "block");
             $("#viewDetail").attr("src", goods.goodsDetails).css("display", "block");
@@ -94,7 +93,6 @@ function updateSubmit(goodsId) {
     var categoryId = $("#category").val();
     var goodsStock = $("#stock").val();
     var goodsPrice = $("#price").val();
-    var goodsActivity = $("#activity").val();
     var image = $("#uploadImage");
     var detail = $("#uploadDetail");
 
@@ -122,7 +120,6 @@ function updateSubmit(goodsId) {
         "categoryId": categoryId,
         "goodsStock": goodsStock,
         "goodsPrice": goodsPrice,
-        "goodsActivity": goodsActivity,
         "goodsStatus": 0
     };
 

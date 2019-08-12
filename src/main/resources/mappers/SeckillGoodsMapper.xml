@@ -3,7 +3,6 @@
 <mapper namespace="com.emall.dao.SeckillGoodsMapper">
 	<resultMap id="BaseResultMap" type="com.emall.entity.SeckillGoods">
 		<id column="seckill_goods_id" jdbcType="VARCHAR" property="seckillGoodsId"/>
-		<result column="goods_id" jdbcType="VARCHAR" property="goodsId"/>
 		<result column="seckill_goods_name" jdbcType="VARCHAR" property="seckillGoodsName"/>
 		<result column="seckill_goods_describe" jdbcType="VARCHAR" property="seckillGoodsDescribe"/>
 		<result column="seckill_goods_stock" jdbcType="INTEGER" property="seckillGoodsStock"/>
@@ -12,14 +11,36 @@
 		<result column="seckill_goods_details" jdbcType="VARCHAR" property="seckillGoodsDetails"/>
 		<result column="seckill_goods_start_time" jdbcType="TIMESTAMP" property="seckillGoodsStartTime"/>
 		<result column="seckill_goods_end_time" jdbcType="TIMESTAMP" property="seckillGoodsEndTime"/>
-		<result column="seckill_goods_status" jdbcType="VARCHAR" property="seckillGoodsStatus"/>
+		<result column="seckill_goods_status" jdbcType="INTEGER" property="seckillGoodsStatus"/>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		seckill_goods_id, goods_id, seckill_goods_name, seckill_goods_describe, seckill_goods_stock,
-    	seckill_goods_price, seckill_goods_image, seckill_goods_details, seckill_goods_start_time,
-    	seckill_goods_end_time, seckill_goods_status
+		seckill_goods_id, seckill_goods_name, seckill_goods_describe, seckill_goods_stock,
+		seckill_goods_price, seckill_goods_image, seckill_goods_details, seckill_goods_start_time,
+		seckill_goods_end_time, seckill_goods_status
 	</sql>
+	
+	<select id="count" resultType="java.lang.Long">
+		select count(1)
+		from seckill_goods
+	</select>
+	
+	<select id="queryAll" resultMap="BaseResultMap">
+		select s.seckill_goods_id,
+			   s.seckill_goods_name,
+			   s.seckill_goods_describe,
+			   s.seckill_goods_price,
+			   s.seckill_goods_stock,
+			   s.seckill_goods_image,
+			   s.seckill_goods_details,
+			   s.seckill_goods_status
+		from seckill_goods s
+				 inner join (select seckill_goods_id
+							 from seckill_goods
+							 order by seckill_goods_id
+							 limit #{limit} offset #{offset}) ids
+							on s.seckill_goods_id = ids.seckill_goods_id
+	</select>
 	
 	<select id="selectBySeckillGoodsId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
@@ -34,17 +55,14 @@
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</delete>
 	
-	<insert id="insert" parameterType="com.emall.entity.SeckillGoods">
-		insert into seckill_goods (seckill_goods_id, goods_id, seckill_goods_name, seckill_goods_describe,
-								   seckill_goods_stock,
-								   seckill_goods_price, seckill_goods_image, seckill_goods_details,
-								   seckill_goods_start_time, seckill_goods_end_time, seckill_goods_status)
-		values (#{seckillGoodsId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR}, #{seckillGoodsName,jdbcType=VARCHAR},
-				#{seckillGoodsDescribe,jdbcType=VARCHAR}, #{seckillGoodsStock,jdbcType=INTEGER},
-				#{seckillGoodsPrice,jdbcType=DECIMAL}, #{seckillGoodsImage,jdbcType=VARCHAR},
-				#{seckillGoodsDetails,jdbcType=VARCHAR},
-				#{seckillGoodsStartTime,jdbcType=TIMESTAMP}, #{seckillGoodsEndTime,jdbcType=TIMESTAMP},
-				#{seckillGoodsStatus,jdbcType=VARCHAR})
+	<insert id="insert" parameterType="com.emall.entity.Goods">
+		insert into seckill_goods (seckill_goods_id, seckill_goods_name,
+								   seckill_goods_describe, seckill_goods_stock, seckill_goods_price,
+								   seckill_goods_image, seckill_goods_details, seckill_goods_status)
+		values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR},
+				#{goodsDescribe,jdbcType=VARCHAR}, #{goodsStock,jdbcType=INTEGER},
+				#{goodsPrice,jdbcType=DECIMAL}, #{goodsImage,jdbcType=VARCHAR},
+				#{goodsDetails,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER})
 	</insert>
 	
 	<insert id="insertSelective" parameterType="com.emall.entity.SeckillGoods">
@@ -52,9 +70,6 @@
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 		  <if test="seckillGoodsId != null">
 			seckill_goods_id,
-		  </if>
-		  <if test="goodsId != null">
-			goods_id,
 		  </if>
 		  <if test="seckillGoodsName != null">
 			seckill_goods_name,
@@ -88,9 +103,6 @@
 		  <if test="seckillGoodsId != null">
 			#{seckillGoodsId,jdbcType=VARCHAR},
 		  </if>
-		  <if test="goodsId != null">
-			#{goodsId,jdbcType=VARCHAR},
-		  </if>
 		  <if test="seckillGoodsName != null">
 			#{seckillGoodsName,jdbcType=VARCHAR},
 		  </if>
@@ -116,45 +128,22 @@
 			#{seckillGoodsEndTime,jdbcType=TIMESTAMP},
 		  </if>
 		  <if test="seckillGoodsStatus != null">
-			#{seckillGoodsStatus,jdbcType=VARCHAR},
+			  #{seckillGoodsStatus,jdbcType=INTEGER},
 		  </if>
 		</trim>
   	</insert>
 	
-	<update id="updateBySeckillGoodsIdSelective" parameterType="com.emall.entity.SeckillGoods">
+	<update id="updateBySeckillGoodsId" parameterType="com.emall.entity.SeckillGoods">
 		update seckill_goods
-		<set>
-			<if test="goodsId != null">
-				goods_id = #{goodsId,jdbcType=VARCHAR},
-			</if>
-			<if test="seckillGoodsName != null">
-				seckill_goods_name = #{seckillGoodsName,jdbcType=VARCHAR},
-			</if>
-			<if test="seckillGoodsDescribe != null">
-				seckill_goods_describe = #{seckillGoodsDescribe,jdbcType=VARCHAR},
-			</if>
-			<if test="seckillGoodsStock != null">
-				seckill_goods_stock = #{seckillGoodsStock,jdbcType=INTEGER},
-			</if>
-			<if test="seckillGoodsPrice != null">
-				seckill_goods_price = #{seckillGoodsPrice,jdbcType=DECIMAL},
-			</if>
-			<if test="seckillGoodsImage != null">
-				seckill_goods_image = #{seckillGoodsImage,jdbcType=VARCHAR},
-			</if>
-			<if test="seckillGoodsDetails != null">
-				seckill_goods_details = #{seckillGoodsDetails,jdbcType=VARCHAR},
-			</if>
-			<if test="seckillGoodsStartTime != null">
-				seckill_goods_start_time = #{seckillGoodsStartTime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="seckillGoodsEndTime != null">
-				seckill_goods_end_time = #{seckillGoodsEndTime,jdbcType=TIMESTAMP},
-			</if>
-			<if test="seckillGoodsStatus != null">
-				seckill_goods_status = #{seckillGoodsStatus,jdbcType=VARCHAR},
-			</if>
-		</set>
+		set seckill_goods_name       = #{seckillGoodsName,jdbcType=VARCHAR},
+			seckill_goods_describe   = #{seckillGoodsDescribe,jdbcType=VARCHAR},
+			seckill_goods_stock      = #{seckillGoodsStock,jdbcType=INTEGER},
+			seckill_goods_price      = #{seckillGoodsPrice,jdbcType=DECIMAL},
+			seckill_goods_image      = #{seckillGoodsImage,jdbcType=VARCHAR},
+			seckill_goods_details    = #{seckillGoodsDetails,jdbcType=VARCHAR},
+			seckill_goods_start_time = #{seckillGoodsStartTime,jdbcType=TIMESTAMP},
+			seckill_goods_end_time   = #{seckillGoodsEndTime,jdbcType=TIMESTAMP},
+			seckill_goods_status     = #{seckillGoodsStatus,jdbcType=INTEGER}
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</update>
 </mapper>

@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 12/08/2019 00:31:27
+ Date: 13/08/2019 00:28:01
 */
 
 SET NAMES utf8mb4;
@@ -121,12 +121,10 @@ CREATE TABLE `goods`
     `goods_image`    varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品图片地址',
     `goods_details`  varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品详情',
     `goods_status`   int(255)                                                NOT NULL COMMENT '商品状态',
-    `goods_activity` int(255)                                                NOT NULL COMMENT '商品活动',
     PRIMARY KEY (`goods_id`) USING BTREE,
     INDEX `goods_name` (`goods_name`) USING BTREE COMMENT '商品名称索引',
     INDEX `goods_status` (`goods_status`) USING BTREE COMMENT '商品状态索引',
-    INDEX `category_id` (`category_id`) USING BTREE COMMENT '商品类别id索引',
-    INDEX `goods_activity` (`goods_activity`) USING BTREE COMMENT '商品活动索引'
+    INDEX `category_id` (`category_id`) USING BTREE COMMENT '商品类别id索引'
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_ci COMMENT = '此表为商品表。'
@@ -137,76 +135,76 @@ CREATE TABLE `goods`
 -- ----------------------------
 INSERT INTO `goods`
 VALUES ('609418584468226048', 'Apple iPhone XS Max 64GB 深空灰色 移动联通电信4G手机 双卡双待', '新一代iPhone！6.5英寸大屏旗舰，A12仿生芯片流畅体验，支持双卡！',
-        '609417120333168640', 7899.00, 100, 'http://192.168.153.130/images/2019/08/09/609418584409505792.jpg',
-        'http://192.168.153.130/images/2019/08/09/609418584409505793.jpg', 0, 1);
+        '609417120333168640', 7399.00, 100, 'http://192.168.153.130/images/2019/08/09/609418584409505792.jpg',
+        'http://192.168.153.130/images/2019/08/09/609418584409505793.jpg', 0);
 INSERT INTO `goods`
 VALUES ('609419030247243776', 'Apple iPhone XR 64GB 白色 移动联通电信4G手机 双卡双待', '6.1英寸视网膜显示屏，A12仿生芯片，面容识别，无线充电，支持双卡！',
         '609417120333168640', 4899.00, 100, 'http://192.168.153.130/images/2019/08/09/609419030213689344.jpg',
-        'http://192.168.153.130/images/2019/08/09/609419030213689345.jpg', 0, 0);
+        'http://192.168.153.130/images/2019/08/09/609419030213689345.jpg', 0);
 INSERT INTO `goods`
 VALUES ('609419407587803136', 'Apple iPhone XS 64GB 金色 移动联通电信4G手机', 'XS采用A12仿生芯片，更强大的全面屏，更出色的iPhone！',
         '609417120333168640', 7399.00, 100, 'http://192.168.153.130/images/2019/08/09/609419407545860096.jpg',
-        'http://192.168.153.130/images/2019/08/09/609419407545860097.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609419407545860097.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609419744935673856', '一加 OnePlus 7 Pro', '2K+90Hz 流体屏 骁龙855旗舰 4800万超广角三摄 8GB+256GB 星雾蓝 全面屏拍照游戏手机',
         '609417120333168640', 4499.00, 100, 'http://192.168.153.130/images/2019/08/09/609419744822427648.jpg',
-        'http://192.168.153.130/images/2019/08/09/609419744822427649.jpg', 0, 0);
+        'http://192.168.153.130/images/2019/08/09/609419744822427649.jpg', 0);
 INSERT INTO `goods`
 VALUES ('609420269345308672', '华为 HUAWEI nova 5i Pro', '前置3200万人像超级夜景4800万AI四摄极点全面屏6GB+128GB翡冷翠全网通双4G手机',
         '609417120333168640', 2199.00, 100, 'http://192.168.153.130/images/2019/08/09/609420269194313728.jpg',
-        'http://192.168.153.130/images/2019/08/09/609420269194313729.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609420269194313729.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609420471418486784', '华为 HUAWEI 麦芒 8', '超广角AI三摄 高清珍珠屏 大存储 6GB+128GB 幻夜黑 全网通双4G手机', '609417120333168640',
         1699.00, 100, 'http://192.168.153.130/images/2019/08/09/609420471313629184.jpg',
-        'http://192.168.153.130/images/2019/08/09/609420471313629185.jpg', 0, 0);
+        'http://192.168.153.130/images/2019/08/09/609420471313629185.jpg', 0);
 INSERT INTO `goods`
 VALUES ('609420987007500288', '华为 HUAWEI P30 Pro', '超感光徕卡四摄10倍混合变焦麒麟980芯片屏内指纹 8GB+128GB极光色全网通版双4G手机',
         '609417120333168640', 4988.00, 100, 'http://192.168.153.130/images/2019/08/09/609420986760036352.jpg',
-        'http://192.168.153.130/images/2019/08/09/609420986760036353.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609420986760036353.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609421425396154368', '华为 HUAWEI P20', 'AI智慧徕卡双摄全面屏游戏手机 6GB+64GB 极光色 全网通移动联通电信4G手机 双卡双待', '609417120333168640',
         2758.00, 100, 'http://192.168.153.130/images/2019/08/09/609421425228382208.jpg',
-        'http://192.168.153.130/images/2019/08/09/609421425228382209.jpg', 0, 0);
+        'http://192.168.153.130/images/2019/08/09/609421425228382209.jpg', 0);
 INSERT INTO `goods`
 VALUES ('609421744234561536', '华为 HUAWEI Mate20 X (5G)', '7nm工艺5G旗舰芯片全面屏超大广角徕卡三摄8GB+256GB翡冷翠5G双模全网通手机',
         '609417120333168640', 6199.00, 100, 'http://192.168.153.130/images/2019/08/09/609421744037429248.jpg',
-        'http://192.168.153.130/images/2019/08/09/609421744037429249.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609421744037429249.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609422172431056896', '华为 HUAWEI Mate 20 Pro', '屏内指纹版麒麟980芯片全面屏超大广角徕卡三摄8GB+128GB极光色全网通双4G手机',
         '609417120333168640', 5099.00, 100, 'http://192.168.153.130/images/2019/08/09/609422172334587904.jpg',
-        'http://192.168.153.130/images/2019/08/09/609422172334587905.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609422172334587905.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609422552434999296', 'OPPO K3', '高通骁龙710 升降摄像头 VOOC闪充 6GB+64GB 电波蓝 全网通4G 全面屏拍照游戏智能手机', '609417120333168640',
         1499.00, 100, 'http://192.168.153.130/images/2019/08/11/610227318928965632.jpg',
-        'http://192.168.153.130/images/2019/08/11/610227374172143616.jpg', 0, 0);
+        'http://192.168.153.130/images/2019/08/11/610227374172143616.jpg', 0);
 INSERT INTO `goods`
 VALUES ('609422911064768512', 'OPPO Reno', '4800万超清像素 NFC 超清夜景 8GB+256GB 雾海绿 全网通 双卡双待手机 全面屏拍照游戏智能手机',
         '609417120333168640', 2999.00, 100, 'http://192.168.153.130/images/2019/08/09/609422911014436864.jpg',
-        'http://192.168.153.130/images/2019/08/09/609422911014436865.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609422911014436865.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609423197086941184', 'OPPO R17 Pro', '全面屏拍照手机 6GB+128GB 雾光渐变 全网通移动联通电信4G手机 双卡双待', '609417120333168640',
         2699.00, 100, 'http://192.168.153.130/images/2019/08/09/609423197049192448.jpg',
-        'http://192.168.153.130/images/2019/08/09/609423197049192449.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609423197049192449.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609423585345273856', 'OPPO Find X', '冰珀蓝 8GB+256GB 全网通 移动联通电信全网通4G 双卡双待手机', '609417120333168640', 5499.00, 100,
         'http://192.168.153.130/images/2019/08/09/609423585307525120.jpg',
-        'http://192.168.153.130/images/2019/08/09/609423585307525121.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609423585307525121.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609424249760776192', 'vivo X27', '8GB+128GB大内存 雀羽蓝 零界全面屏AI三摄 移动联通电信全网通4G手机', '609417120333168640', 2698.00,
         100, 'http://192.168.153.130/images/2019/08/09/609424249681084416.jpg',
-        'http://192.168.153.130/images/2019/08/09/609424249681084417.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609424249681084417.jpg', 1);
 INSERT INTO `goods`
 VALUES ('609425717100281856', '小米9 SE', '4800万超广角三摄 骁龙712 水滴全面屏 游戏智能拍照手机 6GB+64GB 全息幻彩蓝 全网通4G双卡双待',
         '609417120333168640', 1799.00, 100, 'http://192.168.153.130/images/2019/08/09/609425717037367296.jpg',
-        'http://192.168.153.130/images/2019/08/09/609425717037367297.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/09/609425717037367297.jpg', 1);
 INSERT INTO `goods`
 VALUES ('610149310432018432', 'Apple 2019新品 Macbook Pro 15.4', '九代八核i9 16G 512G 深空灰 笔记本电脑 轻薄本【带触控栏】',
         '609417039383101440', 20399.00, 100, 'http://192.168.153.130/images/2019/08/11/610149309567991808.jpg',
-        'http://192.168.153.130/images/2019/08/11/610149309567991809.jpg', 1, 0);
+        'http://192.168.153.130/images/2019/08/11/610149309567991809.jpg', 1);
 INSERT INTO `goods`
 VALUES ('610217472913571840', 'Apple 2019新品 Macbook Pro 13.3', '八代i5 8G 256G 深空灰 苹果笔记本电脑 轻薄本【带触控栏】',
         '609417039383101440', 13099.00, 100, 'http://192.168.153.130/images/2019/08/11/610217472674496512.jpg',
-        'http://192.168.153.130/images/2019/08/11/610217472787742720.jpg', 0, 0);
+        'http://192.168.153.130/images/2019/08/11/610217472787742720.jpg', 0);
 
 -- ----------------------------
 -- Table structure for order
@@ -258,7 +256,6 @@ DROP TABLE IF EXISTS `seckill_goods`;
 CREATE TABLE `seckill_goods`
 (
     `seckill_goods_id`         varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品id',
-    `goods_id`                 varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '商品id',
     `seckill_goods_name`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品名称',
     `seckill_goods_describe`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品描述',
     `seckill_goods_stock`      int(255)                                                NOT NULL COMMENT '秒杀商品库存',
@@ -267,10 +264,9 @@ CREATE TABLE `seckill_goods`
     `seckill_goods_details`    varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品详情',
     `seckill_goods_start_time` timestamp(0)                                            NOT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '秒杀开始时间',
     `seckill_goods_end_time`   timestamp(0)                                            NOT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '秒杀结束时间',
-    `seckill_goods_status`     varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品状态',
+    `seckill_goods_status`     int(255)                                                NOT NULL COMMENT '秒杀商品状态',
     PRIMARY KEY (`seckill_goods_id`) USING BTREE,
-    INDEX `seckill_goods_status` (`seckill_goods_status`) USING BTREE COMMENT '秒杀商品状态索引',
-    UNIQUE INDEX `goods_id` (`goods_id`) USING BTREE COMMENT '商品id唯一索引'
+    INDEX `seckill_goods_status` (`seckill_goods_status`) USING BTREE COMMENT '秒杀商品状态索引'
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
   COLLATE = utf8_general_ci COMMENT = '此表为秒杀商品表。'

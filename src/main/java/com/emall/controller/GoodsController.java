@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.emall.entity.Goods;
 import com.emall.result.Result;
 import com.emall.service.GoodsService;
+import com.emall.service.SeckillGoodsService;
 import com.emall.utils.PageModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,9 @@ public class GoodsController {
 
     @Resource
     private GoodsService goodsService;
+
+    @Resource
+    private SeckillGoodsService seckillGoodsService;
 
     /**
      * 添加商品
@@ -61,7 +65,7 @@ public class GoodsController {
         return goodsService.update(result.getObj(), imageFile, detailFile, path);
     }
 
-    public Result<Goods> goodsValid(String goodsJson) {
+    private Result<Goods> goodsValid(String goodsJson) {
         Goods goods = JSONObject.parseObject(goodsJson, Goods.class);
 
         if (goods.getCategoryId().equals("none")) {
@@ -107,6 +111,8 @@ public class GoodsController {
                 return Result.success("根据关键字分页查询商品", goodsService.selectByKeyWord(param, pageModel));
             case "goodsId":
                 return Result.success("根据商品id查询商品", goodsService.selectByGoodsId(param));
+            case "seckill":
+                return Result.success("秒杀商品分页查询成功", seckillGoodsService.queryAll(pageModel));
             default:
                 return Result.error("查询失败");
         }

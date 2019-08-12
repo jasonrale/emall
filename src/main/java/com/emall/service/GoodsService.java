@@ -3,7 +3,6 @@ package com.emall.service;
 import com.emall.dao.GoodsMapper;
 import com.emall.dao.SeckillGoodsMapper;
 import com.emall.entity.Goods;
-import com.emall.entity.SeckillGoods;
 import com.emall.redis.RedisKeyUtil;
 import com.emall.result.Result;
 import com.emall.utils.PageModel;
@@ -73,7 +72,7 @@ public class GoodsService {
         }
 
         Goods goods = goodsMapper.selectByGoodsId(goodsId);
-        redisTemplate.opsForValue().set(goodsKey, goods);
+        redisTemplate.opsForValue().set(goodsKey, goods, 1800, TimeUnit.SECONDS);
         return goods;
     }
 
@@ -135,6 +134,11 @@ public class GoodsService {
         goods.setGoodsImage(urlList.get(0));
         goods.setGoodsDetails(urlList.get(1));
 
+        if (goods.getGoodsActivity() == 1) {
+            //将Goods对应的字段保存到SeckillGoods
+            return seckillGoodsMapper.insert(goods) != 0 ? Result.success("商品添加成功", goods) : Result.error("商品添加失败");
+        }
+
         return goodsMapper.insert(goods) != 0 ? Result.success("商品添加成功", goods) : Result.error("商品添加失败");
     }
 
@@ -155,26 +159,26 @@ public class GoodsService {
         }
 
         if (imageFile == null && detailFile == null) {
-            if (goodsMapper.updateByGoodsIdSelective(goods) != 0) {
+            if (goodsMapper.updateByGoodsId(goods) != 0) {
                 return Result.success("商品修改成功", goods);
             }
         } else if (imageFile != null && detailFile != null) {
             List<String> urlList = upLoadToServer(imageFile, detailFile, path);
             goods.setGoodsImage(urlList.get(0));
             goods.setGoodsDetails(urlList.get(1));
-            if (goodsMapper.updateByGoodsIdSelective(goods) != 0) {
+            if (goodsMapper.updateByGoodsId(goods) != 0) {
                 return Result.success("商品修改成功", goods);
             }
         } else if (imageFile != null) {
             List<String> urlList = upLoadToServer(imageFile, null, path);
             goods.setGoodsImage(urlList.get(0));
-            if (goodsMapper.updateByGoodsIdSelective(goods) != 0) {
+            if (goodsMapper.updateByGoodsId(goods) != 0) {
                 return Result.success("商品修改成功", goods);
             }
         } else {
             List<String> urlList = upLoadToServer(null, detailFile, path);
             goods.setGoodsDetails(urlList.get(0));
-            if (goodsMapper.updateByGoodsIdSelective(goods) != 0) {
+            if (goodsMapper.updateByGoodsId(goods) != 0) {
                 return Result.success("商品修改成功", goods);
             }
         }

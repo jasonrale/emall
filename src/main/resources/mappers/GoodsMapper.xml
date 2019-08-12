@@ -11,27 +11,25 @@
 		<result column="goods_image" jdbcType="VARCHAR" property="goodsImage"/>
 		<result column="goods_details" jdbcType="VARCHAR" property="goodsDetails"/>
 		<result column="goods_status" jdbcType="INTEGER" property="goodsStatus"/>
-		<result column="goods_activity" jdbcType="INTEGER" property="goodsActivity"/>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
 		goods_id, goods_name, goods_describe, category_id, goods_price, goods_stock, goods_image,
-    	goods_details, goods_status, goods_activity
+    	goods_details, goods_status
 	</sql>
 	
 	<select id="count" resultType="java.lang.Long">
 		select count(1)
 		from goods
-		where goods_activity = 0
 	</select>
 
 	<select id="countByKeyWord" parameterType="java.lang.String" resultType="java.lang.Long">
 		select count(1)
 		from goods
-		where goods_name like #{keyWord,jdbcType=VARCHAR} and goods_activity = 0
+		where goods_name like #{keyWord,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="queryAll" parameterType="com.emall.utils.PageModel" resultMap="BaseResultMap">
+	<select id="queryAll" resultMap="BaseResultMap">
 		select g.goods_id,
 			   g.goods_name,
 			   g.goods_describe,
@@ -40,12 +38,10 @@
 			   g.goods_stock,
 			   g.goods_image,
 			   g.goods_details,
-			   g.goods_status,
-			   g.goods_activity
+			   g.goods_status
 		from goods g
 		inner join (select goods_id from goods order by goods_id limit #{limit} offset #{offset}) ids
 		on g.goods_id = ids.goods_id
-		where g.goods_activity = 0
 	</select>
 
 	<select id="selectByKeyWord" resultMap="BaseResultMap">
@@ -57,19 +53,17 @@
 			   g.goods_stock,
 			   g.goods_image,
 			   g.goods_details,
-			   g.goods_status,
-			   g.goods_activity
+			   g.goods_status
 		from goods g
 		inner join (select goods_id from goods where goods_name like #{keyWord,jdbcType=VARCHAR} order by goods_id limit #{limit} offset #{offset}) ids
 		on g.goods_id = ids.goods_id
-		where g.goods_activity = 0
 	</select>
 	
 	<select id="selectByGoodsId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from goods
-		where goods_id = #{goodsId,jdbcType=VARCHAR} and goods_activity = 0
+		where goods_id = #{goodsId,jdbcType=VARCHAR}
 	</select>
 	
 	<update id="pull" parameterType="java.lang.String">
@@ -92,44 +86,20 @@
 	
 	<insert id="insert" parameterType="com.emall.entity.Goods">
 		insert into goods (goods_id, goods_name, goods_describe, category_id, goods_price, goods_stock, goods_image,
-						   goods_details, goods_status, goods_activity)
+						   goods_details, goods_status)
 		values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsDescribe,jdbcType=VARCHAR},
 				#{categoryId,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, #{goodsStock,jdbcType=INTEGER},
-				#{goodsImage,jdbcType=VARCHAR}, #{goodsDetails,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER},
-				#{goodsActivity,jdbcType=INTEGER})
+				#{goodsImage,jdbcType=VARCHAR}, #{goodsDetails,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER}
 	</insert>
-  
-	<update id="updateByGoodsIdSelective" parameterType="com.emall.entity.Goods">
+	
+	<update id="updateByGoodsId" parameterType="com.emall.entity.Goods">
 		update goods
-		<set>
-			<if test="goodsName != null">
-				goods_name = #{goodsName,jdbcType=VARCHAR},
-			</if>
-			<if test="goodsDescribe != null">
-				goods_describe = #{goodsDescribe,jdbcType=VARCHAR},
-			</if>
-			<if test="categoryId != null">
-				category_id = #{categoryId,jdbcType=VARCHAR},
-			</if>
-			<if test="goodsPrice != null">
-				goods_price = #{goodsPrice,jdbcType=DECIMAL},
-			</if>
-			<if test="goodsStock != null">
-				goods_stock = #{goodsStock,jdbcType=INTEGER},
-			</if>
-			<if test="goodsImage != null">
-				goods_image = #{goodsImage,jdbcType=VARCHAR},
-			</if>
-			<if test="goodsDetails != null">
-				goods_details = #{goodsDetails,jdbcType=VARCHAR},
-			</if>
-			<if test="goodsStatus != null">
-				goods_status = #{goodsStatus,jdbcType=INTEGER},
-			</if>
-			<if test="goodsActivity != null">
-				goods_activity = #{goodsActivity,jdbcType=INTEGER},
-			</if>
-		</set>
+		set goods_name     = #{goodsName,jdbcType=VARCHAR},
+			goods_describe = #{goodsDescribe,jdbcType=VARCHAR},
+			category_id    = #{categoryId,jdbcType=VARCHAR},
+			goods_price    = #{goodsPrice,jdbcType=DECIMAL},
+			goods_stock    = #{goodsStock,jdbcType=INTEGER},
+			goods_status   = #{goodsStatus,jdbcType=INTEGER}
 		where goods_id = #{goodsId,jdbcType=VARCHAR}
 	</update>
 </mapper>
