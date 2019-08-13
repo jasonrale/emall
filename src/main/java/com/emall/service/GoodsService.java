@@ -336,17 +336,23 @@ public class GoodsService {
 
     public boolean pull(String goodsId) {
         String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
+        boolean flag = goodsMapper.pull(goodsId) != 0;
+
         if (redisTemplate.hasKey(goodsKey)) {
             redisTemplate.delete(goodsKey);
         }
-        return goodsMapper.pull(goodsId) != 0;
+
+        return flag;
     }
 
     public boolean put(String goodsId) {
         String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
+        boolean flag = goodsMapper.put(goodsId) != 0;
+
         if (redisTemplate.hasKey(goodsKey)) {
             redisTemplate.delete(goodsKey);
         }
-        return goodsMapper.put(goodsId) != 0;
+
+        return flag;
     }
 }

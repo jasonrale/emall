@@ -25,6 +25,8 @@ public class SeckillGoods {
 
     private String seckillGoodsName;        //秒杀商品名称
 
+    private String categoryId;              //秒杀商品类别
+
     private String seckillGoodsDescribe;    //秒杀商品描述
 
     private Integer seckillGoodsStock;      //秒杀商品库存

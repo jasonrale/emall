@@ -257,13 +257,14 @@ CREATE TABLE `seckill_goods`
 (
     `seckill_goods_id`         varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品id',
     `seckill_goods_name`       varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品名称',
+    `category_id`              varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品类别',
     `seckill_goods_describe`   varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品描述',
     `seckill_goods_stock`      int(255)                                                NOT NULL COMMENT '秒杀商品库存',
     `seckill_goods_price`      decimal(65, 2)                                          NOT NULL COMMENT '秒杀商品价格',
     `seckill_goods_image`      varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品图片',
     `seckill_goods_details`    varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品详情',
-    `seckill_goods_start_time` timestamp(0)                                            NOT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '秒杀开始时间',
-    `seckill_goods_end_time`   timestamp(0)                                            NOT NULL ON UPDATE CURRENT_TIMESTAMP(0) COMMENT '秒杀结束时间',
+      `seckill_goods_start_time` timestamp(0)                                                   COMMENT '秒杀开始时间',
+    `seckill_goods_end_time`   timestamp(0)                                                     COMMENT '秒杀结束时间',
     `seckill_goods_status`     int(255)                                                NOT NULL COMMENT '秒杀商品状态',
     PRIMARY KEY (`seckill_goods_id`) USING BTREE,
     INDEX `seckill_goods_status` (`seckill_goods_status`) USING BTREE COMMENT '秒杀商品状态索引'
@@ -271,6 +272,13 @@ CREATE TABLE `seckill_goods`
   CHARACTER SET = utf8
   COLLATE = utf8_general_ci COMMENT = '此表为秒杀商品表。'
   ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Records of seckill_goods
+-- ----------------------------
+INSERT INTO `seckill_goods`
+VALUES ('610776125458612224', '华为HUAWEI MateBook 14', '609417039383101440','全面屏轻薄性能笔记本电脑(英特尔酷睿i5 8G 512G MX250 office 2K 一碰传)灰',
+        100, 5999.00, 'http://192.168.153.130/images/2019/08/13/610776125274062848.jpg','http://192.168.153.130/images/2019/08/13/610776125378920448.jpg', NULL, NULL, 0);
 
 -- ----------------------------
 -- Table structure for seckill_order

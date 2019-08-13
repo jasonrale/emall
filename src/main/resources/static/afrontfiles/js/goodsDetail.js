@@ -15,7 +15,6 @@ function goodsDetail(goodsId) {
             $("#goodsName").html(goods.goodsName);
             $("#goodsDescribe").html(goods.goodsDescribe);
             $("#goodsStatus").html(goods.goodsStatus === 1 ? "在售" : "下架");
-            $("#goodsActivity").html(goods.goodsActivity === 1 ? "秒杀" : "无");
             $("#goodsPrice").html(goods.goodsPrice + "元");
             $("#goodsStock").html(goods.goodsStock + "件");
             $.ajax({
