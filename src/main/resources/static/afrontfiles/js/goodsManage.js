@@ -85,7 +85,7 @@ function adminQuery(currentNo, pageSize, listType, param) {
                 if (seckillGoodsList.length !== 0) {
                     for (var i = 0; i < seckillGoodsList.length; i++) {
                         var seckillGoodsId = seckillGoodsList[i].seckillGoodsId;
-                        var status = seckillGoodsList[i].seckillGoodsStatus
+                        var status = seckillGoodsList[i].seckillGoodsStatus;
                         var ele = "<tr>" +
                             "<td>" + seckillGoodsId + "</td>" +
                             "<td><p>" + seckillGoodsList[i].seckillGoodsName + "</p><p>" + seckillGoodsList[i].seckillGoodsDescribe + "</p></td>" +

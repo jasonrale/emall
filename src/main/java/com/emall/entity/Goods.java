@@ -17,6 +17,9 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Repository
 public class Goods {
+    public static final String PRICE_ASC = "priceAsc";
+    public static final String PRICE_DESC = "priceDesc";
+
     private String goodsId;         //商品id
 
     @NotEmpty(message = "商品名称不能为空")

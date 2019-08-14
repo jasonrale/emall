@@ -92,6 +92,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/goods/**","anon");
         filterChainDefinitionMap.put("/user/**","anon");
         filterChainDefinitionMap.put("/result/**","anon");
+        filterChainDefinitionMap.put("/test/**","anon");
 
         //先登录认证，再角色验证
         filterChainDefinitionMap.put("/authenticated/user/**","authc,roles[customer]");

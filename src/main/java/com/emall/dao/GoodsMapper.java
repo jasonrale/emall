@@ -14,7 +14,9 @@ public interface GoodsMapper {
 
     List<Goods> queryAll(@Param("limit") long limit, @Param("offset") long offset);
 
-    List<Goods> selectByKeyWord(@Param("keyWord") String keyWord, @Param("limit") long limit, @Param("offset") long offset);
+    List<Goods> selectByKeyWordPaged(@Param("keyWord") String keyWord, @Param("limit") long limit, @Param("offset") long offset);
+
+    List<Goods> selectByKeyWord(@Param("keyWord") String keyWord);
 
     List<Goods> selectByCategoryId(@Param("categoryId") String categoryId, @Param("limit") long limit, @Param("offset") long offset);
 
