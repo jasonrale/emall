@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/goods")
@@ -113,7 +114,7 @@ public class GoodsController {
             case "all":
                 return Result.success("分页查询所有商品", goodsService.queryAll(pageModel));
             case "goodsName":
-                return Result.success("根据关键字分页查询商品", goodsService.selectByKeyWord(param, pageModel));
+                return Result.success("根据关键字分页查询商品", goodsService.selectByKeyWordPaged(param, pageModel));
             case "goodsId":
                 return Result.success("根据商品id查询商品", goodsService.selectByGoodsId(param));
             case "seckill":
@@ -123,17 +124,28 @@ public class GoodsController {
         }
     }
 
-    /**
-     * 根据关键字分页查询商品
-     * @return
-     */
-    @GetMapping(value = "/{keyWord}/keyWord")
-    @ResponseBody
-    public Result<PageModel> selectByKeyWord(@PathVariable("keyWord") String keyWord, @Valid PageModel<Goods> pageModel) {
-        logger.info("根据关键字'" + keyWord + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
-        keyWord = "%" + keyWord + "%";
-        return Result.success("查询商品成功", goodsService.selectByKeyWord(keyWord, pageModel));
-    }
+//    /**
+//     * 根据关键字询商品
+//     * @return
+//     */
+//    @GetMapping(value = "/{keyWord}/keyWord")
+//    @ResponseBody
+//    public Result<List<Goods>> selectByKeyWord(@PathVariable("keyWord") String keyWord) {
+//        logger.info("根据关键字'" + keyWord + "'查询商品");
+//        return Result.success("查询商品成功", goodsService.selectByKeyWord(keyWord));
+//    }
+
+//    /**
+//     * 根据关键字分页查询商品
+//     * @return
+//     */
+//    @GetMapping(value = "/{keyWord}/keyWord")
+//    @ResponseBody
+//    public Result<PageModel> selectByKeyWordPaged(@PathVariable("keyWord") String keyWord, @Valid PageModel<Goods> pageModel) {
+//        logger.info("根据关键字'" + keyWord + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+//        keyWord = "%" + keyWord + "%";
+//        return Result.success("查询商品成功", goodsService.selectByKeyWord(keyWord, pageModel));
+//    }
 
     /**
      * 根据商品类别分页查询商品

@@ -44,7 +44,7 @@
 		on g.goods_id = ids.goods_id
 	</select>
 
-	<select id="selectByKeyWord" resultMap="BaseResultMap">
+	<select id="selectByKeyWordPaged" resultMap="BaseResultMap">
 		select g.goods_id,
 			   g.goods_name,
 			   g.goods_describe,
@@ -58,7 +58,14 @@
 		inner join (select goods_id from goods where goods_name like #{keyWord,jdbcType=VARCHAR} order by goods_id limit #{limit} offset #{offset}) ids
 		on g.goods_id = ids.goods_id
 	</select>
-	
+
+	<select id="selectByKeyWord" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from goods
+		where goods_name = #{keyWord,jdbcType=VARCHAR}
+	</select>
+
 	<select id="selectByGoodsId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
