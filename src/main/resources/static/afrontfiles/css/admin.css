@@ -2437,13 +2437,13 @@ pre code {
 
 .imagePreview {
     display: none;
-    width: 250px;
-    height: 250px
+    width: 300px;
+    height: 300px
 }
 
 .detailPreview {
     display: none;
-    width: 400px
+    width: 500px
 }
 
 @media (min-width: 1200px) {
