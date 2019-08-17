@@ -35,7 +35,7 @@ public class CategoryService {
 
         List<Category> categoryList;
         categoryList = categoryMapper.adminQueryAll(limit, offset);
-        long count = categoryMapper.count();
+        int count = categoryMapper.count();
 
         pageModel.setList(categoryList);
         pageModel.setCount(count);

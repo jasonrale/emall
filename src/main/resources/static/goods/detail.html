@@ -40,10 +40,10 @@
 </div>
 <div class="header">
     <div class="w">
-        <a class="logo">EMall</a>
+        <span class="logo">EMall</span>
         <div class="search-con">
-            <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称"/>
-            <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
+            <input type="text" class="search-input" id="keyWord" placeholder="请输入商品名称"/>
+            <input type="submit" id="query" class="btn search-btn" value="搜索" onclick="query()"/>
         </div>
     </div>
 </div>
@@ -60,26 +60,27 @@
     <div class="intro-wrap">
         <div class="p-img-con">
             <div class="main-img-con">
-                <img class="main-img" src="${goods.gPicture}" alt="${goods.gName}">
+                <img class="main-img" id="goodsImage" src="" alt="">
             </div>
         </div>
         <div class="p-info-con">
-            <h1 class="p-name"></h1>
-            <p class="p-subtitle"></p>
+            <h1 class="p-name" id="goodsName"></h1>
+            <p class="p-subtitle" id="goodsDescribe"></p>
             <div class="p-info-item p-price-con">
                 <span class="label">价格:</span>
-                <span class="info"></span>
+                <span class="info" id="goodsPrice"></span>
             </div>
             <div class="p-info-item">
                 <span class="label">库存:</span>
-                <span class="info"></span>
+                <span class="info" id="goodsStock"></span>
             </div>
             <div class="p-info-item p-count-con">
                 <label class="label" for="count">数量:</label>
                 <input type="text" class="p-count" id="count" value="1">
             </div>
             <div class="p-info-item">
-                <a class="btn cart-add">加入购物车</a>
+                <a class="cart-add">加入购物车</a>
+                <a class="buy">立即购买</a>
             </div>
         </div>
     </div>
@@ -90,7 +91,7 @@
             </ul>
         </div>
         <div class="detail-con">
-            <p></p>
+            <img id="goodsDetails" src="" alt="">
         </div>
     </div>
 </div>

@@ -1,6 +1,6 @@
 /*操作结果判断*/
 $(document).ready(function () {
-    var resultType = ($.getUrlParam("resultType"));
+    var resultType = (getUrlParam("resultType"));
     if (resultType === "register") {
         $(".register-success").css("display", "block");
     } else if (resultType === "reset") {

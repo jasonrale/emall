@@ -118,44 +118,33 @@ public class GoodsController {
             case "goodsId":
                 return Result.success("根据商品id查询商品", goodsService.selectByGoodsId(param));
             case "seckill":
-                return Result.success("秒杀商品分页查询成功", seckillGoodsService.queryAll(pageModel));
+                return Result.success("秒杀商品分页查询成功", seckillGoodsService.queryAllPaged(pageModel));
             default:
                 return Result.error("查询失败");
         }
     }
 
-//    /**
-//     * 根据关键字询商品
-//     * @return
-//     */
-//    @GetMapping(value = "/{keyWord}/keyWord")
-//    @ResponseBody
-//    public Result<List<Goods>> selectByKeyWord(@PathVariable("keyWord") String keyWord) {
-//        logger.info("根据关键字'" + keyWord + "'查询商品");
-//        return Result.success("查询商品成功", goodsService.selectByKeyWord(keyWord));
-//    }
-
-//    /**
-//     * 根据关键字分页查询商品
-//     * @return
-//     */
-//    @GetMapping(value = "/{keyWord}/keyWord")
-//    @ResponseBody
-//    public Result<PageModel> selectByKeyWordPaged(@PathVariable("keyWord") String keyWord, @Valid PageModel<Goods> pageModel) {
-//        logger.info("根据关键字'" + keyWord + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
-//        keyWord = "%" + keyWord + "%";
-//        return Result.success("查询商品成功", goodsService.selectByKeyWord(keyWord, pageModel));
-//    }
-
     /**
-     * 根据商品类别分页查询商品
+     * 用户端根据关键字分页查询商品
+     *
      * @return
      */
-    @GetMapping(value = "/{categoryId}/categoryId")
+    @GetMapping(value = "/{keyWord}/keyWord/{sort}/sort")
     @ResponseBody
-    public Result<PageModel> selectByCategoryId(@PathVariable("categoryId") String categoryId, @Valid PageModel<Goods> pageModel) {
+    public Result<PageModel> selectByKeyWordPaged(@PathVariable("keyWord") String keyWord, @PathVariable("sort") String sort, @Valid PageModel<Goods> pageModel) {
+        logger.info("根据关键字'" + keyWord + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+        return Result.success("查询商品成功", goodsService.selectByKeyWord(keyWord, sort, pageModel));
+    }
+
+    /**
+     * 用户端根据商品类别分页查询商品
+     * @return
+     */
+    @GetMapping(value = "/{categoryId}/categoryId/{sort}/sort")
+    @ResponseBody
+    public Result<PageModel> selectByCategoryId(@PathVariable("categoryId") String categoryId, @PathVariable("sort") String sort, @Valid PageModel<Goods> pageModel) {
         logger.info("根据商品类别'" + categoryId + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
-        return Result.success("查询商品成功", goodsService.selectByCategoryId(categoryId, pageModel));
+        return Result.success("查询商品成功", goodsService.selectByCategoryId(categoryId, sort, pageModel));
     }
 
     /**

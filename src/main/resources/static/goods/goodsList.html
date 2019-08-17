@@ -42,10 +42,10 @@
 </div>
 <div class="header">
     <div class="w">
-        <a class="logo">EMall</a>
+        <span class="logo">EMall</span>
         <div class="search-con">
-            <input class="search-input" name="keyWord" id="search-input" placeholder="请输入商品名称"/>
-            <input type="submit" id="search-btn" class="btn search-btn" value="搜索"/>
+            <input type="text" class="search-input" id="keyWord" placeholder="请输入商品名称"/>
+            <input type="submit" id="query" class="btn search-btn" value="搜索" onclick="query()"/>
         </div>
     </div>
 </div>
@@ -65,25 +65,17 @@
     </ul>
     <!-- list 容器 -->
     <div id="list">
-        <ul class="p-list-con">
-            <li class="p-item">
-                <div class="p-img-con">
-                    <a class="link" href="">
-                        <img class="p-img" src="" alt="">
-                    </a>
-                </div>
-                <div class="p-price-con">
-                    <span class="p-price"></span>
-                </div>
-                <div class="p-name-con">
-                    <a class="p-name" href=""></a>
-                </div>
-            </li>
+        <ul id="goodsUl" class="p-list-con">
         </ul>
-        <ul class="p-list-con"><p class="err-tip">很抱歉，实在找不到您要的商品。</p></ul>
+        <ul id="none" class="p-list-con" style="display: none"><p class="err-tip">很抱歉，实在找不到您要的商品。</p></ul>
     </div>
-    <!-- 分页容器 -->
-    <div class="pagination"></div>
+    <div id="pageControl" class="pagination" style="display: none">
+        <div class="pg-content">
+            <span id="lastPage" class="pg-item disabled">上一页</span>
+            <span id="totalPages" class="pg-total"></span>
+            <span id="nextPage" class="pg-item">下一页</span>
+        </div>
+    </div>
 </div>
 <div class="footer">
     <div class="w">

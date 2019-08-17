@@ -20,5 +20,5 @@ public interface CategoryMapper {
 
     int updateByPrimaryKey(Category record);
 
-    long count();
+    int count();
 }

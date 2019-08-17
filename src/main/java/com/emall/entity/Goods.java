@@ -17,8 +17,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Repository
 public class Goods {
-    public static final String PRICE_ASC = "priceAsc";
-    public static final String PRICE_DESC = "priceDesc";
+    public static final String PRICE_ASC = "PriceAsc";
+    public static final String PRICE_DESC = "PriceDesc";
 
     private String goodsId;         //商品id
 

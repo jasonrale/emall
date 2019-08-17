@@ -14,11 +14,11 @@ public class PageModel<T> {
 
     private int pageSize;           //每页数据条数
 
-    private long count;             //数据总条数
+    private int count;             //数据总条数
 
     private List<T> list;          //查询结果
 
     public void setTotalPages() {
-        totalPages = (int) (count % pageSize > 0 ? (count / pageSize) + 1 : count / pageSize);
+        totalPages = count % pageSize > 0 ? (count / pageSize) + 1 : count / pageSize;
     }
 }

@@ -6,7 +6,8 @@
     font-size:36px;
     color:#c60023;
     font-weight:700;
-    text-decoration:none
+    text-decoration: none;
+    cursor: pointer
 }
 .header .search-con{
     padding:40px 0 30px 250px
@@ -123,7 +124,7 @@
     font-size:18px
 }
 .intro-wrap .p-info-con .p-count-con .p-count{
-    height:36px;
+    height: 30px;
     line-height:36px;
     font-size:15px;
     width:45px;
@@ -154,6 +155,38 @@
 .intro-wrap .p-info-con .p-count-con .p-count-btn.minus{
     bottom:0
 }
+
+.intro-wrap .p-info-con .p-info-item .cart-add {
+    display: inline-block;
+    padding: 0 10px;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 10px;
+    border-style: double;
+    background: #c60023;
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    outline: none;
+    cursor: pointer
+}
+
+.intro-wrap .p-info-con .p-info-item .buy {
+    display: inline-block;
+    padding: 0 15px 0 18px;
+    margin: 0 40px;
+    width: 67px;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 10px;
+    border-style: double;
+    background: rgba(232, 65, 19, 0.92);
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    outline: none;
+    cursor: pointer
+}
 .detail-wrap{
     margin-top:15px
 }
@@ -177,10 +210,10 @@
     color:#fff
 }
 .detail-wrap .detail-con{
-    padding-top:20px;
     background:#fff
 }
 .detail-wrap .detail-con img{
+    width: 100%;
     display:block;
     margin:0 auto
 }

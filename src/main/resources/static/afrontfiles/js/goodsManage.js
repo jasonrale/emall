@@ -42,6 +42,10 @@ function querySeckillGoods(currentNo, pageSize) {
  * 商品管理--分页查询
  */
 function adminQuery(currentNo, pageSize, listType, param) {
+    if ((listType === "goodsId" || listType === "goodsName") && param.trim() === "") {
+        return false;
+    }
+
     var pageModel = {
         "currentNo": currentNo,
         "pageSize": pageSize
@@ -137,6 +141,7 @@ function adminQuery(currentNo, pageSize, listType, param) {
                 }
             }
 
+            //分页
             var totalPages = data.obj.totalPages;
             $("#currentNo").val(currentNo);
             $("#totalPages").html(totalPages);

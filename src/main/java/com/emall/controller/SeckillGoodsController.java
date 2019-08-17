@@ -22,17 +22,16 @@ public class SeckillGoodsController {
     SeckillGoodsService seckillGoodsService;
 
     /**
-     * 查询所有秒杀商品
+     * 用户端查询所有秒杀商品
      *
-     * @param pageModel
      * @return
      */
     @GetMapping("")
     @ResponseBody
-    public Result queryAll(@Valid PageModel<SeckillGoods> pageModel) {
-        logger.info("分页查询所有秒杀商品，第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+    public Result queryAllForUser() {
+        logger.info("查询上架秒杀商品");
 
-        return Result.success("秒杀商品分页查询成功", seckillGoodsService.queryAll(pageModel));
+        return Result.success("秒杀商品分页查询成功", seckillGoodsService.queryAll());
     }
 
     /**
@@ -43,7 +42,7 @@ public class SeckillGoodsController {
      */
     @GetMapping("/{seckillGoodsId}/seckillGoodsId")
     @ResponseBody
-    public Result queryAll(@PathVariable("seckillGoodsId") String seckillGoodsId) {
+    public Result selectBySeckillGoodsId(@PathVariable("seckillGoodsId") String seckillGoodsId) {
         logger.info("根据秒杀商品id=" + seckillGoodsId + "查询商品信息");
 
         return seckillGoodsId != null ? Result.success("秒杀商品查询成功", seckillGoodsService.selectBySeckillGoodsId(seckillGoodsId)) :
@@ -85,8 +84,8 @@ public class SeckillGoodsController {
             return Result.error("开始时间至少在当前时间一小时以后");
         }
 
-        if (seckillGoodsService.countOnShelf() >= 3) {
-            return Result.error("秒杀商品同时上架不可超过三种");
+        if (seckillGoodsService.countOnShelf() >= 12) {
+            return Result.error("秒杀商品同时上架不可超过十二种");
         }
 
         return seckillGoodsService.put(seckillGoodsId, startTime, endTime) ? Result.success("商品上架成功", null) : Result.error("商品上架失败");

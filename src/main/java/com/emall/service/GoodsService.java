@@ -41,7 +41,52 @@ public class GoodsService {
     SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
 
     /**
-     * 根据关键字分页查询商品列表的完整逻辑
+     * 分页查询全部商品的完整逻辑
+     * @param pageModel
+     * @return
+     */
+    public PageModel<Goods> queryAll(PageModel<Goods> pageModel) {
+        String listKey = RedisKeyUtil.goodsAll(pageModel.getCurrentNo(), pageModel.getPageSize());
+        if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+            redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+        }
+
+        if (redisTemplate.hasKey(listKey)) {
+
+            int newVersion = (int) redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION);
+            int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
+            //判断是否没有增加数据
+            if (newVersion == oldVersion) {
+                //从Redis缓存中获取列表中所有商品的键
+                List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
+                if (goodsKeyList == null || goodsKeyList.size() == 0) {
+                    return queryAllFromDB(pageModel);
+                }
+
+                int count = (int) redisTemplate.opsForList().index(listKey, -2);
+                return getFromRedis(count, goodsKeyList, pageModel);
+            }
+
+            return queryAllFromDB(pageModel);
+        }
+
+        return queryAllFromDB(pageModel);
+    }
+
+    private PageModel<Goods> queryAllFromDB(PageModel<Goods> pageModel) {
+        String listKey = RedisKeyUtil.goodsAll(pageModel.getCurrentNo(), pageModel.getPageSize());
+
+        long limit = pageModel.getPageSize();
+        long offset = (pageModel.getCurrentNo() - 1) * limit;
+
+        List<Goods> goodsList = goodsMapper.queryAll(limit, offset);
+        int count = goodsMapper.count();
+
+        return pageToRedis(listKey, goodsList, count, pageModel);
+    }
+
+    /**
+     * 根据关键字分页查询商品列表
      * @param keyWord
      * @param pageModel
      * @return
@@ -49,26 +94,29 @@ public class GoodsService {
     public PageModel<Goods> selectByKeyWordPaged(String keyWord, PageModel<Goods> pageModel) {
         String listKey = RedisKeyUtil.goodsByKeyWord(keyWord, pageModel.getCurrentNo(), pageModel.getPageSize());
 
-        long newCount = goodsMapper.countByKeyWord("%" + keyWord + "%");
         if (redisTemplate.hasKey(listKey)) {
-            long oldCount = Long.valueOf(redisTemplate.opsForList().index(listKey, -1).toString());
-            //判断是否没有增加数据
-            if (newCount == oldCount) {
+            if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+                redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+            }
+            int newVersion = (int) redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION);
+            int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
+            //判断缓存版本是否改变
+            if (newVersion == oldVersion) {
                 //从Redis缓存中获取列表中所有商品的键
-                List<String> goodsKeyList =  redisTemplate.opsForList().range(listKey, 0, -2);
-                if (Objects.requireNonNull(goodsKeyList).size() == 0) {
-                    return selectByKeyWordFromDB(keyWord, newCount, pageModel);
+                List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
+                if (goodsKeyList == null || goodsKeyList.size() == 0) {
+                    return selectByKeyWordFromDB(keyWord, pageModel);
                 }
 
-                return getFromRedis(listKey, newCount, goodsKeyList, pageModel);
+                int count = (int) redisTemplate.opsForList().index(listKey, -2);
+                return getFromRedis(count, goodsKeyList, pageModel);
             }
 
-            return selectByKeyWordFromDB(keyWord, newCount, pageModel);
+            return selectByKeyWordFromDB(keyWord, pageModel);
         }
 
-        return selectByKeyWordFromDB(keyWord, newCount, pageModel);
+        return selectByKeyWordFromDB(keyWord, pageModel);
     }
-
 
     /**
      * 根据关键字在数据库中查询商品列表并缓存到Redis
@@ -76,46 +124,155 @@ public class GoodsService {
      * @param pageModel
      * @return
      */
-    public PageModel<Goods> selectByKeyWordFromDB(String keyWord, long count, PageModel<Goods> pageModel) {
+    public PageModel<Goods> selectByKeyWordFromDB(String keyWord, PageModel<Goods> pageModel) {
         String listKey = RedisKeyUtil.goodsByKeyWord(keyWord, pageModel.getCurrentNo(), pageModel.getPageSize());
 
         long limit = pageModel.getPageSize();
         long offset = (pageModel.getCurrentNo() - 1) * limit;
+        keyWord = "%" + keyWord + "%";
 
-        List<Goods> goodsList = goodsMapper.selectByKeyWordPaged("%" + keyWord + "%", limit, offset);
+        List<Goods> goodsList = goodsMapper.selectByKeyWordPaged(keyWord, limit, offset);
+        int count = goodsMapper.countByKeyWord(keyWord);
 
         return pageToRedis(listKey, goodsList, count, pageModel);
     }
 
-//    public PageModel<Goods> selectByCategoryId(String categoryId, PageModel<Goods> pageModel) {
-//        String listKey = RedisKeyUtil.goodsByCategoryId(categoryId, pageModel.getCurrentNo(), pageModel.getPageSize());
-//
-//        if (redisTemplate.hasKey(listKey)) {
-//            //从Redis缓存中获取列表中所有商品的键
-//            List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -2);
-//
-//            if (goodsKeyList == null) {
-//                return selectByCategoryIdFromDB(categoryId, pageModel);
-//            }
-//
-//            return getFromRedis(listKey, goodsKeyList, pageModel);
-//        }
-//        return selectByCategoryIdFromDB(categoryId, pageModel);
-//    }
-//
-//    public PageModel<Goods> selectByCategoryIdFromDB(String categoryId, PageModel<Goods> pageModel) {
-//        String listKey = RedisKeyUtil.goodsByCategoryId(categoryId, pageModel.getCurrentNo(), pageModel.getPageSize());
-//
-//        long limit = pageModel.getPageSize();
-//        long offset = (pageModel.getCurrentNo() - 1) * limit;
-//
-//        List<Goods> goodsList = goodsMapper.selectByCategoryId(categoryId, limit, offset);
-//        long count = goodsMapper.countByCategoryId(categoryId);
-//
-//        return pageToRedis(listKey, goodsList, count, pageModel);
-//    }
+    /**
+     * 用户端根据关键字查询商品列表（已上架）
+     *
+     * @param keyWord
+     * @return
+     */
+    public PageModel<Goods> selectByKeyWord(String keyWord, String sort, PageModel<Goods> pageModel) {
+        String listKey = RedisKeyUtil.keyWordOfSort(keyWord, sort, pageModel.getCurrentNo(), pageModel.getPageSize());
 
-    public PageModel<Goods> pageToRedis(String listKey, List<Goods> goodsList, long count, PageModel<Goods> pageModel) {
+        if (redisTemplate.hasKey(listKey)) {
+            if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+                redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+            }
+            int newVersion = (int) redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION);
+            int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
+            //判断缓存版本是否改变
+            if (newVersion == oldVersion) {
+                //从Redis缓存中获取列表中所有商品的键
+                List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
+                if (goodsKeyList == null || goodsKeyList.size() == 0) {
+                    return selectByKeyWordForUser(keyWord, sort, pageModel);
+                }
+
+                int count = (int) redisTemplate.opsForList().index(listKey, -2);
+                return getFromRedis(count, goodsKeyList, pageModel);
+            }
+
+            return selectByKeyWordForUser(keyWord, sort, pageModel);
+        }
+
+        return selectByKeyWordForUser(keyWord, sort, pageModel);
+    }
+
+
+    /**
+     * 用户端根据关键字在数据库中查询商品列表并缓存到Redis
+     *
+     * @param keyWord
+     * @param pageModel
+     * @return
+     */
+    public PageModel<Goods> selectByKeyWordForUser(String keyWord, String sort, PageModel<Goods> pageModel) {
+        long limit = pageModel.getPageSize();
+        long offset = (pageModel.getCurrentNo() - 1) * limit;
+        String listKey = RedisKeyUtil.keyWordOfSort(keyWord, sort, pageModel.getCurrentNo(), pageModel.getPageSize());
+        keyWord = "%" + keyWord + "%";
+        int count = goodsMapper.countByKeyWordForUser(keyWord);
+        List<Goods> goodsList;
+
+        if (sort.equals("none")) {
+            goodsList = goodsMapper.selectByKeyWord(keyWord, limit, offset);
+        } else if (sort.equals("asc")) {
+            goodsList = goodsMapper.selectByKeyWordAsc(keyWord, limit, offset);
+        } else {
+            goodsList = goodsMapper.selectByKeyWordDesc(keyWord, limit, offset);
+        }
+
+        return pageToRedis(listKey, goodsList, count, pageModel);
+    }
+
+    /**
+     * 用户端根据商品类别id分页查询商品列表
+     *
+     * @param categoryId
+     * @param pageModel
+     * @return
+     */
+    public PageModel<Goods> selectByCategoryId(String categoryId, String sort, PageModel<Goods> pageModel) {
+        String listKey = RedisKeyUtil.categoryOfSort(categoryId, sort, pageModel.getCurrentNo(), pageModel.getPageSize());
+
+        if (redisTemplate.hasKey(listKey)) {
+            if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+                redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+            }
+            int newVersion = (int) redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION);
+            int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
+            //判断缓存版本是否改变
+            if (newVersion == oldVersion) {
+                //从Redis缓存中获取列表中所有商品的键
+                List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
+                if (goodsKeyList == null || goodsKeyList.size() == 0) {
+                    return selectByCategoryIdForUser(categoryId, sort, pageModel);
+                }
+
+                int count = (int) redisTemplate.opsForList().index(listKey, -2);
+                return getFromRedis(count, goodsKeyList, pageModel);
+            }
+
+            return selectByCategoryIdForUser(categoryId, sort, pageModel);
+        }
+
+        return selectByCategoryIdForUser(categoryId, sort, pageModel);
+    }
+
+    /**
+     * 用户端根据商品类别从数据库中查询并缓存到redis
+     *
+     * @param categoryId
+     * @param sort
+     * @param pageModel
+     * @return
+     */
+    public PageModel<Goods> selectByCategoryIdForUser(String categoryId, String sort, PageModel<Goods> pageModel) {
+        long limit = pageModel.getPageSize();
+        long offset = (pageModel.getCurrentNo() - 1) * limit;
+        String listKey = RedisKeyUtil.categoryOfSort(categoryId, sort, pageModel.getCurrentNo(), pageModel.getPageSize());
+        int count = goodsMapper.countByCategoryIdForUser(categoryId);
+        List<Goods> goodsList;
+
+        if (sort.equals("none")) {
+            goodsList = goodsMapper.selectByCategoryId(categoryId, limit, offset);
+        } else if (sort.equals("asc")) {
+            goodsList = goodsMapper.selectByCategoryIdAsc(categoryId, limit, offset);
+        } else {
+            goodsList = goodsMapper.selectByCategoryIdDesc(categoryId, limit, offset);
+        }
+
+        return pageToRedis(listKey, goodsList, count, pageModel);
+    }
+
+    /**
+     * 分页数据存入缓存
+     *
+     * @param listKey
+     * @param goodsList
+     * @param count
+     * @param pageModel
+     * @return
+     */
+    @Transactional
+    public PageModel<Goods> pageToRedis(String listKey, List<Goods> goodsList, int count, PageModel<Goods> pageModel) {
+        //如果存在该商品列表缓存，则清空，重新缓存
+        if (redisTemplate.hasKey(listKey)) {
+            redisTemplate.delete(listKey);
+        }
+
         for (Goods goods : goodsList) {
             String key = RedisKeyUtil.goodsByGoodsId(goods);
             //将查询到的每个商品缓存到Redis
@@ -125,6 +282,10 @@ public class GoodsService {
         }
         //将商品总数量追加到list末尾
         redisTemplate.opsForList().rightPush(listKey, count);
+        if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+            redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+        }
+        redisTemplate.opsForList().rightPush(listKey, redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION));
         redisTemplate.expire(listKey, 1800, TimeUnit.SECONDS);
 
         pageModel.setCount(count);
@@ -134,7 +295,15 @@ public class GoodsService {
         return pageModel;
     }
 
-    public PageModel<Goods> getFromRedis(String listKey, long count, List<String> goodsKeyList, PageModel pageModel) {
+    /**
+     * 从缓存获取分页数据
+     *
+     * @param count
+     * @param goodsKeyList
+     * @param pageModel
+     * @return
+     */
+    public PageModel<Goods> getFromRedis(int count, List<String> goodsKeyList, PageModel pageModel) {
         List<Goods> goodsList = new ArrayList<>();
 
         for (String goodsKey : goodsKeyList) {
@@ -156,46 +325,6 @@ public class GoodsService {
     }
 
     /**
-     * 分页查询全部商品
-     * @param pageModel
-     * @return
-     */
-    public PageModel<Goods> queryAll(PageModel<Goods> pageModel) {
-        String listKey = RedisKeyUtil.goodsAll(pageModel.getCurrentNo(), pageModel.getPageSize());
-
-        long newCount = goodsMapper.count();
-        if (redisTemplate.hasKey(listKey)) {
-            long oldCount =  Long.valueOf(redisTemplate.opsForList().index(listKey, -1).toString());
-            //判断是否没有增加数据
-            if (newCount == oldCount) {
-                //从Redis缓存中获取列表中所有商品的键
-                List<String> goodsKeyList =  redisTemplate.opsForList().range(listKey, 0, -2);
-                if (Objects.requireNonNull(goodsKeyList).size() == 0) {
-                    return queryAllFromDB(newCount, pageModel);
-                }
-
-                return getFromRedis(listKey, newCount, goodsKeyList, pageModel);
-            }
-
-            return queryAllFromDB(newCount, pageModel);
-        }
-
-        return queryAllFromDB(newCount, pageModel);
-    }
-
-    private PageModel<Goods> queryAllFromDB(long newCount, PageModel<Goods> pageModel) {
-        String listKey = RedisKeyUtil.goodsAll(pageModel.getCurrentNo(), pageModel.getPageSize());
-
-        long limit = pageModel.getPageSize();
-        long offset = (pageModel.getCurrentNo() - 1) * limit;
-
-        List<Goods> goodsList = goodsMapper.queryAll(limit, offset);
-
-        return pageToRedis(listKey, goodsList, newCount, pageModel);
-    }
-
-
-    /**
      * 根据商品id查询商品并缓存
      * @param goodsId
      * @return
@@ -209,72 +338,6 @@ public class GoodsService {
         Goods goods = goodsMapper.selectByGoodsId(goodsId);
         redisTemplate.opsForValue().set(goodsKey, goods, 1800, TimeUnit.SECONDS);
         return goods;
-    }
-
-//    /**
-//     * 根据关键字查询商品列表
-//     * @param keyWord
-//     * @return
-//     */
-//    public List<Goods> selectByKeyWord(String keyWord, String sort) {
-//        String defaultKey = RedisKeyUtil.GOODS_PREFIX + keyWord;
-//        String priceAscKey = RedisKeyUtil.GOODS_PREFIX + Goods.PRICE_ASC;
-//        String priceDescKey = RedisKeyUtil.GOODS_PREFIX + Goods.PRICE_DESC;
-//
-//        keyWord = "%" + keyWord + "%";
-//        if (sort == null) {
-//            if (redisTemplate.hasKey(defaultKey)) {
-//                return redisTemplate.opsForList().range(defaultKey, 0, -1);
-//            }
-//
-//            List<Goods> goodsList = goodsMapper.selectByKeyWord(keyWord);
-//            long count = goodsMapper.countByKeyWord(keyWord);
-//
-//            return goodsList;
-//        } else if (sort.equals(priceAscKey)) {
-//
-//        }
-//    }
-
-    /**
-     * 根据关键字分页查询商品列表
-     * @param keyWord
-     * @param pageModel
-     * @return
-     */
-    public PageModel<Goods> selectByKeyWord(String keyWord, PageModel<Goods> pageModel) {
-        long limit = pageModel.getPageSize();
-        long offset = (pageModel.getCurrentNo() - 1) * limit;
-
-        keyWord = "%" + keyWord + "%";
-        List<Goods> goodsList = goodsMapper.selectByKeyWordPaged(keyWord, limit, offset);
-        long count = goodsMapper.countByKeyWord(keyWord);
-
-        pageModel.setCount(count);
-        pageModel.setList(goodsList);
-        pageModel.setTotalPages();
-
-        return pageModel;
-    }
-
-    /**
-     * 根据商品类别id分页查询商品列表
-     * @param categoryId
-     * @param pageModel
-     * @return
-     */
-    public PageModel<Goods> selectByCategoryId(String categoryId, PageModel<Goods> pageModel) {
-        long limit = pageModel.getPageSize();
-        long offset = (pageModel.getCurrentNo() - 1) * limit;
-
-        List<Goods> goodsList = goodsMapper.selectByCategoryId(categoryId, limit, offset);
-        long count = goodsMapper.countByCategoryId(categoryId);
-
-        pageModel.setCount(count);
-        pageModel.setList(goodsList);
-        pageModel.setTotalPages();
-
-        return pageModel;
     }
 
     /**
@@ -299,6 +362,8 @@ public class GoodsService {
             return seckillGoodsMapper.insert(goods) != 0 ? Result.success("商品添加成功", goods) : Result.error("商品添加失败");
         }
 
+        redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
+
         return goodsMapper.insert(goods) != 0 ? Result.success("商品添加成功", goods) : Result.error("商品添加失败");
     }
 
@@ -317,6 +382,7 @@ public class GoodsService {
         if (redisTemplate.hasKey(goodsKey)) {
             redisTemplate.delete(goodsKey);
         }
+        redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
         if (imageFile == null && detailFile == null) {
             if (goodsMapper.updateByGoodsId(goods) != 0) {
@@ -494,6 +560,7 @@ public class GoodsService {
         }
     }
 
+    @Transactional
     public boolean pull(String goodsId) {
         String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
         boolean flag = goodsMapper.pull(goodsId) != 0;
@@ -502,9 +569,12 @@ public class GoodsService {
             redisTemplate.delete(goodsKey);
         }
 
+        redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
+
         return flag;
     }
 
+    @Transactional
     public boolean put(String goodsId) {
         String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
         boolean flag = goodsMapper.put(goodsId) != 0;
@@ -512,6 +582,8 @@ public class GoodsService {
         if (redisTemplate.hasKey(goodsKey)) {
             redisTemplate.delete(goodsKey);
         }
+
+        redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
         return flag;
     }

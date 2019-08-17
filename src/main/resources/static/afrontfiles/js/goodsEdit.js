@@ -1,7 +1,7 @@
 $(document).ready(function () {
     adminInfo();
 
-    var goodsId = ($.getUrlParam("goodsId"));
+    var goodsId = (getUrlParam("goodsId"));
 
     goodsInit(goodsId);
 
@@ -44,6 +44,7 @@ function goodsInit(goodsId) {
             $("#submit").replaceWith('<input type="button" class="btn btn-xl btn-primary" id="submit" value="提交" onclick="updateSubmit(' + goodsId + ')">');
             $("#viewImage").attr("src", goods.goodsImage).css("display", "block");
             $("#viewDetail").attr("src", goods.goodsDetails).css("display", "block");
+            $("#status").val(goods.goodsStatus);
         }
     });
 }
@@ -93,6 +94,7 @@ function updateSubmit(goodsId) {
     var categoryId = $("#category").val();
     var goodsStock = $("#stock").val();
     var goodsPrice = $("#price").val();
+    var goodsStatus = $("#status").val();
     var image = $("#uploadImage");
     var detail = $("#uploadDetail");
 
@@ -120,7 +122,7 @@ function updateSubmit(goodsId) {
         "categoryId": categoryId,
         "goodsStock": goodsStock,
         "goodsPrice": goodsPrice,
-        "goodsStatus": 0
+        "goodsStatus": goodsStatus
     };
 
     var formData = new FormData();
@@ -148,7 +150,7 @@ function updateSubmit(goodsId) {
             }
         },
         error: function () {
-            layer.msg("商品添加失败", {time : 1000});
+            layer.msg("商品修改失败", {time: 1000});
         }
     });
 }

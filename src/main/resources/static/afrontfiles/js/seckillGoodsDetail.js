@@ -1,7 +1,7 @@
 $(document).ready(function () {
     adminInfo();
 
-    var seckillGoodsId = ($.getUrlParam("seckillGoodsId"));
+    var seckillGoodsId = (getUrlParam("seckillGoodsId"));
 
     seckillGoodsDetail(seckillGoodsId);
 });

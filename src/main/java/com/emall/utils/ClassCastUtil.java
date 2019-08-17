@@ -21,13 +21,11 @@ public class ClassCastUtil {
      * @throws InstantiationException
      */
     public <T> T classCast(Object source, Class<T> clazz) throws IllegalAccessException, InstantiationException {
-        Field[] fields = clazz.getDeclaredFields();
-
         T target = clazz.newInstance();
         Class sourceClazz = source.getClass();
 
         Field[] sourceFields = sourceClazz.getDeclaredFields();
-        Field[] targetFields = target.getClass().getDeclaredFields();
+        Field[] targetFields = clazz.getDeclaredFields();
 
         for (Field sourceField : sourceFields) {
             sourceField.setAccessible(true);

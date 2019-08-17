@@ -1,10 +1,21 @@
+$(document).ready(function () {
+    userSkip();
+
+    adminSkip();
+
+    $(document).keyup(function (event) {
+        if (event.keyCode === 13) {
+            query();
+        }
+    });
+});
+
 //获取url后的参数
-(function ($) {
-    $.getUrlParam = function (name) {
-        var sValue = location.search.match(new RegExp("[\?\&]" + name + "=([^\&]*)(\&?)", "i"));
-        return sValue ? sValue[1] : sValue;
-    }
-})(jQuery);
+function getUrlParam(name) {
+    var sValue = location.search.match(new RegExp("[\?\&]" + name + "=([^\&]*)(\&?)", "i"));
+    return sValue ? sValue[1] : sValue;
+}
+
 
 //展示loading
 function showLoading(){
@@ -44,7 +55,27 @@ function adminInfo() {
     });
 }
 
-$(document).ready(function () {
+/**
+ * 后台跳转功能
+ */
+function adminSkip() {
+    $("#goodsSkip").click(function () {
+        $(window).attr("location", "goodsManage.html");
+    });
+
+    $("#categorySkip").click(function () {
+        $(window).attr("location", "categoryManage.html");
+    });
+
+    $("#orderSkip").click(function () {
+        $(window).attr("location", "orderManage.html");
+    });
+}
+
+/**
+ * 用户端跳转功能
+ */
+function userSkip() {
     $("#login").click(function () {
         $(window).attr('location', '/user/login.html');
     });
@@ -60,17 +91,20 @@ $(document).ready(function () {
     $("#emall").click(function () {
         $(window).attr('location', '/index.html');
     });
+}
 
-    //后台管理
-    $("#goodsSkip").click(function () {
-        $(window).attr("location", "goodsManage.html");
-    });
+/**
+ * 通用关键字搜索框
+ */
+function query() {
+    var keyWord = $("#keyWord").val();
+    if (keyWord === undefined) {
+        return false;
+    } else if (keyWord.trim() === "") {
+        return false;
+    }
 
-    $("#categorySkip").click(function () {
-        $(window).attr("location", "categoryManage.html");
-    });
+    $(window).attr('location', '/goods/goodsList.html?keyWord=' + encodeURI(keyWord));
+}
 
-    $("#orderSkip").click(function () {
-        $(window).attr("location", "orderManage.html");
-    });
-});
+

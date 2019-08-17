@@ -18,15 +18,35 @@
     	goods_details, goods_status
 	</sql>
 	
-	<select id="count" resultType="java.lang.Long">
+	<select id="count" resultType="java.lang.Integer">
 		select count(1)
 		from goods
 	</select>
-
-	<select id="countByKeyWord" parameterType="java.lang.String" resultType="java.lang.Long">
+	
+	<select id="countByKeyWord" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(1)
 		from goods
 		where goods_name like #{keyWord,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="countByKeyWordForUser" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from goods
+		where goods_name like #{keyWord,jdbcType=VARCHAR}
+		  and goods_status = 1
+	</select>
+	
+	<select id="countByCategoryId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from goods
+		where category_id = #{categoryId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="countByCategoryIdForUser" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from goods
+		where category_id = #{categoryId,jdbcType=VARCHAR}
+		  and goods_status = 1
 	</select>
 	
 	<select id="queryAll" resultMap="BaseResultMap">
@@ -43,7 +63,27 @@
 		inner join (select goods_id from goods order by goods_id limit #{limit} offset #{offset}) ids
 		on g.goods_id = ids.goods_id
 	</select>
-
+	
+	<select id="selectByKeyWord" resultMap="BaseResultMap">
+		select g.goods_id,
+			   g.goods_name,
+			   g.goods_describe,
+			   g.category_id,
+			   g.goods_price,
+			   g.goods_stock,
+			   g.goods_image,
+			   g.goods_details,
+			   g.goods_status
+		from goods g
+				 inner join (select goods_id
+							 from goods
+							 where goods_name like #{keyWord,jdbcType=VARCHAR}
+							 order by goods_id
+							 limit #{limit} offset #{offset}) ids
+							on g.goods_id = ids.goods_id
+		where goods_status = 1
+	</select>
+	
 	<select id="selectByKeyWordPaged" resultMap="BaseResultMap">
 		select g.goods_id,
 			   g.goods_name,
@@ -58,14 +98,107 @@
 		inner join (select goods_id from goods where goods_name like #{keyWord,jdbcType=VARCHAR} order by goods_id limit #{limit} offset #{offset}) ids
 		on g.goods_id = ids.goods_id
 	</select>
-
-	<select id="selectByKeyWord" parameterType="java.lang.String" resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List"/>
-		from goods
-		where goods_name = #{keyWord,jdbcType=VARCHAR}
+	
+	<select id="selectByKeyWordAsc" resultMap="BaseResultMap">
+		select g.goods_id,
+			   g.goods_name,
+			   g.goods_describe,
+			   g.category_id,
+			   g.goods_price,
+			   g.goods_stock,
+			   g.goods_image,
+			   g.goods_details,
+			   g.goods_status
+		from goods g
+				 inner join (select goods_id
+							 from goods
+							 where goods_name like #{keyWord,jdbcType=VARCHAR}
+							 order by goods_price
+							 limit #{limit} offset #{offset}) ids
+							on g.goods_id = ids.goods_id
+		where goods_status = 1
 	</select>
-
+	
+	<select id="selectByKeyWordDesc" resultMap="BaseResultMap">
+		select g.goods_id,
+			   g.goods_name,
+			   g.goods_describe,
+			   g.category_id,
+			   g.goods_price,
+			   g.goods_stock,
+			   g.goods_image,
+			   g.goods_details,
+			   g.goods_status
+		from goods g
+				 inner join (select goods_id
+							 from goods
+							 where goods_name like #{keyWord,jdbcType=VARCHAR}
+							 order by goods_price desc
+							 limit #{limit} offset #{offset}) ids
+							on g.goods_id = ids.goods_id
+		where goods_status = 1
+	</select>
+	
+	<select id="selectByCategoryId" resultMap="BaseResultMap">
+		select g.goods_id,
+			   g.goods_name,
+			   g.goods_describe,
+			   g.category_id,
+			   g.goods_price,
+			   g.goods_stock,
+			   g.goods_image,
+			   g.goods_details,
+			   g.goods_status
+		from goods g
+				 inner join (select goods_id
+							 from goods
+							 where category_id = #{categoryId,jdbcType=VARCHAR}
+							 order by goods_id
+							 limit #{limit} offset #{offset}) ids
+							on g.goods_id = ids.goods_id
+		where goods_status = 1
+	</select>
+	
+	<select id="selectByCategoryIdAsc" resultMap="BaseResultMap">
+		select g.goods_id,
+			   g.goods_name,
+			   g.goods_describe,
+			   g.category_id,
+			   g.goods_price,
+			   g.goods_stock,
+			   g.goods_image,
+			   g.goods_details,
+			   g.goods_status
+		from goods g
+				 inner join (select goods_id
+							 from goods
+							 where category_id = #{categoryId,jdbcType=VARCHAR}
+							 order by goods_price asc
+							 limit #{limit} offset #{offset}) ids
+							on g.goods_id = ids.goods_id
+		where goods_status = 1
+	</select>
+	
+	<select id="selectByCategoryIdDesc" resultMap="BaseResultMap">
+		select g.goods_id,
+			   g.goods_name,
+			   g.goods_describe,
+			   g.category_id,
+			   g.goods_price,
+			   g.goods_stock,
+			   g.goods_image,
+			   g.goods_details,
+			   g.goods_status
+		from goods g
+				 inner join (select goods_id
+							 from goods
+							 where category_id = #{categoryId,jdbcType=VARCHAR}
+							 order by goods_price desc
+							 limit #{limit} offset #{offset}) ids
+							on g.goods_id = ids.goods_id
+		where goods_status = 1
+	</select>
+	
 	<select id="selectByGoodsId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
@@ -96,7 +229,7 @@
 						   goods_details, goods_status)
 		values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsDescribe,jdbcType=VARCHAR},
 				#{categoryId,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, #{goodsStock,jdbcType=INTEGER},
-				#{goodsImage,jdbcType=VARCHAR}, #{goodsDetails,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER}
+				#{goodsImage,jdbcType=VARCHAR}, #{goodsDetails,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER})
 	</insert>
 	
 	<update id="updateByGoodsId" parameterType="com.emall.entity.Goods">

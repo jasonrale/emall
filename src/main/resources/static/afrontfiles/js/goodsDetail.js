@@ -1,11 +1,14 @@
 $(document).ready(function () {
     adminInfo();
 
-    var goodsId = ($.getUrlParam("goodsId"));
+    var goodsId = (getUrlParam("goodsId"));
 
     goodsDetail(goodsId);
 });
 
+/**
+ * 商品详情信息
+ */
 function goodsDetail(goodsId) {
     $.ajax({
         type: "GET",

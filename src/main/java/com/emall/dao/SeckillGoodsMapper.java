@@ -12,19 +12,19 @@ public interface SeckillGoodsMapper {
 
     int insert(Goods goods);
 
-    int insertSelective(SeckillGoods seckillGoods);
+    int count();
 
-    List<SeckillGoods> queryAll(@Param("limit") long limit, @Param("offset") long offset);
+    int countOnShelf();
+
+    List<SeckillGoods> queryAllOnShelf();
 
     SeckillGoods selectBySeckillGoodsId(String seckillGoodsId);
 
-    int updateBySeckillGoodsIdSelective(SeckillGoods seckillGoods);
-
-    int count();
+    List<SeckillGoods> queryAll(@Param("limit") long limit, @Param("offset") long offset);
 
     int pull(@Param("seckillGoodsId") String seckillGoodsId);
 
     int put(@Param("seckillGoodsId") String seckillGoodsId, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
 
-    int countOnShelf();
+
 }

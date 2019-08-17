@@ -32,15 +32,24 @@
 		from seckill_goods
 	</select>
 	
+	<select id="queryAllOnShelf" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from seckill_goods s
+		where seckill_goods_status != 0
+	</select>
+	
 	<select id="queryAll" resultMap="BaseResultMap">
 		select s.seckill_goods_id,
 			   s.seckill_goods_name,
-		       s.category_id,
+			   s.category_id,
 			   s.seckill_goods_describe,
 			   s.seckill_goods_price,
 			   s.seckill_goods_stock,
 			   s.seckill_goods_image,
 			   s.seckill_goods_details,
+			   s.seckill_goods_start_time,
+			   s.seckill_goods_end_time,
 			   s.seckill_goods_status
 		from seckill_goods s
 		inner join (select seckill_goods_id from seckill_goods order by seckill_goods_id limit #{limit} offset #{offset}) ids

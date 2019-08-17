@@ -8,23 +8,36 @@ import java.util.List;
 public interface GoodsMapper {
     int insert(Goods goods);
 
-    int deleteByGoodsId(String goodsId);
+    int count();
+
+    int countByKeyWord(@Param("keyWord") String keyWord);
+
+    int countByKeyWordForUser(@Param("keyWord") String keyWord);
+
+    int countByCategoryId(@Param("categoryId") String categoryId);
+
+    int countByCategoryIdForUser(@Param("categoryId") String categoryId);
 
     Goods selectByGoodsId(@Param("goodsId") String goodsId);
 
     List<Goods> queryAll(@Param("limit") long limit, @Param("offset") long offset);
 
+
+    List<Goods> selectByKeyWord(@Param("keyWord") String keyWord, @Param("limit") long limit, @Param("offset") long offset);
+
     List<Goods> selectByKeyWordPaged(@Param("keyWord") String keyWord, @Param("limit") long limit, @Param("offset") long offset);
 
-    List<Goods> selectByKeyWord(@Param("keyWord") String keyWord);
+    List<Goods> selectByKeyWordAsc(@Param("keyWord") String keyWord, @Param("limit") long limit, @Param("offset") long offset);
+
+    List<Goods> selectByKeyWordDesc(@Param("keyWord") String keyWord, @Param("limit") long limit, @Param("offset") long offset);
+
 
     List<Goods> selectByCategoryId(@Param("categoryId") String categoryId, @Param("limit") long limit, @Param("offset") long offset);
 
-    long count();
+    List<Goods> selectByCategoryIdAsc(@Param("categoryId") String categoryId, @Param("limit") long limit, @Param("offset") long offset);
 
-    long countByKeyWord(@Param("keyWord") String keyWord);
+    List<Goods> selectByCategoryIdDesc(@Param("categoryId") String categoryId, @Param("limit") long limit, @Param("offset") long offset);
 
-    long countByCategoryId(@Param("categoryId") String categoryId);
 
     int pull(@Param("goodsId") String goodsId);
 
