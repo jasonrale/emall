@@ -9,7 +9,7 @@ $(document).ready(function () {
 function seckillGoodsDetail(seckillGoodsId) {
     $.ajax({
         type: "GET",
-        url: "/seckillGoods/" + seckillGoodsId + "/seckillGoodsId",
+        url: "/seckillGoods/admin/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
             var seckillGoods = data.obj;
             var status = seckillGoods.seckillGoodsStatus;
@@ -18,6 +18,8 @@ function seckillGoodsDetail(seckillGoodsId) {
             $("#goodsStatus").html(status === 0 ? "未上架" : status === 1 ? "准备中" : status === 2 ? "进行中" : "已结束");
             $("#goodsPrice").html(seckillGoods.seckillGoodsPrice + "元");
             $("#goodsStock").html(seckillGoods.seckillGoodsStock + "件");
+            $("#startTime").html(new Date(seckillGoods.seckillGoodsStartTime).format("yyyy-MM-dd hh:mm:ss"));
+            $("#endTime").html(new Date(seckillGoods.seckillGoodsEndTime).format("yyyy-MM-dd hh:mm:ss"));
             $.ajax({
                 type: "GET",
                 url: "/category/" + seckillGoods.categoryId + "/categoryId",

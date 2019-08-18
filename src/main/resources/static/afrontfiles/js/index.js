@@ -42,7 +42,8 @@ function querySeckillGoods(ins) {
                         '<span class="seckill-price">' +
                         '<h3 style="background-color: #cdcdcd;">' + "￥" + seckillGoodsList[i].seckillGoodsPrice + "</h3>" +
                         "</span>" +
-                        '<div class="seckill"><input type="button" class="seckillbtn" value="前往秒杀"></div>' +
+                        '<div class="seckill"><input type="button" class="seckillbtn" value="前往秒杀" ' +
+                        'onclick="seckillDetail(' + "'" + seckillGoodsList[i].seckillGoodsId + "'" + ')"></div>' +
                         "</li>";
                     if (i + 1 < size) {
                         element +=
@@ -51,7 +52,8 @@ function querySeckillGoods(ins) {
                             '<span class="seckill-price">' +
                             '<h3 style="background-color: #cdcdcd;">' + "￥" + seckillGoodsList[i + 1].seckillGoodsPrice + "</h3>" +
                             "</span>" +
-                            '<div class="seckill"><input type="button" class="seckillbtn" value="前往秒杀"></div>' +
+                            '<div class="seckill"><input type="button" class="seckillbtn" value="前往秒杀" ' +
+                            'onclick="seckillDetail(' + "'" + seckillGoodsList[i + 1].seckillGoodsId + "'" + ')"></div>' +
                             "</li>";
                     }
 
@@ -62,7 +64,8 @@ function querySeckillGoods(ins) {
                             '<span class="seckill-price">' +
                             '<h3 style="background-color: #cdcdcd;">' + "￥" + seckillGoodsList[i + 2].seckillGoodsPrice + "</h3>" +
                             "</span>" +
-                            '<div class="seckill"><input type="button" class="seckillbtn" value="前往秒杀"></div>' +
+                            '<div class="seckill"><input type="button" class="seckillbtn" value="前往秒杀" ' +
+                            'onclick="seckillDetail(' + "'" + seckillGoodsList[i + 2].seckillGoodsId + "'" + ')"></div>' +
                             "</li>";
                     }
 
@@ -75,4 +78,11 @@ function querySeckillGoods(ins) {
             }
         }
     });
+}
+
+/**
+ * 跳转秒杀商品详情页面
+ */
+function seckillDetail(seckillGoodsId) {
+    $(window).attr("location", "seckillGoods/seckillDetail.html?seckillGoodsId=" + seckillGoodsId);
 }

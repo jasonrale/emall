@@ -25,6 +25,7 @@
 		select count(1)
 		from seckill_goods
 		where seckill_goods_status != 0
+		  and seckill_goods_status != 3
 	</select>
 
 	<select id="count" resultType="java.lang.Integer">
@@ -36,7 +37,7 @@
 		select
 		<include refid="Base_Column_List"/>
 		from seckill_goods s
-		where seckill_goods_status != 0
+		where seckill_goods_status != 0 and seckill_goods_status != 3
 	</select>
 	
 	<select id="queryAll" resultMap="BaseResultMap">
@@ -152,7 +153,22 @@
 		  </if>
 		</trim>
   	</insert>
-
+	
+	<update id="update" parameterType="com.emall.entity.SeckillGoods">
+		update seckill_goods
+		set seckill_goods_name       = #{seckillGoodsName,jdbcType=VARCHAR},
+			category_id              = #{categoryId,jdbcType=VARCHAR},
+			seckill_goods_describe   = #{seckillGoodsDescribe,jdbcType=VARCHAR},
+			seckill_goods_stock      = #{seckillGoodsStock,jdbcType=INTEGER},
+			seckill_goods_price      = #{seckillGoodsPrice,jdbcType=DECIMAL},
+			seckill_goods_image      = #{seckillGoodsImage,jdbcType=VARCHAR},
+			seckill_goods_details    = #{seckillGoodsDetails,jdbcType=VARCHAR},
+			seckill_goods_start_time = #{seckillGoodsStartTime,jdbcType=TIMESTAMP},
+			seckill_goods_end_time   = #{seckillGoodsEndTime,jdbcType=TIMESTAMP},
+			seckill_goods_status     = #{seckillGoodsStatus,jdbcType=INTEGER}
+		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
+	</update>
+	
 	<update id="pull" parameterType="java.lang.String">
 		update seckill_goods
 		set seckill_goods_status = 0
@@ -164,6 +180,12 @@
 		set seckill_goods_start_time = #{startTime,jdbcType=TIMESTAMP},
 		 	seckill_goods_end_time = #{endTime,jdbcType=TIMESTAMP},
 		 	seckill_goods_status = 1
+		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="changeStatus">
+		update seckill_goods
+		set seckill_goods_status = #{complete,jdbcType=INTEGER}
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</update>
 </mapper>

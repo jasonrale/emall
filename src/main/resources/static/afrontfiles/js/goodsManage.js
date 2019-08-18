@@ -95,8 +95,8 @@ function adminQuery(currentNo, pageSize, listType, param) {
                             "<td><p>" + seckillGoodsList[i].seckillGoodsName + "</p><p>" + seckillGoodsList[i].seckillGoodsDescribe + "</p></td>" +
                             "<td>" + seckillGoodsList[i].seckillGoodsPrice + "元" + "</td>" +
                             "<td>" + seckillGoodsList[i].seckillGoodsStock + "件" + "</td>" +
-                            "<td>" + (status === 1 || status === 3 ? '<a id="' + seckillGoodsId + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'" + seckillGoodsId + "', " + "'" + listType + "'" + ')">下架</a>' :
-                                status === 0 ? '<a id="' + seckillGoodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + seckillGoodsId + "', " + "'" + listType + "'" + ')">上架</a>' : "秒杀进行中") +
+                            "<td>" + (status === 0 ? '<a id="' + seckillGoodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + seckillGoodsId + "', " + "'" + listType + "'" + ')">上架</a>' :
+                                status === 1 || status === 2 ? "上架中" : "已结束") +
                             "</td>" +
                             "<td>" +
                             '<a class="opear" href="seckillGoodsDetail.html?seckillGoodsId=' + seckillGoodsId + '">查看</a>' +
@@ -197,60 +197,32 @@ function turn() {
     });
 }
 
-function pull(goodsId, listType) {
-    if (listType !== "seckill") {
-        layer.confirm(
-            "您确定要下架该商品？",
-            {btn: ["确定", "取消"]},
-            function (index) {
-                $.ajax({
-                    type: "POST",
-                    url: "/goods/pull",
-                    data: goodsId,
-                    contentType: 'application/json;charset=UTF-8',
-                    success: function (data) {
-                        if (data.status === true) {
-                            layer.msg(data.msg, {time: 800}, function () {
-                                layer.close(index);
-                                $("#" + goodsId).replaceWith('<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="put(' + "'" + goodsId + "'" + ')">上架</a>');
-                            });
-                        } else {
-                            layer.msg(data.msg, {time : 1000});
-                        }
+function pull(goodsId) {
+    layer.confirm(
+        "您确定要下架该商品？",
+        {btn: ["确定", "取消"]},
+        function (index) {
+            $.ajax({
+                type: "POST",
+                url: "/goods/pull",
+                data: goodsId,
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.status === true) {
+                        layer.msg(data.msg, {time: 800}, function () {
+                            layer.close(index);
+                            $("#" + goodsId).replaceWith('<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="put(' + "'" + goodsId + "'" + ')">上架</a>');
+                        });
+                    } else {
+                        layer.msg(data.msg, {time: 1000});
                     }
-                });
-            },
-            function (index) {
-                layer.close(index);
-            }
-        );
-    } else {
-        layer.confirm(
-            "您确定要下架该商品？",
-            {btn: ["确定", "取消"]},
-            function (index) {
-                $.ajax({
-                    type: "POST",
-                    url: "/seckillGoods/pull",
-                    data: goodsId,
-                    contentType: 'application/json;charset=UTF-8',
-                    success: function (data) {
-                        if (data.status === true) {
-                            layer.msg(data.msg, {time: 800}, function () {
-                                layer.close(index);
-                                $("#" + goodsId).replaceWith('<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="put(' + "'" + goodsId + "', " + "'seckill'" +')">上架</a>');
-                            });
-                        } else {
-                            layer.msg(data.msg, {time : 1000});
-                        }
-                    }
-                });
-            },
-            function (index) {
-                layer.close(index);
-            }
-        );
-    }
+                }
+            });
+        },
+        function (index) {
+            layer.close(index);
+        }
+    );
 }
 
 function put(goodsId, listType) {
@@ -316,10 +288,11 @@ function put(goodsId, listType) {
                 if (startTime > endTime) {
                     layer.msg("开始时间不能大于结束时间", {time: 1200});
                     return false;
-                } else if (startTime < new Date(new Date().getTime() + 1800 * 1000)) {
-                    layer.msg("开始时间至少在当前时间一小时以后", {time: 1200});
-                    return false;
                 }
+                // else if (startTime < new Date(new Date().getTime() + 1800 * 1000)) {
+                //     layer.msg("开始时间至少在当前时间一小时以后", {time: 1200});
+                //     return false;
+                // }
 
                 var timeInfo = {"seckillGoodsId": goodsId, "startTime": startTime, "endTime": endTime};
                 $.ajax({
@@ -330,7 +303,7 @@ function put(goodsId, listType) {
                         if (data.status === true) {
                             layer.msg(data.msg, {time: 800});
                             layer.close(index);
-                            $("#" + goodsId).replaceWith('<a id="' + goodsId + '" class="btn btn-xs btn-warning opear" onclick="pull(' + "'" + goodsId + "'" + ')">下架</a>');
+                            $("#" + goodsId).replaceWith("上架中");
                         } else {
                             layer.msg(data.msg, {time: 1000});
                         }

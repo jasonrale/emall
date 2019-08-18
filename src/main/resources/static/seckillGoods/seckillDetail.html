@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name="keywords" content="EMall网上商城">
+    <meta name="description" content="EMall网上商城">
+    <title>商品详情 - EMall</title>
+    <link rel="icon" href="../afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../afrontfiles/css/common.css">
+    <link rel="stylesheet" href="../afrontfiles/css/detail.css">
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../afrontfiles/js/common.js"></script>
+    <script src="../afrontfiles/js/seckillDetail.js"></script>
+</head>
+<body>
+<div class="nav">
+    <div class="w">
+        <div class="user-info">
+            <span class="user login">
+                <span class="link login" id="login" style="display: block">&nbsp;登录</span>
+                <span class="link-text" id="welcome" style="display: none">欢迎
+                    <span id="loginName" style="display: none"></span>，
+                </span>
+                <span class="link js-logout" id="logout" style="display: none">退出</span>
+            </span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="link" href="">购物车(<span class="cart-count">0</span>)</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的订单</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="../authenticated/user/userCenter.html">我的EMall</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="header">
+    <div class="w">
+        <span class="logo">EMall</span>
+        <div class="search-con">
+            <input type="text" class="search-input" id="keyWord" placeholder="请输入商品名称"/>
+            <input type="submit" id="query" class="btn search-btn" value="搜索" onclick="query()"/>
+        </div>
+    </div>
+</div>
+<div class="crumb">
+    <div class="w">
+        <div class="crumb-con">
+            <span class="link" id="emall">EMall</span>
+            <span>&gt;</span>
+            <span class="link-text">商品详情页</span>
+        </div>
+    </div>
+</div>
+<div class="page-wrap w">
+    <div class="intro-wrap">
+        <div class="p-img-con">
+            <div class="main-img-con">
+                <img class="main-img" id="goodsImage" src="" alt="">
+            </div>
+        </div>
+        <div class="p-info-con">
+            <h1 class="p-name" id="goodsName"></h1>
+            <p class="p-subtitle" id="goodsDescribe"></p>
+            <div class="p-info-item p-price-con">
+                <span class="label">价格:</span>
+                <span class="info" id="goodsPrice"></span>
+            </div>
+            <div class="p-info-item">
+                <span class="label">库存:</span>
+                <span class="info" id="goodsStock"></span>
+            </div>
+            <div class="p-info-item">
+                <span class="label">状态:</span>
+                <span class="info" id="goodsStatus"></span>
+            </div>
+            <div class="p-info-item">
+                <span class="label" style="width: 80px">开始时间:</span>
+                <span class="info" id="startTime"></span>
+            </div>
+            <div class="p-info-item">
+                <span class="label" style="width: 80px">结束时间:</span>
+                <span class="info" id="endTime"></span>
+            </div>
+            <div id="countDownDiv" class="p-info-item">
+                <span class="label">倒计时:</span>
+                <input type="hidden" id="remainSeconds">
+                <span class="info" id="countDown"></span>秒
+            </div>
+            <div class="p-info-item">
+                <input type="button" id="seckill" class="seckill" value="立即秒杀">
+            </div>
+        </div>
+    </div>
+    <div class="detail-wrap">
+        <div class="detail-tab-con">
+            <ul class="tab-list">
+                <li class="tab-item active">详细描述</li>
+            </ul>
+        </div>
+        <div class="detail-con">
+            <img id="goodsDetails" src="" alt="">
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="w">
+        <div class=links>EMall网上商城</div>
+    </div>
+</div>
+</body>
+</html>

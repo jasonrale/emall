@@ -6,13 +6,13 @@ import com.emall.result.Result;
 import com.emall.service.UserService;
 import com.emall.shiro.ShiroEncrypt;
 import com.emall.utils.ClassCastUtil;
+import com.emall.utils.LoginSession;
 import com.emall.vo.LoginVo;
 import com.emall.vo.PasswordVo;
 import com.emall.vo.UserUpdateVo;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.session.Session;
-import org.apache.shiro.session.UnknownSessionException;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.util.SavedRequest;
 import org.apache.shiro.web.util.WebUtils;
@@ -31,6 +31,9 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Resource
+    private LoginSession loginSession;
+
+    @Resource
     private UserService userService;
 
     @Resource
@@ -46,15 +49,7 @@ public class UserController {
     public Result<Object> userInfo() {
         logger.info("获取用户登录信息中......");
 
-        User userInfo = null;
-        try {
-            Object object = SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
-            if (object != null) {
-                userInfo = castUtil.classCast(object, User.class);
-            }
-        } catch (IllegalAccessException | InstantiationException | UnknownSessionException e) {
-            throw new GeneralException("登录已过期");
-        }
+        User userInfo = loginSession.getUserSession();
 
         return userInfo != null ? Result.success("用户" + userInfo.getUserName() + "已登录", userInfo) : Result.error("用户未登录");
     }
@@ -69,16 +64,7 @@ public class UserController {
     public Result<Object> adminInfo() {
         logger.info("获取管理员登录信息中......");
 
-        User adminInfo = null;
-        try {
-            Object object = SecurityUtils.getSubject().getSession().getAttribute("SysAdmin");
-            if (object != null) {
-                adminInfo = castUtil.classCast(object, User.class);
-            }
-
-        } catch (IllegalAccessException | InstantiationException | UnknownSessionException e) {
-            throw new GeneralException("登录已过期");
-        }
+        User adminInfo = loginSession.getAdminSession();
 
         return adminInfo != null ? Result.success("管理员" + adminInfo.getUserName() + "已登录", adminInfo) : null;
     }

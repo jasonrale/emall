@@ -1,8 +1,5 @@
 package com.emall.utils;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 

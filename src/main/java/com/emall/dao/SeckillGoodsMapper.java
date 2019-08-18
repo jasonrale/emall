@@ -12,6 +12,8 @@ public interface SeckillGoodsMapper {
 
     int insert(Goods goods);
 
+    int update(SeckillGoods seckillGoods);
+
     int count();
 
     int countOnShelf();
@@ -24,7 +26,5 @@ public interface SeckillGoodsMapper {
 
     int pull(@Param("seckillGoodsId") String seckillGoodsId);
 
-    int put(@Param("seckillGoodsId") String seckillGoodsId, @Param("startTime") Date startTime, @Param("endTime") Date endTime);
-
-
+    void changeStatus(@Param("seckillGoodsId") String seckillGoodsId, @Param("complete") Integer complete);
 }

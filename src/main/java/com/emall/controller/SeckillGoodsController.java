@@ -3,14 +3,13 @@ package com.emall.controller;
 import com.emall.entity.SeckillGoods;
 import com.emall.result.Result;
 import com.emall.service.SeckillGoodsService;
-import com.emall.utils.PageModel;
+import com.emall.vo.SeckillGoodsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.validation.Valid;
 import java.util.Date;
 
 @Controller
@@ -35,18 +34,54 @@ public class SeckillGoodsController {
     }
 
     /**
-     * 根据秒杀商品id查询
+     * 用户端根据秒杀商品id查询
      *
      * @param seckillGoodsId
      * @return
      */
     @GetMapping("/{seckillGoodsId}/seckillGoodsId")
     @ResponseBody
-    public Result selectBySeckillGoodsId(@PathVariable("seckillGoodsId") String seckillGoodsId) {
+    public Result<SeckillGoodsVo> selectBySeckillGoodsIdForUser(@PathVariable("seckillGoodsId") String seckillGoodsId) {
+        logger.info("根据秒杀商品id=" + seckillGoodsId + "查询商品信息");
+        SeckillGoods seckillGoods = seckillGoodsService.selectBySeckillGoodsIdFromCache(seckillGoodsId);
+
+        if (seckillGoodsId == null) {
+            return Result.error("查询商品信息失败");
+        }
+
+        long startTime = seckillGoods.getSeckillGoodsStartTime().getTime() / 1000;
+        long endTime = seckillGoods.getSeckillGoodsEndTime().getTime() / 1000;
+        long now = System.currentTimeMillis() / 1000;
+        int remainSeconds = 0;
+        if (now < startTime) {//秒杀准备中，倒计时
+            seckillGoods.setSeckillGoodsStatus(1);
+            remainSeconds = (int) (startTime - now);
+        } else if (now > endTime) {//秒杀已经结束
+            seckillGoods.setSeckillGoodsStatus(3);
+            remainSeconds = (int) (startTime - endTime);
+        } else {//秒杀进行中
+            seckillGoods.setSeckillGoodsStatus(2);
+        }
+        SeckillGoodsVo vo = new SeckillGoodsVo();
+        vo.setSeckillGoods(seckillGoods);
+        vo.setGoingSeconds((int) (startTime - endTime));
+        vo.setRemainSeconds(remainSeconds);
+
+        return Result.success("秒杀商品查询成功", vo);
+    }
+
+    /**
+     * 管理员根据秒杀商品id查询
+     *
+     * @param seckillGoodsId
+     * @return
+     */
+    @GetMapping("/admin/{seckillGoodsId}/seckillGoodsId")
+    @ResponseBody
+    public Result<SeckillGoods> selectBySeckillGoodsIdForAdmin(@PathVariable("seckillGoodsId") String seckillGoodsId) {
         logger.info("根据秒杀商品id=" + seckillGoodsId + "查询商品信息");
 
-        return seckillGoodsId != null ? Result.success("秒杀商品查询成功", seckillGoodsService.selectBySeckillGoodsId(seckillGoodsId)) :
-                Result.error("秒杀商品查询失败");
+        return seckillGoodsId != null ? Result.success("秒杀商品查询成功", seckillGoodsService.selectBySeckillGoodsId(seckillGoodsId)) : Result.error("秒杀商品查询失败");
     }
 
     /**
@@ -73,34 +108,21 @@ public class SeckillGoodsController {
     @PostMapping("")
     @ResponseBody
     public Result put(@RequestParam("seckillGoodsId") String seckillGoodsId, @RequestParam("startTime") Date startTime, @RequestParam("endTime") Date endTime) {
-        Date date = new Date(System.currentTimeMillis() + 1800 * 1000);
         if (startTime == null) {
             return Result.error("开始时间不能为空");
         } else if (endTime == null) {
             return Result.error("结束时间不能为空");
         } else if (startTime.after(endTime)) {
             return Result.error("开始时间不能大于结束时间");
-        } else if (startTime.before(new Date(System.currentTimeMillis() + 1800 * 1000))) {
-            return Result.error("开始时间至少在当前时间一小时以后");
         }
+//        else if (startTime.before(new Date(System.currentTimeMillis() + 900 * 1000))) {
+//            return Result.error("开始时间至少在当前时间半小时以后");
+//        }
 
         if (seckillGoodsService.countOnShelf() >= 12) {
             return Result.error("秒杀商品同时上架不可超过十二种");
         }
 
         return seckillGoodsService.put(seckillGoodsId, startTime, endTime) ? Result.success("商品上架成功", null) : Result.error("商品上架失败");
-    }
-
-    /**
-     * 下架商品
-     *
-     * @param seckillGoodsId
-     * @return
-     */
-    @PostMapping(value = "/pull")
-    @ResponseBody
-    public Result pull(@RequestBody String seckillGoodsId) {
-        logger.info("下架商品,id=" + seckillGoodsId);
-        return seckillGoodsService.pull(seckillGoodsId) ? Result.success("商品下架成功", null) : Result.error("秒杀进行中，无法下架");
     }
 }
