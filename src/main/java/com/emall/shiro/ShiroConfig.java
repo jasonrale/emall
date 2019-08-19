@@ -90,6 +90,7 @@ public class ShiroConfig {
         filterChainDefinitionMap.put("/afrontfiles/**","anon");
         filterChainDefinitionMap.put("/*","anon");
         filterChainDefinitionMap.put("/goods/**","anon");
+        filterChainDefinitionMap.put("/seckillGoods/seckillDetail.html*", "authc");
         filterChainDefinitionMap.put("/seckillGoods/**", "anon");
         filterChainDefinitionMap.put("/user/**","anon");
         filterChainDefinitionMap.put("/result/**","anon");

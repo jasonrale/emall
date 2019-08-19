@@ -3,6 +3,8 @@ package com.emall.controller;
 import com.emall.entity.SeckillGoods;
 import com.emall.result.Result;
 import com.emall.service.SeckillGoodsService;
+import com.emall.service.SeckillService;
+import com.emall.utils.LoginSession;
 import com.emall.vo.SeckillGoodsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletResponse;
+import java.awt.image.BufferedImage;
+import java.io.OutputStream;
 import java.util.Date;
 
 @Controller
@@ -19,6 +25,9 @@ public class SeckillGoodsController {
 
     @Resource
     SeckillGoodsService seckillGoodsService;
+
+    @Resource
+    LoginSession loginSession;
 
     /**
      * 用户端查询所有秒杀商品
@@ -124,5 +133,29 @@ public class SeckillGoodsController {
         }
 
         return seckillGoodsService.put(seckillGoodsId, startTime, endTime) ? Result.success("商品上架成功", null) : Result.error("商品上架失败");
+    }
+
+    /**
+     * 获取秒杀验证码
+     *
+     * @param response
+     * @param seckillGoodsId
+     * @return
+     */
+    @GetMapping("/captcha/{seckillGoodsId}/seckillGoodsId")
+    @ResponseBody
+    public Result getSeckillCaptcha(HttpServletResponse response, @PathVariable("seckillGoodsId") String seckillGoodsId) {
+
+        try {
+            BufferedImage image = seckillGoodsService.createCaptcha(loginSession.getUserSession(), seckillGoodsId);
+            OutputStream out = response.getOutputStream();
+            ImageIO.write(image, "JPEG", out);
+            out.flush();
+            out.close();
+            return Result.success("生成验证码", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Result.error("就差一点点哦，秒杀失败");
+        }
     }
 }

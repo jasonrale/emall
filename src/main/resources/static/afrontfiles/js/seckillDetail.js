@@ -31,10 +31,16 @@ function seckillDetail(seckillGoodsId) {
                 $("#startTime").html(new Date(seckillGoods.seckillGoodsStartTime).format("yyyy-MM-dd hh:mm:ss"));
                 $("#endTime").html(new Date(seckillGoods.seckillGoodsEndTime).format("yyyy-MM-dd hh:mm:ss"));
                 $("#remainSeconds").val(remainSeconds);
-                remainSeconds > 0 ? $("#countDown").html(remainSeconds) : $("#countDown").html(remainSeconds).css("display", "none")
+                if (remainSeconds > 0) {
+                    $("#countDown").html(remainSeconds);
+                } else {
+                    $("#countDown").html(remainSeconds).css("display", "none");
+                    $("#captchaImg").attr("src", "/seckillGoods/captcha/" + seckillGoods.seckillGoodsId + "/seckillGoodsId");
+                    $("#captcha").css("display", "block");
+                }
                 $("#goodsImage").attr("src", seckillGoods.seckillGoodsImage);
                 $("#goodsDetails").attr("src", seckillGoods.seckillGoodsDetails);
-                $("#seckill").replaceWith('<input type="button" id="seckill" class="seckill" onclick="seckill(' + "'" + seckillGoods.seckillGoodsId + "'" + ')" value="立即秒杀">');
+                $("#seckill").replaceWith('<input type="button" id="seckill" class="seckill" onclick="captcha(' + "'" + seckillGoods.seckillGoodsId + "'" + ')" value="立即秒杀">');
                 countDown(false, goingSeconds);
             }
         },
@@ -60,9 +66,22 @@ function countDown(timeFlag, goingSeconds) {
         timeout = setTimeout(function () {
             countDown(timeFlag, goingSeconds);
         }, 1000);
-    } else if (remainSeconds >= goingSeconds) {//秒杀进行中
+    } else if (remainSeconds === goingSeconds) {//秒杀进行中
         timeFlag = true;
         $("#countDownDiv").css("display", "none");
+        $("#captchaImg").attr("src", "/seckillGoods/captcha/" + seckillGoods.seckillGoodsId + "/seckillGoodsId");
+        $("#captcha").css("display", "block");
+        $("#goodsStatus").html("进行中");
+        $("#seckill").attr("disabled", false);
+        $("#countDown").html(remainSeconds - 1);
+        $("#remainSeconds").val(remainSeconds - 1);
+        timeout = setTimeout(function () {
+            countDown(timeFlag, goingSeconds);
+        }, 1000);
+    } else if (remainSeconds > goingSeconds) {//秒杀进行中
+        timeFlag = true;
+        $("#countDownDiv").css("display", "none");
+        $("#captcha").css("display", "block");
         $("#goodsStatus").html("进行中");
         $("#seckill").attr("disabled", false);
         $("#countDown").html(remainSeconds - 1);
@@ -81,9 +100,9 @@ function countDown(timeFlag, goingSeconds) {
 }
 
 /**
- * 秒杀
+ * 秒杀验证码
  * @param seckillGoodsId
  */
-function seckill(seckillGoodsId) {
-    alert("秒杀");
+function captcha(seckillGoodsId) {
+
 }

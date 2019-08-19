@@ -84,5 +84,5 @@ function querySeckillGoods(ins) {
  * 跳转秒杀商品详情页面
  */
 function seckillDetail(seckillGoodsId) {
-    $(window).attr("location", "seckillGoods/seckillDetail.html?seckillGoodsId=" + seckillGoodsId);
+    window.open("seckillGoods/seckillDetail.html?seckillGoodsId=" + seckillGoodsId);
 }

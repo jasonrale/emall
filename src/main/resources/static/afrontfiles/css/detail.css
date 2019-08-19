@@ -187,12 +187,36 @@
     cursor: pointer
 }
 
+.intro-wrap .p-info-con .captcha {
+    padding: 0 10px;
+    height: 41px;
+}
+
+#captchaImg {
+    position: relative;
+    left: 70px;
+    bottom: 27px;
+}
+
+#captchaResult {
+    width: 30px;
+    height: 25px;
+    position: relative;
+    left: 180px;
+    bottom: 58px;
+}
+
+.intro-wrap .p-info-con .captcha .captchaLabel {
+    margin-top: 20px;
+    display: inline-block;
+    width: 80px;
+    color: #999;
+}
 .intro-wrap .p-info-con .p-info-item .seckill {
     display: inline-block;
     padding: 0 15px 0 18px;
     margin: 0 40px;
     height: 40px;
-    line-height: 35px;
     border-radius: 10px;
     border-style: outset;
     background: rgba(232, 65, 19, 0.92);

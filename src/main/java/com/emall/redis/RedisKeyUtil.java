@@ -35,6 +35,14 @@ public class RedisKeyUtil {
         return SECKILL_GOODS_PREFIX + seckillGoods.getSeckillGoodsId();
     }
 
+    public static String seckillStockById(String seckillGoodsId) {
+        return SECKILL_GOODS_PREFIX + "Stock:" + seckillGoodsId;
+    }
+
+    public static String captcha(String userId, String seckillGoodsId) {
+        return SECKILL_GOODS_PREFIX + "Captcha:" + ":" + userId + ":" + seckillGoodsId;
+    }
+
     public static String keyWordOfSort(String keyWord, String sort, int currentNo, int pageSize) {
         return sort.equals("none") ? StringUnicode.stringToUnicode(GOODS_PREFIX + "User:" + keyWord + ":" + "none:" + currentNo + ":" + pageSize) :
                 sort.equals("asc") ? StringUnicode.stringToUnicode(GOODS_PREFIX + "User:" + keyWord + ":" + Goods.PRICE_ASC + ":" + currentNo + ":" + pageSize) :

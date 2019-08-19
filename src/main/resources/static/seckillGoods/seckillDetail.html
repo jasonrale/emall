@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../afrontfiles/css/common.css">
     <link rel="stylesheet" href="../afrontfiles/css/detail.css">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../afrontfiles/layui/lay/modules/layer.js"></script>
     <script src="../afrontfiles/js/common.js"></script>
     <script src="../afrontfiles/js/seckillDetail.js"></script>
 </head>
@@ -87,9 +88,16 @@
                 <span class="info" id="endTime"></span>
             </div>
             <div id="countDownDiv" class="p-info-item">
-                <span class="label">倒计时:</span>
+                <span class="label" style="width: 80px">倒计时:</span>
                 <input type="hidden" id="remainSeconds">
                 <span class="info" id="countDown"></span>秒
+            </div>
+            <div id="captcha" class="captcha" style="display: none">
+                <label class="captchaLabel" for="captchaResult">验证码:</label>
+                <span class="info">
+                    <img id="captchaImg" width="100px" height="35px" src="" alt="秒杀验证码"/>
+                    <input type="text" id="captchaResult"/>
+                </span>
             </div>
             <div class="p-info-item">
                 <input type="button" id="seckill" class="seckill" value="立即秒杀">
