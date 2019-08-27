@@ -96,9 +96,8 @@ public class GoodsController {
     @ResponseBody
     public Result<Goods> selectByGoodsId(@PathVariable("goodsId") String goodsId) {
         logger.info("根据商品id=" + goodsId + "查询商品");
-
-        return goodsId != null ? Result.success("查询商品成功", goodsService.selectByGoodsId(goodsId)) :
-                Result.error("查询商品失败");
+        Goods goods = goodsService.selectByGoodsId(goodsId);
+        return goods != null ? Result.success("查询商品成功", goods) : Result.error("查询商品失败");
     }
 
     /**

@@ -5,7 +5,7 @@
 		<id column="shipping_id" jdbcType="VARCHAR" property="shippingId"/>
 		<result column="user_id" jdbcType="VARCHAR" property="userId"/>
 		<result column="shipping_name" jdbcType="VARCHAR" property="shippingName"/>
-		<result column="shipping_mobile_number" jdbcType="INTEGER" property="shippingMobileNumber"/>
+		<result column="shipping_mobile_number" jdbcType="VARCHAR" property="shippingMobileNumber"/>
 		<result column="shipping_address" jdbcType="VARCHAR" property="shippingAddress"/>
 	</resultMap>
 	
@@ -13,14 +13,21 @@
 		shipping_id, user_id, shipping_name, shipping_mobile_number, shipping_address
 	</sql>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="queryAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from shipping
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectByShippingId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from shipping
 		where shipping_id = #{shippingId,jdbcType=VARCHAR}
 	</select>
 	
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+	<delete id="deleteByShippingId" parameterType="java.lang.String">
 		delete
 		from shipping
 		where shipping_id = #{shippingId,jdbcType=VARCHAR}
@@ -29,14 +36,13 @@
 	<insert id="insert" parameterType="com.emall.entity.Shipping">
 		insert into shipping (shipping_id, user_id, shipping_name, shipping_mobile_number, shipping_address)
 		values (#{shippingId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{shippingName,jdbcType=VARCHAR},
-				#{shippingMobileNumber,jdbcType=INTEGER}, #{shippingAddress,jdbcType=VARCHAR})
+				#{shippingMobileNumber,jdbcType=VARCHAR}, #{shippingAddress,jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="updateByPrimaryKey" parameterType="com.emall.entity.Shipping">
+	<update id="update" parameterType="com.emall.entity.Shipping">
 		update shipping
-		set user_id                = #{userId,jdbcType=VARCHAR},
-			shipping_name          = #{shippingName,jdbcType=VARCHAR},
-			shipping_mobile_number = #{shippingMobileNumber,jdbcType=INTEGER},
+		set shipping_name          = #{shippingName,jdbcType=VARCHAR},
+			shipping_mobile_number = #{shippingMobileNumber,jdbcType=VARCHAR},
 			shipping_address       = #{shippingAddress,jdbcType=VARCHAR}
 		where shipping_id = #{shippingId,jdbcType=VARCHAR}
 	</update>

@@ -36,9 +36,6 @@ public class SeckillGoodsService {
     @Resource
     ScheduledExecutorService scheduleThreadPool;
 
-    //验证码数学运算符
-    private static char[] ops = new char[]{'+', '-', '*'};
-
     /**
      * 管理员分页查询全部秒杀商品
      *
@@ -116,9 +113,9 @@ public class SeckillGoodsService {
         long end = endTime.getTime() / 1000;
         long now = System.currentTimeMillis() / 1000;
         //秒杀商品缓存 结束10分钟后时失效
-        redisTemplate.opsForValue().set(seckillGoodsKey, seckillGoods, end - now + 600, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(seckillGoodsKey, seckillGoods, end - now + 1800, TimeUnit.SECONDS);
         //秒杀库存缓存
-        redisTemplate.opsForValue().set(seckillStockKey, seckillGoods.getSeckillGoodsStock(), end - now + 600, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(seckillStockKey, seckillGoods.getSeckillGoodsStock(), end - now + 1800, TimeUnit.SECONDS);
         redisTemplate.opsForList().rightPush(RedisKeyUtil.seckillGoodsAll(), seckillGoodsKey);
 
         //定时任务
@@ -216,91 +213,9 @@ public class SeckillGoodsService {
         return seckillGoodsList;
     }
 
-    /**
-     * 创建验证码
-     *
-     * @param user
-     * @param seckillGoodsId
-     * @return
-     */
-    public BufferedImage createCaptcha(User user, String seckillGoodsId) {
-        int width = 80;
-        int height = 32;
+    public boolean reduceStock(SeckillGoods seckillGoods) {
+        String seckillGoodsId = seckillGoods.getSeckillGoodsId();
 
-        //创建图像
-        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        Graphics g = image.getGraphics();
-
-        //设置背景颜色
-        g.setColor(new Color(0xDCDCDC));
-        g.fillRect(0, 0, width, height);
-
-        //设置画笔颜色
-        g.setColor(Color.black);
-        g.drawRect(0, 0, width - 1, height - 1);
-
-        //生成随机干扰点
-        Random random = new Random();
-        for (int i = 0; i < 50; i++) {
-            int x = random.nextInt(width);
-            int y = random.nextInt(height);
-            g.drawOval(x, y, 0, 0);
-        }
-        //生成随机码
-        String captcha = generateCaptcha(random);
-        g.setColor(new Color(0, 100, 0));
-        g.setFont(new Font("Candara", Font.BOLD, 24));
-        g.drawString(captcha, 8, 24);
-        g.dispose();
-
-        //把验证码存到redis中
-        int calcResult = calc(captcha);
-        redisTemplate.opsForValue().set(RedisKeyUtil.captcha(user.getUserId(), seckillGoodsId), calcResult);
-
-        return image;
-    }
-
-//    public boolean checkCaptcha(MiaoshaUser user, long goodsId, int verifyCode) {
-//        if(user == null || goodsId <=0) {
-//            return false;
-//        }
-//        Integer codeOld = redisService.get(MiaoshaKey.getMiaoshaVerifyCode, user.getId()+","+goodsId, Integer.class);
-//        if(codeOld == null || codeOld - verifyCode != 0 ) {
-//            return false;
-//        }
-//        redisService.delete(MiaoshaKey.getMiaoshaVerifyCode, user.getId()+","+goodsId);
-//        return true;
-//    }
-
-    /**
-     * 计算数学表达式结果
-     *
-     * @param exp
-     * @return
-     */
-    private static int calc(String exp) {
-        try {
-            ScriptEngineManager manager = new ScriptEngineManager();
-            ScriptEngine engine = manager.getEngineByName("JavaScript");
-            return (Integer) engine.eval(exp);
-        } catch (ScriptException e) {
-            e.printStackTrace();
-            return 0;
-        }
-    }
-
-    /**
-     * 生成加减乘验证码
-     *
-     * @param random
-     * @return
-     */
-    private String generateCaptcha(Random random) {
-        int num1 = random.nextInt(10);
-        int num2 = random.nextInt(10);
-        int num3 = random.nextInt(10);
-        char op1 = ops[random.nextInt(3)];
-        char op2 = ops[random.nextInt(3)];
-        return "" + num1 + op1 + num2 + op2 + num3;
+        return seckillGoodsMapper.reduceStock(seckillGoodsId) != 0;
     }
 }

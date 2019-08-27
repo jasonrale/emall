@@ -1,13 +1,18 @@
 package com.emall.dao;
 
 import com.emall.entity.Shipping;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface ShippingMapper {
-    int deleteByPrimaryKey(String shippingId);
+    Shipping selectByShippingId(@Param("shippingId") String shippingId);
 
-    int insert(Shipping record);
+    int deleteByShippingId(@Param("shippingId") String shippingId);
 
-    Shipping selectByPrimaryKey(String shippingId);
+    int insert(Shipping shipping);
 
-    int updateByPrimaryKey(Shipping record);
+    int update(Shipping shipping);
+
+    List<Shipping> queryAll(@Param("userId") String userId);
 }

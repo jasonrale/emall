@@ -12,7 +12,7 @@
 		seckill_order_id, order_id, user_id, seckill_goods_id
 	</sql>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="selectBySeckillOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from seckill_order
@@ -26,9 +26,8 @@
 	</delete>
 	
 	<insert id="insert" parameterType="com.emall.entity.SeckillOrder">
-		insert into seckill_order (seckill_order_id, order_id, user_id, seckill_goods_id)
-		values (#{seckillOrderId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
-				#{seckillGoodsId,jdbcType=VARCHAR})
+		insert into seckill_order (seckill_order_id, user_id, seckill_goods_id)
+		values (#{seckillOrderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{seckillGoodsId,jdbcType=VARCHAR})
 	</insert>
 	
 	<update id="updateByPrimaryKey" parameterType="com.emall.entity.SeckillOrder">

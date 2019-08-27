@@ -28,6 +28,7 @@ function uNameValid() {
     } else {
         $(".error-item").css("display", "none");
     }
+
     return result;
 }
 
@@ -43,6 +44,7 @@ function pwdValid() {
     } else {
         $(".error-item").css("display", "none");
     }
+
     return result;
 }
 
@@ -59,13 +61,13 @@ function pwdConfirmValid() {
     } else {
         $(".error-item").css("display", "none");
     }
+
     return result;
 }
 
 //验证手机号码
-function mobileValid() {
+function mobileValid(mobileNumber) {
     var result = true;
-    var mobileNumber = $("#mobile").val();
     var mobileValidate = /^(1[3-9])\d{9}$/;
 
     if (!(mobileValidate.test(mobileNumber))) {
@@ -75,18 +77,19 @@ function mobileValid() {
     } else {
         $(".error-item").css("display", "none");
     }
+
     return result;
 }
 
 //验证提交
 function submitValid() {
-    if (uNameValid() && pwdValid() && pwdConfirmValid() && mobileValid()) {
+    var mobileNumber = $("#mobile").val();
+    if (uNameValid() && pwdValid() && pwdConfirmValid() && mobileValid(mobileNumber)) {
         $(".error-item").css("display", "none");
 
         var userName = $("#username").val();
         var password = $("#password").val();
         var sex = $(".sex:checked").val();
-        var mobileNumber = $("#mobile").val();
 
         var submit = {
             "userName": userName,

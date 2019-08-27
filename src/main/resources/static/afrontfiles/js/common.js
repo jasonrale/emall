@@ -12,14 +12,14 @@ $(document).ready(function () {
 
 //获取url后的参数
 function getUrlParam(name) {
-    var sValue = location.search.match(new RegExp("[\?\&]" + name + "=([^\&]*)(\&?)", "i"));
-    return sValue ? sValue[1] : sValue;
+    var param = window.location.search.substr(1).match(new RegExp("(^|&)" + name + "=([^&]*)(&|$)"));
+    return param ? unescape(param[2]) : param;
 }
 
 
 //展示loading
 function showLoading(){
-    return layer.msg('处理中...', {icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '0px', time: 5000});
+    return layer.msg('处理中...', {icon: 16, shade: [0.5, '#f5f5f5'], scrollbar: false, offset: '0px', time: 10000});
 }
 
 /**

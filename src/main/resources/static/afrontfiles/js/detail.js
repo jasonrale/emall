@@ -1,9 +1,15 @@
 $(document).ready(function () {
     userInfo();
 
-    var goodsId = (getUrlParam("goodsId"));
+    var goodsId = getUrlParam("goodsId");
+    var seckillGoodsId = getUrlParam("seckillGoodsId");
 
-    detail(goodsId);
+    if (seckillGoodsId !== null || seckillGoodsId !== "") {
+        seckillGoodsDetail(seckillGoodsId);
+    } else {
+        detail(goodsId);
+    }
+
 });
 
 /**
@@ -37,4 +43,27 @@ function countValid(goodsStock) {
             element.value = 1;
         }
     }
+}
+
+/**
+ * 秒杀商品详情信息
+ */
+function seckillGoodsDetail(seckillGoodsId) {
+    $.ajax({
+        type: "GET",
+        url: "/seckillGoods/" + seckillGoodsId + "/seckillGoodsId",
+        success: function (data) {
+            var seckillGoods = data.obj;
+            $("#goodsName").html(seckillGoods.seckillGoodsName);
+            $("#goodsDescribe").html(seckillGoods.seckillGoodsDescribe);
+            $("#goodsStatus").html(status === 0 ? "未上架" : status === 1 ? "准备中" : status === 2 ? "进行中" : "已结束");
+            $("#goodsPrice").html(seckillGoods.seckillGoodsPrice + "元");
+            $("#goodsStock").html(seckillGoods.seckillGoodsStock + "件");
+            $("#startTime").html(new Date(seckillGoods.seckillGoodsStartTime).format("yyyy-MM-dd hh:mm:ss"));
+            $("#endTime").html(new Date(seckillGoods.seckillGoodsEndTime).format("yyyy-MM-dd hh:mm:ss"));
+            $("#goodsImage").attr("src", seckillGoods.seckillGoodsImage);
+            $("#goodsDetails").attr("src", seckillGoods.seckillGoodsDetails);
+            $("#countDiv").css("display", "none");
+        }
+    });
 }

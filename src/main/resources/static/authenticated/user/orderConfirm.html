@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name="keywords" content="EMall网上商城">
+    <meta name="description" content="EMall网上商城">
+    <title>订单确认 - EMall</title>
+    <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../afrontfiles/css/common.css">
+    <link href="../../afrontfiles/css/orderConfirm.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../afrontfiles/layer/layer.js"></script>
+    <script src="../../afrontfiles/js/common.js"></script>
+    <script src="../../afrontfiles/js/orderConfirm.js"></script>
+</head>
+<body>
+<div class="nav">
+    <div class="w">
+        <div class="user-info">
+            <span class="user login">
+                <span class="link login" id="login" style="display: block">&nbsp;登录</span>
+                <span class="link-text" id="welcome" style="display: none">欢迎
+                    <span id="loginName" style="display: none"></span>，
+                </span>
+                <span class="link js-logout" id="logout" style="display: none">退出</span>
+            </span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="link" href="">购物车(<span class="cart-count">0</span>)</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的订单</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="userCenter.html">我的EMall</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="header">
+    <div class="w">
+        <span class="logo">EMall</span>
+        <div class="search-con">
+            <input type="text" class="search-input" id="keyWord" placeholder="请输入商品名称"/>
+            <input type="submit" id="query" class="btn search-btn" value="搜索" onclick="query()"/>
+        </div>
+    </div>
+</div>
+<div class="crumb">
+    <div class="w">
+        <div class="crumb-con">
+            <span class="link" id="emall">EMall</span>
+            <span>></span>
+            <span class="link-text">订单确认</span>
+        </div>
+    </div>
+</div>
+<div class="page-wrap w">
+    <div class="panel">
+        <h1 class="panel-title">收货地址信息</h1>
+        <div class="panel-body address-con">
+        </div>
+    </div>
+    <div class="panel">
+        <h1 class="panel-title">商品清单</h1>
+        <div class="panel-body product-con">
+            <table class=product-table>
+                <tr>
+                    <th class=cell-img>&nbsp;</th>
+                    <th class=cell-info>商品描述</th>
+                    <th class=cell-price>价格</th>
+                    <th class=cell-count>数量</th>
+                    <th class=cell-total>小计</th>
+                </tr>
+            </table>
+            <div class=submit-con>
+                <span>订单总价:</span><span class=submit-total></span>
+                <input type="button" id="submit" class="btn order-submit" value="提交订单">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-wrap">
+    <div id="modal" class="modal close" style="display: none">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h1 id="update" class="modal-title">修改收获信息</h1>
+                <h1 id="add" class="modal-title">添加收获信息</h1>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="form-line">
+                        <label class="label" for="shippingName">收件人姓名：</label>
+                        <input class="form-item" id="shippingName"/>
+                    </div>
+                    <div class="form-line">
+                        <label class="label" for="shippingAddress">详细地址：</label>
+                        <input class="form-item" id="shippingAddress"/>
+                    </div>
+                    <div class="form-line">
+                        <label class="label" for="shippingMobileNumber">收件人手机：</label>
+                        <input class="form-item" id="shippingMobileNumber"/>
+                    </div>
+                    <div class="form-line">
+                        <input type="hidden" id="shippingId"/>
+                        <a class="btn address-btn" id="shippingSave">保存</a>
+                        <a class="btn address-btn" onclick="shippingCancel()">取消</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="w">
+        <div class=links>EMall网上商城</div>
+    </div>
+</div>
+</body>
+</html>

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -15,19 +16,31 @@ import java.util.Date;
 @AllArgsConstructor
 @Repository
 public class Order {
-    private String orderId;         //订单id
+    public static Integer CANCELED = -1;    //已完成
 
-    private String userId;          //订单用户id
+    public static Integer UNPAID = 0;       //未支付
 
-    private String orderPayment;    //订单总付款
+    public static Integer TOBESHIPPED = 1;  //待发货
 
-    private String orderStatus;     //订单状态--未支付 ：0，待发货 ：1，待收货 ：2，已完成 ：3
+    public static Integer TOBERECEVIED = 2; //待收货
 
-    private Date orderCreateTime;   //订单创建时间
+    public static Integer COMPLETED = 3;    //已完成
 
-    private Date orderPaymentTime;  //订单支付时间
+    private String orderId;                 //订单id
 
-    private Date orderSendTime;     //订单商品发货时间
+    private String userId;                  //订单用户id
 
-    private Date orderEndTime;      //订单完成时间
+    private BigDecimal orderPayment;        //订单总付款
+
+    private Integer orderStatus;            //订单状态
+
+    private Date orderCreateTime;           //订单创建时间
+
+    private Date orderPaymentTime;          //订单支付时间
+
+    private Date orderSendTime;             //订单商品发货时间
+
+    private Date orderEndTime;              //订单完成时间
+
+    private String shippingId;              //订单收货地址
 }

@@ -8,7 +8,7 @@
 		<result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
 		<result column="goods_image" jdbcType="VARCHAR" property="goodsImage"/>
 		<result column="goods_price" jdbcType="DECIMAL" property="goodsPrice"/>
-		<result column="goods_count" jdbcType="VARCHAR" property="goodsCount"/>
+		<result column="goods_count" jdbcType="INTEGER" property="goodsCount"/>
 		<result column="order_item_subtotal" jdbcType="DECIMAL" property="orderItemSubtotal"/>
 	</resultMap>
 	
@@ -16,11 +16,18 @@
 		order_item_id, order_id, goods_id, goods_name, goods_image, goods_price, goods_count, order_item_subtotal
 	</sql>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="selectByOrderItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from order_item
 		where order_item_id = #{orderItemId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from order_item
+		where order_id = #{orderId,jdbcType=VARCHAR}
 	</select>
 	
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
@@ -34,7 +41,7 @@
 								order_item_subtotal)
 		values (#{orderItemId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR},
 				#{goodsName,jdbcType=VARCHAR}, #{goodsImage,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL},
-				#{goodsCount,jdbcType=VARCHAR}, #{orderItemSubtotal,jdbcType=DECIMAL})
+				#{goodsCount,jdbcType=INTEGER}, #{orderItemSubtotal,jdbcType=DECIMAL})
 	</insert>
 	
 	<update id="updateByPrimaryKey" parameterType="com.emall.entity.OrderItem">
@@ -44,7 +51,7 @@
 			goods_name          = #{goodsName,jdbcType=VARCHAR},
 			goods_image         = #{goodsImage,jdbcType=VARCHAR},
 			goods_price         = #{goodsPrice,jdbcType=DECIMAL},
-			goods_count         = #{goodsCount,jdbcType=VARCHAR},
+			goods_count         = #{goodsCount,jdbcType=INTEGER},
 			order_item_subtotal = #{orderItemSubtotal,jdbcType=DECIMAL}
 		where order_item_id = #{orderItemId,jdbcType=VARCHAR}
   </update>

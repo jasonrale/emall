@@ -188,4 +188,11 @@
 		set seckill_goods_status = #{complete,jdbcType=INTEGER}
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</update>
+	
+	<update id="reduceStock">
+		update seckill_goods
+		set seckill_goods_stock = seckill_goods_stock - 1
+		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
+		  and seckill_goods_stock > 0;
+	</update>
 </mapper>

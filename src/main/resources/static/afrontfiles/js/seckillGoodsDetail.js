@@ -9,7 +9,7 @@ $(document).ready(function () {
 function seckillGoodsDetail(seckillGoodsId) {
     $.ajax({
         type: "GET",
-        url: "/seckillGoods/admin/" + seckillGoodsId + "/seckillGoodsId",
+        url: "/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
             var seckillGoods = data.obj;
             var status = seckillGoods.seckillGoodsStatus;

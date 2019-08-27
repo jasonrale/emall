@@ -4,19 +4,20 @@
 	<resultMap id="BaseResultMap" type="com.emall.entity.Order">
 		<id column="order_id" jdbcType="VARCHAR" property="orderId"/>
 		<result column="user_id" jdbcType="VARCHAR" property="userId"/>
-		<result column="order_payment" jdbcType="VARCHAR" property="orderPayment"/>
-		<result column="order_status" jdbcType="VARCHAR" property="orderStatus"/>
+		<result column="order_payment" jdbcType="DECIMAL" property="orderPayment"/>
+		<result column="order_status" jdbcType="INTEGER" property="orderStatus"/>
 		<result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime"/>
 		<result column="order_payment_time" jdbcType="TIMESTAMP" property="orderPaymentTime"/>
 		<result column="order_send_time" jdbcType="TIMESTAMP" property="orderSendTime"/>
 		<result column="order_end_time" jdbcType="TIMESTAMP" property="orderEndTime"/>
+		<result column="shipping_id" jdbcType="VARCHAR" property="shippingId"/>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		order_id, user_id, order_payment, order_status, order_create_time, order_payment_time, order_send_time, order_end_time
+		order_id, user_id, order_payment, order_status, order_create_time, order_payment_time, order_send_time, order_end_time, shipping_id
 	</sql>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from `order`
@@ -31,22 +32,116 @@
 	
 	<insert id="insert" parameterType="com.emall.entity.Order">
 		insert into `order` (order_id, user_id, order_payment, order_status, order_create_time, order_payment_time,
-							 order_send_time, order_end_time)
-		values (#{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{orderPayment,jdbcType=VARCHAR},
-				#{orderStatus,jdbcType=VARCHAR}, #{orderCreateTime,jdbcType=TIMESTAMP},
+							 order_send_time, order_end_time, shipping_id)
+		values (#{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{orderPayment,jdbcType=DECIMAL},
+				#{orderStatus,jdbcType=INTEGER}, #{orderCreateTime,jdbcType=TIMESTAMP},
 				#{orderPaymentTime,jdbcType=TIMESTAMP},
-				#{orderSendTime,jdbcType=TIMESTAMP}, #{orderEndTime,jdbcType=TIMESTAMP})
-  </insert>
+				#{orderSendTime,jdbcType=TIMESTAMP}, #{orderEndTime,jdbcType=TIMESTAMP}, #{shippingId,jdbcType=VARCHAR})
+	</insert>
+	
+	<insert id="insertSelective" parameterType="com.emall.entity.Order">
+		insert into `order`
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				order_id,
+			</if>
+			<if test="userId != null">
+				user_id,
+			</if>
+			<if test="orderPayment != null">
+				order_payment,
+			</if>
+			<if test="orderStatus != null">
+				order_status,
+			</if>
+			<if test="orderCreateTime != null">
+				order_create_time,
+			</if>
+			<if test="orderPaymentTime != null">
+				order_payment_time,
+			</if>
+			<if test="orderSendTime != null">
+				order_send_time,
+			</if>
+			<if test="orderEndTime != null">
+				order_end_time,
+			</if>
+			<if test="shippingId != null">
+				shipping_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="orderId != null">
+				#{orderId,jdbcType=VARCHAR},
+			</if>
+			<if test="userId != null">
+				#{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderPayment != null">
+				#{orderPayment,jdbcType=DECIMAL},
+			</if>
+			<if test="orderStatus != null">
+				#{orderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="orderCreateTime != null">
+				#{orderCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderPaymentTime != null">
+				#{orderPaymentTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderSendTime != null">
+				#{orderSendTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderEndTime != null">
+				#{orderEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="shippingId != null">
+				#{shippingId,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	
+	<update id="updateByPrimaryKeySelective" parameterType="com.emall.entity.Order">
+		update `order`
+		<set>
+			<if test="userId != null">
+				user_id = #{userId,jdbcType=VARCHAR},
+			</if>
+			<if test="orderPayment != null">
+				order_payment = #{orderPayment,jdbcType=DECIMAL},
+			</if>
+			<if test="orderStatus != null">
+				order_status = #{orderStatus,jdbcType=INTEGER},
+			</if>
+			<if test="orderCreateTime != null">
+				order_create_time = #{orderCreateTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderPaymentTime != null">
+				order_payment_time = #{orderPaymentTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderSendTime != null">
+				order_send_time = #{orderSendTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="orderEndTime != null">
+				order_end_time = #{orderEndTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="shippingId != null">
+				shipping_id = #{shippingId,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where order_id = #{orderId,jdbcType=VARCHAR}
+	</update>
 	
 	<update id="updateByPrimaryKey" parameterType="com.emall.entity.Order">
 		update `order`
 		set user_id            = #{userId,jdbcType=VARCHAR},
-			order_payment      = #{orderPayment,jdbcType=VARCHAR},
-			order_status       = #{orderStatus,jdbcType=VARCHAR},
+			order_payment      = #{orderPayment,jdbcType=DECIMAL},
+			order_status       = #{orderStatus,jdbcType=INTEGER},
 			order_create_time  = #{orderCreateTime,jdbcType=TIMESTAMP},
 			order_payment_time = #{orderPaymentTime,jdbcType=TIMESTAMP},
 			order_send_time    = #{orderSendTime,jdbcType=TIMESTAMP},
-			order_end_time     = #{orderEndTime,jdbcType=TIMESTAMP}
+			order_end_time     = #{orderEndTime,jdbcType=TIMESTAMP},
+			shipping_id        = #{shippingId,jdbcType=VARCHAR}
 		where order_id = #{orderId,jdbcType=VARCHAR}
-  </update>
+	</update>
 </mapper>

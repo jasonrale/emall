@@ -26,9 +26,6 @@ public class SeckillGoodsController {
     @Resource
     SeckillGoodsService seckillGoodsService;
 
-    @Resource
-    LoginSession loginSession;
-
     /**
      * 用户端查询所有秒杀商品
      *
@@ -63,13 +60,13 @@ public class SeckillGoodsController {
         long now = System.currentTimeMillis() / 1000;
         int remainSeconds = 0;
         if (now < startTime) {//秒杀准备中，倒计时
-            seckillGoods.setSeckillGoodsStatus(1);
+            seckillGoods.setSeckillGoodsStatus(SeckillGoods.PREPARING);
             remainSeconds = (int) (startTime - now);
         } else if (now > endTime) {//秒杀已经结束
-            seckillGoods.setSeckillGoodsStatus(3);
+            seckillGoods.setSeckillGoodsStatus(SeckillGoods.COMPLETE);
             remainSeconds = (int) (startTime - endTime);
         } else {//秒杀进行中
-            seckillGoods.setSeckillGoodsStatus(2);
+            seckillGoods.setSeckillGoodsStatus(SeckillGoods.ONGOING);
         }
         SeckillGoodsVo vo = new SeckillGoodsVo();
         vo.setSeckillGoods(seckillGoods);
@@ -80,12 +77,12 @@ public class SeckillGoodsController {
     }
 
     /**
-     * 管理员根据秒杀商品id查询
+     * 根据秒杀商品id从数据库查询
      *
      * @param seckillGoodsId
      * @return
      */
-    @GetMapping("/admin/{seckillGoodsId}/seckillGoodsId")
+    @GetMapping("/fromDB/{seckillGoodsId}/seckillGoodsId")
     @ResponseBody
     public Result<SeckillGoods> selectBySeckillGoodsIdForAdmin(@PathVariable("seckillGoodsId") String seckillGoodsId) {
         logger.info("根据秒杀商品id=" + seckillGoodsId + "查询商品信息");
@@ -133,29 +130,5 @@ public class SeckillGoodsController {
         }
 
         return seckillGoodsService.put(seckillGoodsId, startTime, endTime) ? Result.success("商品上架成功", null) : Result.error("商品上架失败");
-    }
-
-    /**
-     * 获取秒杀验证码
-     *
-     * @param response
-     * @param seckillGoodsId
-     * @return
-     */
-    @GetMapping("/captcha/{seckillGoodsId}/seckillGoodsId")
-    @ResponseBody
-    public Result getSeckillCaptcha(HttpServletResponse response, @PathVariable("seckillGoodsId") String seckillGoodsId) {
-
-        try {
-            BufferedImage image = seckillGoodsService.createCaptcha(loginSession.getUserSession(), seckillGoodsId);
-            OutputStream out = response.getOutputStream();
-            ImageIO.write(image, "JPEG", out);
-            out.flush();
-            out.close();
-            return Result.success("生成验证码", null);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Result.error("就差一点点哦，秒杀失败");
-        }
     }
 }

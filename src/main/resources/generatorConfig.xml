@@ -78,7 +78,8 @@
 		       <!--<table tableName="goods" domainObjectName="Goods" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
 		<!--        <table tableName="cart_item" domainObjectName="CartItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
 		<!--        <table tableName="category" domainObjectName="Category" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
-		<!--        <table tableName="order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
+		<table tableName="order" domainObjectName="Order" enableCountByExample="false" enableUpdateByExample="false"
+			   enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>
 		<!--        <table tableName="order_item" domainObjectName="OrderItem" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false"/>-->
 		<!--<table tableName="seckill_goods" domainObjectName="SeckillGoods" enableCountByExample="false"-->
 			   <!--enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"-->

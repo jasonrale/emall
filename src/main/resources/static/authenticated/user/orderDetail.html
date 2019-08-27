@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv=x-ua-compatible content="ie=edge">
+    <meta name="keywords" content="EMall网上商城">
+    <meta name="description" content="EMall网上商城">
+    <title>订单详情 - EMall</title>
+    <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../../afrontfiles/css/common.css">
+    <link href="../../afrontfiles/css/orderDetail.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../afrontfiles/js/common.js"></script>
+    <script src="../../afrontfiles/js/orderDetail.js"></script>
+</head>
+<body>
+<div class="nav">
+    <div class="w">
+        <div class="user-info">
+            <span class="user login">
+                <span class="link login" id="login" style="display: block">&nbsp;登录</span>
+                <span class="link-text" id="welcome" style="display: none">欢迎
+                    <span id="loginName" style="display: none"></span>，
+                </span>
+                <span class="link js-logout" id="logout" style="display: none">退出</span>
+            </span>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item">
+                <a class="link" href="">购物车(<span class="cart-count">0</span>)</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="">我的订单</a>
+            </li>
+            <li class="nav-item">
+                <a class="link" href="userCenter.html">我的EMall</a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="header">
+    <div class="w">
+        <span class="logo">EMall</span>
+        <div class="search-con">
+            <input type="text" class="search-input" id="keyWord" placeholder="请输入商品名称"/>
+            <input type="submit" id="query" class="btn search-btn" value="搜索" onclick="query()"/>
+        </div>
+    </div>
+</div>
+<div class="crumb">
+    <div class="w">
+        <div class="crumb-con">
+            <span class="link" id="emall">EMall</span>
+            <span>></span>
+            <span class="link-text">我的订单</span>
+        </div>
+    </div>
+</div>
+<div class="page-wrap w">
+    <ul class="nav-side">
+        <li class="nav-item">
+            <a class="link" href="userCenter.html">个人中心</a>
+        </li>
+        <li class="nav-item active">
+            <a class="link" href="">我的订单</a>
+        </li>
+        <li class="nav-item">
+            <a class="link" href="password.html">修改密码</a>
+        </li>
+    </ul>
+    <div class="content with-nav">
+        <div class="panel">
+            <div class="panel-title">订单信息</div>
+            <div class="panel-body">
+                <div class="order-info">
+                    <div class="text-line">
+                        <span class="text"><span>订单号：</span><span id="orderId" class="text"></span></span>
+                        <span class="text"><span>创建时间：</span><span id="orderCreateTime" class="text"></span></span>
+                    </div>
+                    <div class="text-line"><span class="text"><span> 收件人：</span><span id="shippingName"
+                                                                                      class="text"></span></span></div>
+                    <div class="text-line"><span class="text"><span> 订单状态：</span><span id="orderStatus"
+                                                                                       class="text"></span></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="panel">
+            <div class="panel-title">商品清单</div>
+            <div class="panel-body">
+                <table class="product-table">
+                    <tbody id="tbody">
+                    <tr>
+                        <th class="cell-th cell-img">商品图片</th>
+                        <th class="cell-th cell-info">商品名称</th>
+                        <th class="cell-th cell-price">单价</th>
+                        <th class="cell-th cell-count">数量</th>
+                        <th class="cell-th cell-total">小计</th>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="footer">
+    <div class="w">
+        <div class=links>EMall网上商城</div>
+    </div>
+</div>
+</body>
+</html>

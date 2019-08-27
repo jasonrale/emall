@@ -1,13 +1,18 @@
 package com.emall.dao;
 
 import com.emall.entity.OrderItem;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface OrderItemMapper {
-    int deleteByPrimaryKey(String orderItemId);
+    int deleteByPrimaryKey(@Param("orderItemId") String orderItemId);
 
-    int insert(OrderItem record);
+    int insert(OrderItem orderItem);
 
-    OrderItem selectByPrimaryKey(String orderItemId);
+    OrderItem selectByOrderItemId(@Param("orderItemId") String orderItemId);
 
-    int updateByPrimaryKey(OrderItem record);
+    int updateByPrimaryKey(OrderItem orderItem);
+
+    List<OrderItem> selectByOrderId(@Param("orderId") String orderId);
 }

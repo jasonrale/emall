@@ -1,13 +1,14 @@
 package com.emall.dao;
 
 import com.emall.entity.SeckillOrder;
+import org.apache.ibatis.annotations.Param;
 
 public interface SeckillOrderMapper {
-    int deleteByPrimaryKey(String seckillOrderId);
+    int deleteByPrimaryKey(@Param("seckillOrderId") String seckillOrderId);
 
-    int insert(SeckillOrder record);
+    int insert(SeckillOrder seckillOrder);
 
-    SeckillOrder selectByPrimaryKey(String seckillOrderId);
+    SeckillOrder selectBySeckillOrderId(@Param("seckillOrderId") String seckillOrderId);
 
-    int updateByPrimaryKey(SeckillOrder record);
+    int updateByPrimaryKey(SeckillOrder seckillOrder);
 }
