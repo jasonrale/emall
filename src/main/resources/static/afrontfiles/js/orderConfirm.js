@@ -38,9 +38,10 @@ function pathValid(seckillGoodsId, path) {
  */
 function init(seckillGoodsId, path) {
     if (!pathValid(seckillGoodsId, path) || path === null || path === "") {
-        layer.msg("请求非法", {time: 1000});
+        layer.msg("请求非法", {time: 1000}, function () {
+            $(window).attr("location", "../../index.html");
+        });
         $("#submit").attr("disabled", true);
-        $(window).attr("location", "../../index.html");
     } else {
         seckillOrder(seckillGoodsId);
         queryAllShipping();
@@ -60,12 +61,12 @@ function seckillOrder(seckillGoodsId) {
                 var seckillGoods = data.obj.seckillGoods;
                 var element = "<tr>" +
                     '<td class="cell-img">' +
-                    '<a href="../../seckillGoods/detail.html?seckillGoodsId=' + seckillGoods.seckillGoodsId + '" target="_blank">' +
+                    '<a href="../../goods/detail.html?goodsId=' + seckillGoods.seckillGoodsId + '" target="_blank">' +
                     '<img class="p-img" src="' + seckillGoods.seckillGoodsImage + '" alt="' + seckillGoods.seckillGoodsName + '"/>' +
                     "</a>" +
                     "</td>" +
                     '<td class="cell-info">' +
-                    '<a class="link" href="../../seckillGoods/detail.html?seckillGoodsId=' + seckillGoods.seckillGoodsId + '" target="_blank">' + seckillGoods.seckillGoodsName + "</a>" +
+                    '<a class="link" href="../../goods/detail.html?goodsId=' + seckillGoods.seckillGoodsId + '" target="_blank">' + seckillGoods.seckillGoodsName + "</a>" +
                     "</td>" +
                     '<td class="cell-price">' + "￥" + seckillGoods.seckillGoodsPrice + "</td>" +
                     '<td class="cell-count">1</td>' +
@@ -115,7 +116,7 @@ function queryAllShipping() {
                             '<div class="mobile-number" id="mobile:' + shippingId + '">' + shippingList[i].shippingMobileNumber + "</div>" +
                             '<div class="address-opera">' +
                             '<span class="link address-update" onclick="updateShipping(' + "'" + shippingId + "'" + ')">编辑</span>' +
-                            '<span class="link address-delete">删除</span>' +
+                            '<span class="link address-delete" onclick="deleteShipping(' + "'" + shippingId + "'" + ')">删除</span>' +
                             "</div>" +
                             "</div>" +
                             '<div class="address-add" onclick="newShipping()">' +
@@ -166,6 +167,34 @@ function updateShipping(shippingId) {
 }
 
 /**
+ * 删除收货信息
+ */
+function deleteShipping(shippingId) {
+    layer.confirm("您确定要删除该收货地址吗？",
+        {btn: ["确定", "取消"]},
+        function () {
+            $.ajax({
+                type: "DELETE",
+                url: "/shipping",
+                data: shippingId,
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.status === true) {
+                        layer.msg(data.msg, {time: 1000}, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        },
+        function () {
+            layer.closeAll();
+        }
+    );
+}
+/**
  * 保存收货信息
  */
 function shippingSave(type) {
@@ -198,9 +227,10 @@ function shippingSave(type) {
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
                 if (data.status === true) {
-                    layer.msg(data.msg);
-                    shippingCancel();
-                    queryAllShipping();
+                    layer.msg(data.msg, {time: 1000}, function () {
+                        shippingCancel();
+                        queryAllShipping();
+                    });
                 } else {
                     layer.msg(data.msg);
                 }
@@ -261,26 +291,26 @@ function mobileValid(mobileNumber) {
  * @param path
  */
 function seckillSubmit(seckillGoodsId, path) {
-    var json = {
-        seckillGoodsId: seckillGoodsId,
-        shippingId: $(".address.active").attr("id"),
-        path: path
-    };
-
     $("#submit").click(function () {
+        var json = {
+            seckillGoodsId: seckillGoodsId,
+            shippingId: $(".address.active").attr("id"),
+            path: path
+        };
+
         $.ajax({
             type: "PUT",
             url: "/seckillOrder",
-            data: JSON.stringify(json),
-            contentType: 'application/json;charset=UTF-8',
+            data: json,
             success: function (data) {
                 if (data.status === true) {
                     layer.msg(data.msg, {time: 1500}, function () {
-                        $(window).attr("location", "/orderDetail.html?orderId=" + data.obj)
+                        $(window).attr("location", "orderDetail.html?orderId=" + data.obj)
                     });
                 } else {
-                    layer.msg(data.msg, {time: 1000});
-                    $(window).attr("location", "../../index.html");
+                    layer.msg(data.msg, {time: 1000}, function () {
+                        $(window).attr("location", "../../index.html");
+                    });
                 }
             }
         });

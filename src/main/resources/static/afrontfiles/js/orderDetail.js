@@ -23,7 +23,7 @@ function orderDetail(orderId) {
                 var orderStatus = parseInt(order.orderStatus);
 
                 $("#orderId").html(order.orderId);
-                $("#orderCreateTime").html(order.orderCreateTime);
+                $("#orderCreateTime").html(new Date(order.orderCreateTime).format("yyyy-MM-dd hh:mm:ss"));
                 $("#shippingName").html(shipping.shippingName);
                 if (orderStatus === -1) {
                     $("#orderStatus").html("已取消");
@@ -32,7 +32,7 @@ function orderDetail(orderId) {
                     $(".order-info").append(
                         '<div class="text-line">' +
                         '<a class="btn" href="payment.html?orderId=' + order.orderId + '">去支付</a>' +
-                        '<a class="btn order-cancel" id="cancel">取消订单</a>' +
+                        '<a class="btn order-cancel" id="cancel" onclick="cancel(' + "'" + order.orderId + "'" + ')">取消订单</a>' +
                         "</div>"
                     );
                 } else if (orderStatus === 1) {
@@ -47,10 +47,12 @@ function orderDetail(orderId) {
                 for (var i = 0; i < orderItemList.length; i++) {
                     var element = "<tr>" +
                         '<td class="cell cell-img">' +
-                        '<a href="./detail.html?productId=26" target="_blank"><img class="p-img"src="" alt=""></a>' +
+                        '<a href="../../goods/detail.html?goodsId=' + orderItemList[i].goodsId + '" target="_blank">' +
+                        '<img class="p-img" src="' + orderItemList[i].goodsImage + '" alt="' + orderItemList[i].goodsName + '">' +
+                        "</a>" +
                         "</td>" +
                         '<td class="cell cell-info">' +
-                        '<a class="link" href="../../goods/detail.html?seckillGoodsId=' + orderItemList[i].goodsId + '" target="_blank">' +
+                        '<a class="link" href="../../goods/detail.html?goodsId=' + orderItemList[i].goodsId + '" target="_blank">' +
                         orderItemList[i].goodsName +
                         "</a>" +
                         "</td>" +
@@ -63,6 +65,29 @@ function orderDetail(orderId) {
                 }
 
                 $(".panel-body").append('<p class="total"><span>订单总价：</span><span class="total-price">￥' + total + "</span></p>");
+            } else {
+                layer.msg(data.msg, {time: 1000}, function () {
+                    $(window).attr("location", "orderList.html");
+                });
+            }
+        }
+    });
+}
+
+/**
+ * 取消订单
+ */
+function cancel(orderId) {
+    $.ajax({
+        type: "POST",
+        url: "/order/cancel",
+        data: orderId,
+        contentType: 'application/json;charset=UTF-8',
+        success: function (data) {
+            if (data.status === true) {
+                layer.msg(data.msg, {time: 1000}, function () {
+                    window.location.reload();
+                });
             } else {
                 layer.msg(data.msg);
             }

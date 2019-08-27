@@ -16,6 +16,8 @@ import javax.validation.constraints.NotEmpty;
 @AllArgsConstructor
 @Repository
 public class Shipping {
+    public static final Integer MAXCOUNT = 4;    //最大收获地址数量
+
     private String shippingId;              //收货信息id
 
     private String userId;                  //收货地址用户id

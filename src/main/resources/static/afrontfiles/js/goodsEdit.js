@@ -142,7 +142,7 @@ function updateSubmit(goodsId) {
         contentType: false,
         success: function (data) {
             if (data.status === true) {
-                layer.msg(data.msg, {time: 800}, function () {
+                layer.msg(data.msg, {time: 1000}, function () {
                     $(window).attr("location", "goodsmanage.html")
                 });
             } else {

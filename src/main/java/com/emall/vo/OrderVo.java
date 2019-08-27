@@ -18,7 +18,7 @@ import java.util.List;
 public class OrderVo {
     private Order order;                    //订单
 
-    private List<OrderItem> orderItemList;  //订单明细列表
-
     private Shipping shipping;              //订单收货地址
+
+    private List<OrderItem> orderItemList;  //订单明细列表
 }

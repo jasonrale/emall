@@ -15,4 +15,6 @@ public interface ShippingMapper {
     int update(Shipping shipping);
 
     List<Shipping> queryAll(@Param("userId") String userId);
+
+    int count(@Param("userId") String userId);
 }

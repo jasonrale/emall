@@ -87,7 +87,7 @@ public class RedisKeyUtil {
      * @return
      */
     public static String seckillPath(String userId, String seckillGoodsId) {
-        return SECKILL_GOODS_PREFIX + "Path:" + ":" + userId + ":" + seckillGoodsId;
+        return SECKILL_GOODS_PREFIX + "Path:" + userId + ":" + seckillGoodsId;
     }
 
     /**

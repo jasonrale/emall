@@ -13,6 +13,12 @@
 		shipping_id, user_id, shipping_name, shipping_mobile_number, shipping_address
 	</sql>
 	
+	<select id="count" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from shipping
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
 	<select id="queryAll" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>

@@ -129,16 +129,6 @@ public class SeckillController {
 
         //库存标记，减少redis访问
         if (stockFlagMap.containsKey(seckillGoodsId)) {
-            boolean over = stockFlagMap.get(seckillGoodsId);
-            if (over) {
-                return Result.error("就差一点点哦，秒杀失败");
-            }
-        }
-
-        //预减库存
-        int stock = seckillService.reduceCacheStock(seckillGoodsId);
-        if (stock < 0) {
-            stockFlagMap.put(seckillGoodsId, true);
             return Result.error("就差一点点哦，秒杀失败");
         }
 
@@ -146,6 +136,13 @@ public class SeckillController {
         SeckillOrder seckillOrder = seckillOrderService.selectByUserIdGoodsId(user.getUserId(), seckillGoodsId);
         if (seckillOrder != null) {
             return Result.error("不能重复秒杀");
+        }
+
+        //预减库存
+        int stock = seckillService.reduceCacheStock(seckillGoodsId);
+        if (stock < 0) {
+            stockFlagMap.put(seckillGoodsId, true);
+            return Result.error("就差一点点哦，秒杀失败");
         }
 
         //入队

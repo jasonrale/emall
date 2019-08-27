@@ -126,8 +126,9 @@ function captchaPath(seckillGoodsId) {
                 var path = data.obj;
                 trySeckill(path, seckillGoodsId);
             } else {
-                layer.msg(data.msg, {time: 1000});
-                $("#captchaImg").attr("src", "/seckill/" + seckillGoodsId + "/captcha");
+                layer.msg(data.msg, {time: 1000}, function () {
+                    $("#captchaImg").attr("src", "/seckill/" + seckillGoodsId + "/captcha");
+                });
             }
         }
     });
@@ -149,8 +150,9 @@ function trySeckill(path, seckillGoodsId) {
             if (data.status === true) {
                 seckillResult(path, seckillGoodsId);
             } else {
-                layer.msg(data.msg, {time: 1000});
-                $(window).attr("location", "../../index.html");
+                layer.msg(data.msg, {time: 1000}, function () {
+                    $(window).attr("location", "../../index.html");
+                });
             }
         },
         error: function () {
@@ -177,9 +179,9 @@ function seckillResult(path, seckillGoodsId) {
                 } else if (result === "queuing") {//继续轮询
                     setTimeout(function () {
                         seckillResult(seckillGoodsId);
-                    }, 300);
+                    }, 500);
                 } else {
-                    layer.confirm("恭喜你，秒杀成功！请确认订单？",
+                    layer.confirm("恭喜您，秒杀成功！请确认订单？",
                         {btn: ["确定", "取消"]},
                         function () {
                             window.location.href = "/authenticated/user/orderConfirm.html?seckillGoodsId=" + result + "&path=" + path;

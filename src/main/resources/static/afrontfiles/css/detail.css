@@ -117,6 +117,10 @@
 #end {
     display: none;
 }
+
+#goSeckill {
+    display: none;
+}
 .intro-wrap .p-info-con .p-info-item{
     position:relative;
     padding:0 10px;
@@ -192,6 +196,22 @@
     border-radius: 10px;
     border-style: double;
     background: rgba(232, 65, 19, 0.92);
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+    outline: none;
+    cursor: pointer
+}
+
+.intro-wrap .p-info-con .p-info-item .skipSeckill {
+    display: inline-block;
+    margin: 10px 0 0 80px;
+    padding: 0 10px;
+    height: 35px;
+    line-height: 35px;
+    border-radius: 10px;
+    border-style: double;
+    background: #c60023;
     font-size: 16px;
     font-weight: 700;
     color: #fff;

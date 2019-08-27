@@ -27,7 +27,7 @@ function login() {
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
                 if (data.status === true) {
-                    layer.msg(data.msg, {time: 800}, function () {
+                    layer.msg(data.msg, {time: 1000}, function () {
                         if (data.obj.userRole === 0) {
                             $(window).attr("location", "/index.html");
                         } else {

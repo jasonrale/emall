@@ -88,7 +88,7 @@ public class GoodsController {
     }
 
     /**
-     * 根据关键字分页查询商品
+     * 根据商品id查询商品
      *
      * @return
      */

@@ -91,7 +91,7 @@
 }
 
 .pg-content {
-    display: none;
+    display: block;
     text-align: center;
     color: #333
 }
