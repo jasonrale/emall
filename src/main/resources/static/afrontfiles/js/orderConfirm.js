@@ -1,12 +1,19 @@
 $(document).ready(function () {
     userInfo();
 
-    var seckillGoodsId = getUrlParam("seckillGoodsId");
-    var path = getUrlParam("path");
-
-    init(seckillGoodsId, path);
-
-    seckillSubmit(seckillGoodsId, path);
+    var goodsId = getUrlParam("goodsId");
+    var count = getUrlParam("count");
+    if (goodsId != null && goodsId.trim() !== "" && count != null && count.trim() !== "") {
+        normalInit(goodsId, count);
+        normalSubmit(goodsId, count);
+    } else {
+        var seckillGoodsId = getUrlParam("seckillGoodsId");
+        if (seckillGoodsId != null && seckillGoodsId.trim() !== "") {
+            var path = getUrlParam("path");
+            initSeckill(seckillGoodsId, path);
+            seckillSubmit(seckillGoodsId, path);
+        }
+    }
 });
 
 /**
@@ -32,12 +39,47 @@ function pathValid(seckillGoodsId, path) {
 }
 
 /**
- * 数据初始化
+ * 普通订单确认数据初始化(立即购买)
+ * @param goodsId
+ * @param count
+ */
+function normalInit(goodsId, count) {
+    queryAllShipping();
+
+    $.ajax({
+        type: "GET",
+        async: false,
+        url: "/goods/" + goodsId + "/goodsId",
+        success: function (data) {
+            if (data.status === true) {
+                var goods = data.obj;
+                var element = "<tr>" +
+                    '<td class="cell-img">' +
+                    '<a href="../../goods/detail.html?goodsId=' + goods.goodsId + '" target="_blank">' +
+                    '<img class="p-img" src="' + goods.goodsImage + '" alt="' + goods.goodsName + '"/>' +
+                    "</a>" +
+                    "</td>" +
+                    '<td class="cell-info">' +
+                    '<a class="link" href="../../goods/detail.html?goodsId=' + goods.goodsId + '" target="_blank">' + goods.goodsName + "</a>" +
+                    "</td>" +
+                    '<td class="cell-price">' + "￥" + goods.goodsPrice + "</td>" +
+                    '<td class="cell-count">' + count + "</td>" +
+                    '<td class="cell-total">' + "￥" + count * goods.goodsPrice + "</td>" +
+                    "</tr>";
+                $(".product-table").append(element);
+                $(".submit-total").html("￥" + count * goods.goodsPrice);
+            }
+        }
+    });
+}
+
+/**
+ * 秒杀订单确认数据初始化
  * @param seckillGoodsId
  * @param path
  */
-function init(seckillGoodsId, path) {
-    if (!pathValid(seckillGoodsId, path) || path === null || path === "") {
+function initSeckill(seckillGoodsId, path) {
+    if (!pathValid(seckillGoodsId, path) || path === null || path.trim() === "") {
         layer.msg("请求非法", {time: 1000}, function () {
             $(window).attr("location", "../../index.html");
         });
@@ -286,6 +328,38 @@ function mobileValid(mobileNumber) {
 }
 
 /**
+ * 普通订单提交（立即购买）
+ * @param goodsId
+ * @param count
+ */
+function normalSubmit(goodsId, count) {
+    $("#submit").click(function () {
+        var json = {
+            goodsId: goodsId,
+            shippingId: $(".address.active").attr("id"),
+            count: count
+        };
+
+        $.ajax({
+            type: "PUT",
+            url: "/order/normal",
+            data: json,
+            success: function (data) {
+                if (data.status === true) {
+                    layer.msg(data.msg, {time: 1200}, function () {
+                        $(window).attr("location", "orderDetail.html?orderId=" + data.obj)
+                    });
+                } else {
+                    layer.msg(data.msg, {time: 1000}, function () {
+                        $(window).attr("location", "../../index.html");
+                    });
+                }
+            }
+        });
+    });
+}
+
+/**
  * 秒杀订单提交
  * @param seckillGoodsId
  * @param path
@@ -304,7 +378,7 @@ function seckillSubmit(seckillGoodsId, path) {
             data: json,
             success: function (data) {
                 if (data.status === true) {
-                    layer.msg(data.msg, {time: 1500}, function () {
+                    layer.msg(data.msg, {time: 1200}, function () {
                         $(window).attr("location", "orderDetail.html?orderId=" + data.obj)
                     });
                 } else {

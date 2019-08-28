@@ -173,26 +173,6 @@ public class SeckillGoodsService {
     }
 
     /**
-     * 用户端从数据库查询所有秒杀商品
-     *
-     * @return
-     */
-    public List<SeckillGoods> queryAllForUser() {
-        String redisKey = RedisKeyUtil.seckillGoodsAll();
-
-        List<SeckillGoods> list = seckillGoodsMapper.queryAllOnShelf();
-        for (SeckillGoods seckillGoods : list) {
-            String seckillGoodsKey = RedisKeyUtil.seckillGoodsById(seckillGoods);
-            redisTemplate.opsForValue().set(seckillGoodsKey, seckillGoods, 1800, TimeUnit.SECONDS);
-            redisTemplate.opsForList().rightPush(redisKey, seckillGoodsKey);
-        }
-
-        redisTemplate.expire(redisKey, 1800, TimeUnit.SECONDS);
-
-        return list;
-    }
-
-    /**
      * 从缓存查询所有秒杀商品
      *
      * @return

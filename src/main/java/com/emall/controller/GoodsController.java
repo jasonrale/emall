@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 @Controller
@@ -130,8 +132,9 @@ public class GoodsController {
      */
     @GetMapping(value = "/{keyWord}/keyWord/{sort}/sort")
     @ResponseBody
-    public Result<PageModel> selectByKeyWordPaged(@PathVariable("keyWord") String keyWord, @PathVariable("sort") String sort, @Valid PageModel<Goods> pageModel) {
+    public Result<PageModel> selectByKeyWordPaged(@PathVariable("keyWord") String keyWord, @PathVariable("sort") String sort, @Valid PageModel<Goods> pageModel) throws UnsupportedEncodingException {
         logger.info("根据关键字'" + keyWord + "'查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+        keyWord = new String(keyWord.getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);
         return Result.success("查询商品成功", goodsService.selectByKeyWord(keyWord, sort, pageModel));
     }
 

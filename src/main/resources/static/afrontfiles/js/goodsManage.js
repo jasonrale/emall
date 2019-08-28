@@ -197,6 +197,10 @@ function turn() {
     });
 }
 
+/**
+ * 下架商品
+ * @param goodsId
+ */
 function pull(goodsId) {
     layer.confirm(
         "您确定要下架该商品？",
@@ -225,6 +229,11 @@ function pull(goodsId) {
     );
 }
 
+/**
+ * 上架商品
+ * @param goodsId
+ * @param listType
+ */
 function put(goodsId, listType) {
     if (listType !== "seckill") {
         layer.confirm(

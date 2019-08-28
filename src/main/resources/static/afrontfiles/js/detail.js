@@ -28,6 +28,8 @@ function detail(goodsId) {
 
                 countValid(goods.goodsStock);
             }
+
+            buy(goodsId);
         }
     });
 }
@@ -50,9 +52,9 @@ function countValid(goodsStock) {
 function seckillGoodsDetail(seckillGoodsId) {
     $.ajax({
         type: "GET",
-        url: "/seckillGoods/" + seckillGoodsId + "/seckillGoodsId",
+        url: "/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
-            var seckillGoods = data.obj.seckillGoods;
+            var seckillGoods = data.obj;
             var status = seckillGoods.seckillGoodsStatus;
             $("#goodsName").html(seckillGoods.seckillGoodsName);
             $("#goodsDescribe").html(seckillGoods.seckillGoodsDescribe);
@@ -80,4 +82,14 @@ function seckillGoodsDetail(seckillGoodsId) {
  */
 function goSeckill(seckillGoodsId) {
     $(window).attr("location", "../../seckillGoods/seckillDetail.html?seckillGoodsId=" + seckillGoodsId);
+}
+
+/**
+ * 立即购买
+ */
+function buy(goodsId) {
+    $(".buy").click(function () {
+        var count = $("#count").val();
+        $(window).attr("location", "../authenticated/user/orderConfirm.html?goodsId=" + goodsId + "&count=" + count);
+    });
 }

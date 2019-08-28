@@ -25,6 +25,7 @@ function orderDetail(orderId) {
                 $("#orderId").html(order.orderId);
                 $("#orderCreateTime").html(new Date(order.orderCreateTime).format("yyyy-MM-dd hh:mm:ss"));
                 $("#shippingName").html(shipping.shippingName);
+                $("#shippingAddress").html(shipping.shippingAddress);
                 if (orderStatus === -1) {
                     $("#orderStatus").html("已取消");
                 } else if (orderStatus === 0) {

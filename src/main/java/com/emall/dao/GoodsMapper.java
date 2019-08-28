@@ -44,4 +44,6 @@ public interface GoodsMapper {
     int put(@Param("goodsId") String goodsId);
 
     int updateByGoodsId(Goods goods);
+
+    int reduceStock(@Param("goodsId") String goodsId, @Param("count") Integer count);
 }

@@ -587,4 +587,26 @@ public class GoodsService {
 
         return flag;
     }
+
+    /**
+     * 减库存
+     *
+     * @param goodsId
+     * @param count
+     * @return
+     */
+    @Transactional
+    public boolean reduceStock(String goodsId, Integer count) {
+        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
+
+        //先减库存
+        boolean success = goodsMapper.reduceStock(goodsId, count) != 0;
+
+        //缓存失效
+        if (redisTemplate.hasKey(goodsKey)) {
+            redisTemplate.delete(goodsKey);
+        }
+
+        return success;
+    }
 }

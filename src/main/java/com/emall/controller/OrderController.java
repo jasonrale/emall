@@ -2,19 +2,24 @@ package com.emall.controller;
 
 import com.emall.entity.*;
 import com.emall.result.Result;
+import com.emall.service.GoodsService;
 import com.emall.service.OrderItemService;
 import com.emall.service.OrderService;
 import com.emall.service.ShippingService;
 import com.emall.utils.LoginSession;
 import com.emall.utils.PageModel;
+import com.emall.utils.SnowFlakeConfig;
 import com.emall.vo.OrderVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -29,10 +34,16 @@ public class OrderController {
     OrderItemService orderItemService;
 
     @Resource
+    GoodsService goodsService;
+
+    @Resource
     ShippingService shippingService;
 
     @Resource
     LoginSession loginSession;
+
+    @Resource
+    SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 根据用户id分页查询所有订单列表
@@ -74,6 +85,53 @@ public class OrderController {
         Shipping shipping = shippingService.selectByShippingId(shippingId);
 
         return Result.success("查询订单详情成功", new OrderVo(order, shipping, orderItemList));
+    }
+
+    /**
+     * 提交订单(立即购买)
+     *
+     * @param goodsId
+     * @param shippingId
+     * @param count
+     * @return
+     */
+    @PutMapping("/normal")
+    @ResponseBody
+    @Transactional
+    public Result<String> normalSubmit(@RequestParam("goodsId") String goodsId, @RequestParam("shippingId") String shippingId, @RequestParam("count") Integer count) {
+        User user = loginSession.getUserSession();
+        String userId = user.getUserId();
+
+        Goods goods = goodsService.selectByGoodsId(goodsId);
+
+        //生成订单
+        Order order = new Order();
+        order.setOrderId(String.valueOf(snowflakeIdWorker.nextId()));
+        order.setUserId(userId);
+        order.setOrderPayment(goods.getGoodsPrice().multiply(new BigDecimal(count)));
+        order.setOrderStatus(Order.UNPAID);
+        order.setOrderCreateTime(new Date());
+        order.setShippingId(shippingId);
+        orderService.insert(order);
+
+        String orderId = order.getOrderId();
+
+        //生成订单明细
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrderItemId(String.valueOf(snowflakeIdWorker.nextId()));
+        orderItem.setOrderId(orderId);
+        orderItem.setGoodsId(goodsId);
+        orderItem.setGoodsName(goods.getGoodsName());
+        orderItem.setGoodsImage(goods.getGoodsImage());
+        orderItem.setGoodsPrice(goods.getGoodsPrice());
+        orderItem.setGoodsCount(count);
+        orderItem.setOrderItemSubtotal(order.getOrderPayment());
+        orderItemService.insert(orderItem);
+
+        //减库存
+        goodsService.reduceStock(goodsId, count);
+
+        return goodsService.reduceStock(goodsId, count) ? Result.success("订单已提交，快去看看吧", orderId) : Result.success("订单提交失败", orderId);
     }
 
     /**

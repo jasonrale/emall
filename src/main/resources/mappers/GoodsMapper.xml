@@ -242,4 +242,11 @@
 			goods_status   = #{goodsStatus,jdbcType=INTEGER}
 		where goods_id = #{goodsId,jdbcType=VARCHAR}
 	</update>
+	
+	<update id="reduceStock">
+		update goods
+		set goods_stock = goods_stock - #{count,jdbcType=INTEGER}
+		where goods_id = #{goodsId,jdbcType=VARCHAR}
+		  and goods_stock >= #{count,jdbcType=INTEGER};
+	</update>
 </mapper>
