@@ -81,6 +81,14 @@ public class SeckillService {
         return image;
     }
 
+    /**
+     * 验证码计算结果验证
+     *
+     * @param user
+     * @param seckillGoodsId
+     * @param captchaResult
+     * @return
+     */
     public Result<String> checkCaptchaResult(User user, String seckillGoodsId, int captchaResult) {
         String captchaKey = RedisKeyUtil.captcha(user.getUserId(), seckillGoodsId);
 
