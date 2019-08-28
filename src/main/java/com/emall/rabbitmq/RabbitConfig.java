@@ -83,7 +83,7 @@ public class RabbitConfig {
     }
 
     /**
-     * 秒杀队列绑定表啥交换机
+     * 秒杀队列绑定秒杀交换机
      * @return
      */
     @Bean
