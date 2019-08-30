@@ -5,7 +5,7 @@ import com.emall.entity.Category;
 import com.emall.exception.GeneralException;
 import com.emall.redis.RedisKeyUtil;
 import com.emall.utils.PageModel;
-import com.emall.utils.SnowFlakeConfig;
+import com.emall.utils.SnowflakeIdWorker;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class CategoryService {
     @Resource
-    private SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     @Resource
     CategoryMapper categoryMapper;

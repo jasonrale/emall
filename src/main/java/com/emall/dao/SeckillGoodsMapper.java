@@ -18,8 +18,6 @@ public interface SeckillGoodsMapper {
 
     int countOnShelf();
 
-    List<SeckillGoods> queryAllOnShelf();
-
     SeckillGoods selectBySeckillGoodsId(@Param("seckillGoodsId") String seckillGoodsId);
 
     List<SeckillGoods> queryAll(@Param("limit") long limit, @Param("offset") long offset);

@@ -19,23 +19,9 @@
 		where seckill_order_id = #{seckillOrderId,jdbcType=VARCHAR}
 	</select>
 	
-	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-		delete
-		from seckill_order
-		where seckill_order_id = #{seckillOrderId,jdbcType=VARCHAR}
-	</delete>
-	
 	<insert id="insert" parameterType="com.emall.entity.SeckillOrder">
 		insert into seckill_order (seckill_order_id, order_id, user_id, seckill_goods_id)
 		values (#{seckillOrderId,jdbcType=VARCHAR}, #{orderId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR},
 				#{seckillGoodsId,jdbcType=VARCHAR})
 	</insert>
-	
-	<update id="updateByPrimaryKey" parameterType="com.emall.entity.SeckillOrder">
-		update seckill_order
-		set order_id         = #{orderId,jdbcType=VARCHAR},
-			user_id          = #{userId,jdbcType=VARCHAR},
-			seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
-		where seckill_order_id = #{seckillOrderId,jdbcType=VARCHAR}
-	</update>
 </mapper>

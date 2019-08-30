@@ -2,13 +2,12 @@ package com.emall.controller;
 
 import com.emall.entity.*;
 import com.emall.result.Result;
-import com.emall.service.GoodsService;
-import com.emall.service.OrderItemService;
-import com.emall.service.OrderService;
-import com.emall.service.ShippingService;
+import com.emall.service.*;
 import com.emall.utils.LoginSession;
 import com.emall.utils.PageModel;
-import com.emall.utils.SnowFlakeConfig;
+import com.emall.utils.SnowflakeIdWorker;
+import com.emall.vo.CartOrderSubmitVo;
+import com.emall.vo.OrderSubmitVo;
 import com.emall.vo.OrderVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,10 +39,13 @@ public class OrderController {
     ShippingService shippingService;
 
     @Resource
+    CartItemService cartItemService;
+
+    @Resource
     LoginSession loginSession;
 
     @Resource
-    SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
+    SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 根据用户id分页查询所有订单列表
@@ -83,56 +85,94 @@ public class OrderController {
 
         String shippingId = order.getShippingId();
         Shipping shipping = shippingService.selectByShippingId(shippingId);
+        OrderVo orderVo = new OrderVo(order.getOrderId(), order.getUserId(), order.getOrderPayment(), order.getOrderStatus(), order.getOrderCreateTime(),
+                order.getOrderPaymentTime(), order.getOrderSendTime(), order.getOrderEndTime(), order.getShippingId(), shipping, orderItemList);
 
-        return Result.success("查询订单详情成功", new OrderVo(order, shipping, orderItemList));
+        return Result.success("查询订单详情成功", orderVo);
     }
 
     /**
      * 提交订单(立即购买)
      *
-     * @param goodsId
-     * @param shippingId
-     * @param count
+     * @param orderSubmitVo
      * @return
      */
     @PutMapping("/normal")
     @ResponseBody
     @Transactional
-    public Result<String> normalSubmit(@RequestParam("goodsId") String goodsId, @RequestParam("shippingId") String shippingId, @RequestParam("count") Integer count) {
+    public Result<String> normalSubmit(@RequestBody OrderSubmitVo orderSubmitVo) {
         User user = loginSession.getUserSession();
         String userId = user.getUserId();
 
-        Goods goods = goodsService.selectByGoodsId(goodsId);
+        Goods goods = orderSubmitVo.getGoods();
+        String shippingId = orderSubmitVo.getShippingId();
+        Integer count = orderSubmitVo.getCount();
+        String goodsId = goods.getGoodsId();
 
         //生成订单
-        Order order = new Order();
-        order.setOrderId(String.valueOf(snowflakeIdWorker.nextId()));
-        order.setUserId(userId);
-        order.setOrderPayment(goods.getGoodsPrice().multiply(new BigDecimal(count)));
-        order.setOrderStatus(Order.UNPAID);
-        order.setOrderCreateTime(new Date());
-        order.setShippingId(shippingId);
+        Order order = new Order(String.valueOf(snowflakeIdWorker.nextId()), userId, goods.getGoodsPrice().multiply(new BigDecimal(count)),
+                Order.UNPAID, new Date(), null, null, null, shippingId);
+
         orderService.insert(order);
 
         String orderId = order.getOrderId();
 
         //生成订单明细
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrderItemId(String.valueOf(snowflakeIdWorker.nextId()));
-        orderItem.setOrderId(orderId);
-        orderItem.setGoodsId(goodsId);
-        orderItem.setGoodsName(goods.getGoodsName());
-        orderItem.setGoodsImage(goods.getGoodsImage());
-        orderItem.setGoodsPrice(goods.getGoodsPrice());
-        orderItem.setGoodsCount(count);
-        orderItem.setOrderItemSubtotal(order.getOrderPayment());
+        OrderItem orderItem = new OrderItem(String.valueOf(snowflakeIdWorker.nextId()), orderId, goodsId, goods.getGoodsName(),
+                goods.getGoodsImage(), goods.getGoodsPrice(), count, order.getOrderPayment());
+
         orderItemService.insert(orderItem);
 
         //减库存
         goodsService.reduceStock(goodsId, count);
 
-        return goodsService.reduceStock(goodsId, count) ? Result.success("订单已提交，快去看看吧", orderId) : Result.success("订单提交失败", orderId);
+        return goodsService.reduceStock(goodsId, count) ? Result.success("订单已提交，快去看看吧", orderId) : Result.error("订单提交失败");
     }
+
+    /**
+     * 提交订单(购物车)
+     *
+     * @param cartOrderSubmitVo
+     * @return
+     */
+    @PutMapping("/cart")
+    @ResponseBody
+    @Transactional
+    public Result<String> fromCartSubmit(@RequestBody CartOrderSubmitVo cartOrderSubmitVo) {
+        User user = loginSession.getUserSession();
+        String userId = user.getUserId();
+
+        //生成订单
+        Order order = new Order(String.valueOf(snowflakeIdWorker.nextId()), userId, cartOrderSubmitVo.getTotalPrice(), Order.UNPAID,
+                new Date(), null, null, null, cartOrderSubmitVo.getShippingId());
+
+        orderService.insert(order);
+
+        String orderId = order.getOrderId();
+
+        //生成订单明细并删除购物车明细
+        boolean success = true;
+        List<CartItem> cartItemList = cartOrderSubmitVo.getCartItemList();
+        for (CartItem cartItem : cartItemList) {
+            String goodsId = cartItem.getGoodsId();
+            Integer count = cartItem.getGoodsCount();
+
+            OrderItem orderItem = new OrderItem(String.valueOf(snowflakeIdWorker.nextId()), orderId, goodsId, cartItem.getGoodsName(),
+                    cartItem.getGoodsImage(), cartItem.getGoodsPrice(), count, cartItem.getCartItemSubtotal());
+
+            orderItemService.insert(orderItem);
+            cartItemService.deleteByCartItemId(cartItem.getCartItemId());
+
+            //减库存
+            if (!goodsService.reduceStock(goodsId, count)) {
+                success = false;
+                break;
+            }
+        }
+
+        return success ? Result.success("订单已提交，快去看看吧", orderId) : Result.error("订单提交失败");
+    }
+
 
     /**
      * 订单号验证

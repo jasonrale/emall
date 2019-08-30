@@ -14,8 +14,6 @@ public interface GoodsMapper {
 
     int countByKeyWordForUser(@Param("keyWord") String keyWord);
 
-    int countByCategoryId(@Param("categoryId") String categoryId);
-
     int countByCategoryIdForUser(@Param("categoryId") String categoryId);
 
     Goods selectByGoodsId(@Param("goodsId") String goodsId);

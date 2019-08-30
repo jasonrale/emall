@@ -341,13 +341,14 @@ function put(goodsId, listType) {
 
 function del(seckillGoodsId) {
     layer.confirm(
-        "您确定要删除该商品？",
+        "您确定要删除该商品吗？",
         {btn: ["确定", "取消"]},
         function (index) {
             $.ajax({
                 type: "DELETE",
-                url: "/seckillGoods/" + seckillGoodsId + "/seckillGoodsId",
+                url: "/seckillGoods",
                 data: seckillGoodsId,
+                contentType: 'application/json;charset=UTF-8',
                 success: function (data) {
                     if (data.status === true) {
                         layer.msg(data.msg, {time: 800}, function () {

@@ -5,7 +5,7 @@ import com.emall.entity.SeckillGoods;
 import com.emall.entity.SeckillOrder;
 import com.emall.entity.User;
 import com.emall.redis.RedisKeyUtil;
-import com.emall.utils.SnowFlakeConfig;
+import com.emall.utils.SnowflakeIdWorker;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 @Service
 public class SeckillOrderService {
     @Resource
-    SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
+    SnowflakeIdWorker snowflakeIdWorker;
 
     @Resource
     SeckillOrderMapper seckillOrderMapper;

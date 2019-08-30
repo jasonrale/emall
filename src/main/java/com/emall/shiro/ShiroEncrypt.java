@@ -3,6 +3,9 @@ package com.emall.shiro;
 import lombok.Data;
 import org.apache.shiro.crypto.hash.SimpleHash;
 
+/**
+ * shiro加密
+ */
 @Data
 public class ShiroEncrypt {
     public static final String algorithmName = "SHA-256";

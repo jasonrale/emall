@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    userInfo();
+    navInfo();
 
     var goodsId = getUrlParam("goodsId");
 
@@ -27,9 +27,11 @@ function detail(goodsId) {
                 $("#goodsDetails").attr("src", goods.goodsDetails);
 
                 countValid(goods.goodsStock);
+
+                cartAdd(goods);
             }
 
-            buy(goodsId);
+            buy(goods);
         }
     });
 }
@@ -55,6 +57,7 @@ function seckillGoodsDetail(seckillGoodsId) {
         url: "/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
             var seckillGoods = data.obj;
+            tempDetailGoods = seckillGoods;
             var status = seckillGoods.seckillGoodsStatus;
             $("#goodsName").html(seckillGoods.seckillGoodsName);
             $("#goodsDescribe").html(seckillGoods.seckillGoodsDescribe);
@@ -85,11 +88,43 @@ function goSeckill(seckillGoodsId) {
 }
 
 /**
+ * 加入购物车
+ */
+function cartAdd(goods) {
+    $(".cart-add").click(function () {
+        var count = $("#count").val();
+        var cartItem = {
+            goodsId: goods.goodsId,
+            goodsName: goods.goodsName,
+            goodsCount: count,
+            goodsPrice: goods.goodsPrice,
+            goodsImage: goods.goodsImage,
+            cartItemSubtotal: count * goods.goodsPrice
+        };
+
+        $.ajax({
+            type: "PUT",
+            url: "/cartItem",
+            data: JSON.stringify(cartItem),
+            contentType: 'application/json;charset=UTF-8',
+            success: function (data) {
+                if (data.status === true) {
+                    layer.msg(data.msg, {time: 1000});
+                } else {
+                    layer.msg(data.msg, {time: 1000});
+                }
+            }
+        });
+    });
+}
+
+/**
  * 立即购买
  */
-function buy(goodsId) {
+function buy(goods) {
     $(".buy").click(function () {
+        sessionStorage.setItem("buyGoods", JSON.stringify(goods));
         var count = $("#count").val();
-        $(window).attr("location", "../authenticated/user/orderConfirm.html?goodsId=" + goodsId + "&count=" + count);
+        $(window).attr("location", "../authenticated/user/orderConfirm.html?count=" + count);
     });
 }

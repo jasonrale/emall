@@ -1,11 +1,10 @@
 package com.emall.controller;
 
 import com.emall.entity.Shipping;
-import com.emall.entity.User;
 import com.emall.result.Result;
 import com.emall.service.ShippingService;
 import com.emall.utils.LoginSession;
-import com.emall.utils.SnowFlakeConfig;
+import com.emall.utils.SnowflakeIdWorker;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +22,7 @@ public class ShippingController {
     LoginSession loginSession;
 
     @Resource
-    SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
+    SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 查询所有收货地址

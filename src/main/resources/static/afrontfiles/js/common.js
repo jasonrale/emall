@@ -23,9 +23,9 @@ function showLoading(){
 }
 
 /**
- * 判断是否登录
+ * 导航栏信息
  */
-function userInfo() {
+function navInfo() {
     $.ajax({
         type: "GET",
         url: "/user",
@@ -35,6 +35,16 @@ function userInfo() {
                 $("#welcome").css("display", "inline");
                 $("#loginName").css("display", "inline").html(data.obj.userName);
                 $("#logout").css("display", "inline");
+            }
+        }
+    });
+
+    $.ajax({
+        type: "GET",
+        url: "/cartItem/count",
+        success: function (data) {
+            if (data.status === true) {
+                $(".cart-count").html(data.obj);
             }
         }
     });

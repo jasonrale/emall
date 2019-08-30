@@ -2,7 +2,7 @@ package com.emall.service;
 
 import com.emall.dao.UserMapper;
 import com.emall.entity.User;
-import com.emall.utils.SnowFlakeConfig;
+import com.emall.utils.SnowflakeIdWorker;
 import com.emall.vo.PasswordVo;
 import com.emall.vo.UserUpdateVo;
 import org.apache.shiro.crypto.SecureRandomNumberGenerator;
@@ -20,7 +20,7 @@ public class UserService {
     private UserMapper userMapper;
 
     @Resource
-    private SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 根据用户名查询用户对象

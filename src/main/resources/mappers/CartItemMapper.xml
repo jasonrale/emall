@@ -5,39 +5,49 @@
 		<id column="cart_item_id" jdbcType="VARCHAR" property="cartItemId"/>
 		<result column="user_id" jdbcType="VARCHAR" property="userId"/>
 		<result column="goods_id" jdbcType="VARCHAR" property="goodsId"/>
-		<result column="goods_count" jdbcType="VARCHAR" property="goodsCount"/>
+		<result column="goods_name" jdbcType="VARCHAR" property="goodsName"/>
+		<result column="goods_count" jdbcType="INTEGER" property="goodsCount"/>
 		<result column="goods_price" jdbcType="DECIMAL" property="goodsPrice"/>
 		<result column="goods_image" jdbcType="VARCHAR" property="goodsImage"/>
 		<result column="cart_item_subtotal" jdbcType="DECIMAL" property="cartItemSubtotal"/>
 	</resultMap>
 	
 	<sql id="Base_Column_List">
-		cart_item_id, user_id, goods_id, goods_count, goods_price, goods_image, cart_item_subtotal
+		cart_item_id, user_id, goods_id, goods_name, goods_count, goods_price, goods_image,
+		cart_item_subtotal
 	</sql>
 	
-	<select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+	<select id="countByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from cart_item
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryAllByUserId" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List"/>
+		from cart_item
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectByCartItemId" parameterType="java.lang.String" resultMap="BaseResultMap">
 		select
 		<include refid="Base_Column_List"/>
 		from cart_item
 		where cart_item_id = #{cartItemId,jdbcType=VARCHAR}
 	</select>
 	
+	<delete id="deleteByCartItemId" parameterType="java.lang.String">
+		delete
+		from cart_item
+		where cart_item_id = #{cartItemId,jdbcType=VARCHAR}
+	</delete>
+	
 	<insert id="insert" parameterType="com.emall.entity.CartItem">
-		insert into cart_item (cart_item_id, user_id, goods_id, goods_count, goods_price, goods_image,
+		insert into cart_item (cart_item_id, user_id, goods_id, goods_name, goods_count, goods_price, goods_image,
 							   cart_item_subtotal)
 		values (#{cartItemId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{goodsId,jdbcType=VARCHAR},
-				#{goodsCount,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, #{goodsImage,jdbcType=VARCHAR},
-				#{cartItemSubtotal,jdbcType=DECIMAL})
+				#{goodsName,jdbcType=VARCHAR}, #{goodsCount,jdbcType=INTEGER}, #{goodsPrice,jdbcType=DECIMAL},
+				#{goodsImage,jdbcType=VARCHAR}, #{cartItemSubtotal,jdbcType=DECIMAL})
 	</insert>
-	
-	<update id="updateByPrimaryKey" parameterType="com.emall.entity.CartItem">
-		update cart_item
-		set user_id            = #{userId,jdbcType=VARCHAR},
-			goods_id           = #{goodsId,jdbcType=VARCHAR},
-			goods_count        = #{goodsCount,jdbcType=VARCHAR},
-			goods_price        = #{goodsPrice,jdbcType=DECIMAL},
-			goods_image        = #{goodsImage,jdbcType=VARCHAR},
-			cart_item_subtotal = #{cartItemSubtotal,jdbcType=DECIMAL}
-		where cart_item_id = #{cartItemId,jdbcType=VARCHAR}
-  </update>
 </mapper>

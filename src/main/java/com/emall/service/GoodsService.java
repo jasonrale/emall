@@ -6,7 +6,7 @@ import com.emall.entity.Goods;
 import com.emall.redis.RedisKeyUtil;
 import com.emall.result.Result;
 import com.emall.utils.PageModel;
-import com.emall.utils.SnowFlakeConfig;
+import com.emall.utils.SnowflakeIdWorker;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -38,7 +38,7 @@ public class GoodsService {
     RedisTemplate redisTemplate;
 
     @Resource
-    SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
+    SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 分页查询全部商品的完整逻辑

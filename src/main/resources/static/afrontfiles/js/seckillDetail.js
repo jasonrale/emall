@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    userInfo();
+    navInfo();
 
     var seckillGoodsId = getUrlParam("seckillGoodsId");
 

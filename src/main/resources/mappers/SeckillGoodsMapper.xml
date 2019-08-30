@@ -33,13 +33,6 @@
 		from seckill_goods
 	</select>
 	
-	<select id="queryAllOnShelf" resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List"/>
-		from seckill_goods s
-		where seckill_goods_status != 0 and seckill_goods_status != 3
-	</select>
-	
 	<select id="queryAll" resultMap="BaseResultMap">
 		select s.seckill_goods_id,
 			   s.seckill_goods_name,

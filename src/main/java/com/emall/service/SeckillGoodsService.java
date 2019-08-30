@@ -2,7 +2,6 @@ package com.emall.service;
 
 import com.emall.dao.SeckillGoodsMapper;
 import com.emall.entity.SeckillGoods;
-import com.emall.entity.User;
 import com.emall.redis.RedisKeyUtil;
 import com.emall.utils.FutureRunnable;
 import com.emall.utils.PageModel;
@@ -11,16 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;

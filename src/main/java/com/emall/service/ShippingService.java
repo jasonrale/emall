@@ -2,7 +2,6 @@ package com.emall.service;
 
 import com.emall.dao.ShippingMapper;
 import com.emall.entity.Shipping;
-import com.emall.result.Result;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 

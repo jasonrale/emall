@@ -3,8 +3,6 @@ package com.emall.controller;
 import com.emall.entity.SeckillGoods;
 import com.emall.result.Result;
 import com.emall.service.SeckillGoodsService;
-import com.emall.service.SeckillService;
-import com.emall.utils.LoginSession;
 import com.emall.vo.SeckillGoodsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletResponse;
-import java.awt.image.BufferedImage;
-import java.io.OutputStream;
 import java.util.Date;
 
 @Controller
@@ -96,9 +90,9 @@ public class SeckillGoodsController {
      * @param seckillGoodsId
      * @return
      */
-    @DeleteMapping("/{seckillGoodsId}/seckillGoodsId")
+    @DeleteMapping("")
     @ResponseBody
-    public Result delete(@PathVariable("seckillGoodsId") String seckillGoodsId) {
+    public Result delete(@RequestBody String seckillGoodsId) {
         logger.info("根据秒杀商品id=" + seckillGoodsId + "删除");
 
         return seckillGoodsService.deleteBySeckillGoodsId(seckillGoodsId) ? Result.success("秒杀商品删除成功", null) : Result.error("秒杀商品已上架，无法删除");

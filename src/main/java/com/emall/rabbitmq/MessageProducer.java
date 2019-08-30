@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
+/**
+ * 消息生产者
+ */
 @Service
 public class MessageProducer {
     @Resource

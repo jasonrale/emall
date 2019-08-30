@@ -36,12 +36,6 @@
 		  and goods_status = 1
 	</select>
 	
-	<select id="countByCategoryId" parameterType="java.lang.String" resultType="java.lang.Integer">
-		select count(1)
-		from goods
-		where category_id = #{categoryId,jdbcType=VARCHAR}
-	</select>
-	
 	<select id="countByCategoryIdForUser" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(1)
 		from goods

@@ -2,6 +2,10 @@ package com.emall.result;
 
 import lombok.*;
 
+/**
+ * RESTFUL接口Json数据格式
+ * @param <T>
+ */
 @Data
 public class Result<T> {
     private boolean status;

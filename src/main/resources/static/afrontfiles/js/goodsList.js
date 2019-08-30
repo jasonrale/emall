@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    userInfo();
+    navInfo();
 
     showLoading();
 

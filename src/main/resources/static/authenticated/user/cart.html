@@ -5,13 +5,14 @@
     <meta http-equiv=x-ua-compatible content="ie=edge">
     <meta name="keywords" content="EMall网上商城">
     <meta name="description" content="EMall网上商城">
-    <title>订单列表 - EMall</title>
+    <title>购物车明细 - EMall</title>
     <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../afrontfiles/css/common.css">
-    <link href="../../afrontfiles/css/orderList.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../afrontfiles/css/cart.css">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../afrontfiles/layer/layer.js"></script>
     <script src="../../afrontfiles/js/common.js"></script>
-    <script src="../../afrontfiles/js/orderList.js"></script>
+    <script src="../../afrontfiles/js/cart.js"></script>
 </head>
 <body>
 <div class="nav">
@@ -30,10 +31,10 @@
                 <a class="link" href="../../authenticated/user/cart.html">购物车(<span class="cart-count">0</span>)</a>
             </li>
             <li class="nav-item">
-                <a class="link" href="orderList.html">我的订单</a>
+                <a class="link" href="../../authenticated/user/orderList.html">我的订单</a>
             </li>
             <li class="nav-item">
-                <a class="link" href="userCenter.html">个人中心</a>
+                <a class="link" href="../../authenticated/user/userCenter.html">个人中心</a>
             </li>
         </ul>
     </div>
@@ -51,39 +52,12 @@
     <div class="w">
         <div class="crumb-con">
             <span class="link" id="emall">EMall</span>
-            <span>></span>
-            <span class="link-text">我的订单</span>
+            <span>&gt;</span>
+            <span class="link-text">购物车详情页</span>
         </div>
     </div>
 </div>
 <div class="page-wrap w">
-    <ul class="nav-side">
-        <li class="nav-item">
-            <a class="link" href="userCenter.html">个人中心</a>
-        </li>
-        <li class="nav-item active">
-            <a class="link" href="">我的订单</a>
-        </li>
-        <li class="nav-item">
-            <a class="link" href="password.html">修改密码</a>
-        </li>
-    </ul>
-    <div class="content with-nav">
-        <div class="panel">
-            <div class="panel-title">订单列表</div>
-            <div class="panel-body">
-                <div class="order-list-con">
-                </div>
-                <div class="pagination">
-                    <div class="pg-content">
-                        <span id="lastPage" class="pg-item disabled">上一页</span>
-                        <span id="totalPages" class="pg-total"></span>
-                        <span id="nextPage" class="pg-item">下一页</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <div class="footer">
     <div class="w">

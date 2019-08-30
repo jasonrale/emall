@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    userInfo();
+    navInfo();
 
     orderList(1, 10);
 });
@@ -34,13 +34,13 @@ function orderList(currentNo, pageSize) {
 
             if (orderVoList.length !== 0) {
                 for (var i = 0; i < orderVoList.length; i++) {
-                    var order = orderVoList[i].order;
+                    var orderVo = orderVoList[i];
 
-                    var orderId = order.orderId;
-                    var status = order.orderStatus === -1 ? "已取消" : order.orderStatus === 0 ? "未支付" :
-                        order.orderStatus === 1 ? "待发货" : order.orderStatus === 2 ? "待收货" : "已完成";
+                    var orderId = orderVo.orderId;
+                    var status = orderVo.orderStatus === -1 ? "已取消" : orderVo.orderStatus === 0 ? "未支付" :
+                        orderVo.orderStatus === 1 ? "待发货" : orderVo.orderStatus === 2 ? "待收货" : "已完成";
 
-                    var shipping = orderVoList[i].shipping;
+                    var shipping = orderVo.shipping;
 
                     element += '<table class="order-list-table order-item">' +
                         "<tbody>" +
@@ -50,15 +50,15 @@ function orderList(currentNo, pageSize) {
                         "<span>订单号：</span>" +
                         '<a class="link order-num" href="orderDetail.html?orderId=' + orderId + '" target="_blank">' + orderId + "</a>" +
                         "</span>" +
-                        '<span class="order-text">' + new Date(order.orderCreateTime).format("yyyy-MM-dd hh:mm:ss") + "</span>" +
+                        '<span class="order-text">' + new Date(orderVo.orderCreateTime).format("yyyy-MM-dd hh:mm:ss") + "</span>" +
                         '<span>收件人：<span class="order-text">' + shipping.shippingName + "</span></span>\n" +
                         '<span>订单状态：<span class="order-text">' + status + "</span></span>" +
-                        '<span>订单总价：<span class="order-total">￥' + order.orderPayment + "</span></span>" +
+                        '<span>订单总价：<span class="order-total">￥' + orderVo.orderPayment + "</span></span>" +
                         '<a class="link order-detail" href="orderDetail.html?orderId=' + orderId + '" target="_blank">查看详情&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>' +
                         "</td>" +
                         "</tr>";
 
-                    var orderItemList = orderVoList[i].orderItemList;
+                    var orderItemList = orderVo.orderItemList;
                     for (var j = 0; j < orderItemList.length; j++) {
                         var orderItem = orderItemList[j];
 

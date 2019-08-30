@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    userInfo();
+    navInfo();
 
     var orderId = getUrlParam("orderId");
 
@@ -17,13 +17,12 @@ function orderDetail(orderId) {
         success: function (data) {
             if (data.status === true) {
                 var orderVo = data.obj;
-                var order = orderVo.order;
                 var orderItemList = orderVo.orderItemList;
                 var shipping = orderVo.shipping;
-                var orderStatus = parseInt(order.orderStatus);
+                var orderStatus = parseInt(orderVo.orderStatus);
 
-                $("#orderId").html(order.orderId);
-                $("#orderCreateTime").html(new Date(order.orderCreateTime).format("yyyy-MM-dd hh:mm:ss"));
+                $("#orderId").html(orderVo.orderId);
+                $("#orderCreateTime").html(new Date(orderVo.orderCreateTime).format("yyyy-MM-dd hh:mm:ss"));
                 $("#shippingName").html(shipping.shippingName);
                 $("#shippingAddress").html(shipping.shippingAddress);
                 if (orderStatus === -1) {
@@ -32,8 +31,8 @@ function orderDetail(orderId) {
                     $("#orderStatus").html("未支付");
                     $(".order-info").append(
                         '<div class="text-line">' +
-                        '<a class="btn" href="payment.html?orderId=' + order.orderId + '">去支付</a>' +
-                        '<a class="btn order-cancel" id="cancel" onclick="cancel(' + "'" + order.orderId + "'" + ')">取消订单</a>' +
+                        '<a class="btn" href="payment.html?orderId=' + orderVo.orderId + '">去支付</a>' +
+                        '<a class="btn order-cancel" id="cancel" onclick="cancel(' + "'" + orderVo.orderId + "'" + ')">取消订单</a>' +
                         "</div>"
                     );
                 } else if (orderStatus === 1) {
@@ -44,7 +43,6 @@ function orderDetail(orderId) {
                     $("#orderStatus").html("已完成");
                 }
 
-                var total = 0;
                 for (var i = 0; i < orderItemList.length; i++) {
                     var element = "<tr>" +
                         '<td class="cell cell-img">' +
@@ -61,11 +59,10 @@ function orderDetail(orderId) {
                         '<td class="cell cell-count">' + orderItemList[i].goodsCount + "</td>" +
                         '<td class="cell cell-total">￥' + orderItemList[i].orderItemSubtotal + "</td>" +
                         "</tr>";
-                    total += orderItemList[i].orderItemSubtotal;
                     $("#tbody").append(element);
                 }
 
-                $(".panel-body").append('<p class="total"><span>订单总价：</span><span class="total-price">￥' + total + "</span></p>");
+                $(".panel-body").append('<p class="total"><span>订单总价：</span><span class="total-price">￥' + orderVo.orderPayment + "</span></p>");
             } else {
                 layer.msg(data.msg, {time: 1000}, function () {
                     $(window).attr("location", "orderList.html");
@@ -79,19 +76,28 @@ function orderDetail(orderId) {
  * 取消订单
  */
 function cancel(orderId) {
-    $.ajax({
-        type: "POST",
-        url: "/order/cancel",
-        data: orderId,
-        contentType: 'application/json;charset=UTF-8',
-        success: function (data) {
-            if (data.status === true) {
-                layer.msg(data.msg, {time: 1000}, function () {
-                    window.location.reload();
-                });
-            } else {
-                layer.msg(data.msg);
-            }
+    layer.confirm(
+        "您确定要取消该订单吗？",
+        {btn: ["确定", "取消"]},
+        function (index) {
+            $.ajax({
+                type: "POST",
+                url: "/order/cancel",
+                data: orderId,
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.status === true) {
+                        layer.msg(data.msg, {time: 1000}, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        },
+        function (index) {
+            layer.close(index);
         }
-    });
+    );
 }

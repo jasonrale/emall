@@ -1,17 +1,21 @@
 $(document).ready(function () {
-    userInfo();
+    navInfo();
 
-    var goodsId = getUrlParam("goodsId");
-    var count = getUrlParam("count");
-    if (goodsId != null && goodsId.trim() !== "" && count != null && count.trim() !== "") {
-        normalInit(goodsId, count);
-        normalSubmit(goodsId, count);
+    var from = getUrlParam("from");
+    if (from === "cart") {
+        fromCartInit(JSON.parse(sessionStorage.getItem("cartItemIdList")), JSON.parse(sessionStorage.getItem("totalPrice")));
     } else {
-        var seckillGoodsId = getUrlParam("seckillGoodsId");
-        if (seckillGoodsId != null && seckillGoodsId.trim() !== "") {
-            var path = getUrlParam("path");
-            initSeckill(seckillGoodsId, path);
-            seckillSubmit(seckillGoodsId, path);
+        var count = getUrlParam("count");
+        if (count != null && count.trim() !== "") {
+            normalInit(JSON.parse(sessionStorage.getItem("buyGoods")), count);
+            normalSubmit(JSON.parse(sessionStorage.getItem("buyGoods")), count);
+        } else {
+            var seckillGoodsId = getUrlParam("seckillGoodsId");
+            if (seckillGoodsId != null && seckillGoodsId.trim() !== "") {
+                var path = getUrlParam("path");
+                initSeckill(seckillGoodsId, path);
+                seckillSubmit(seckillGoodsId, path);
+            }
         }
     }
 });
@@ -39,38 +43,77 @@ function pathValid(seckillGoodsId, path) {
 }
 
 /**
- * 普通订单确认数据初始化(立即购买)
- * @param goodsId
- * @param count
+ * 购物车订单数据初始化
  */
-function normalInit(goodsId, count) {
+function fromCartInit(cartItemIdList, totalPrice) {
     queryAllShipping();
 
     $.ajax({
-        type: "GET",
-        async: false,
-        url: "/goods/" + goodsId + "/goodsId",
+        type: "POST",
+        url: "/cartItem/orderConfirm",
+        data: JSON.stringify(cartItemIdList),
+        contentType: 'application/json;charset=UTF-8',
         success: function (data) {
             if (data.status === true) {
-                var goods = data.obj;
-                var element = "<tr>" +
-                    '<td class="cell-img">' +
-                    '<a href="../../goods/detail.html?goodsId=' + goods.goodsId + '" target="_blank">' +
-                    '<img class="p-img" src="' + goods.goodsImage + '" alt="' + goods.goodsName + '"/>' +
-                    "</a>" +
-                    "</td>" +
-                    '<td class="cell-info">' +
-                    '<a class="link" href="../../goods/detail.html?goodsId=' + goods.goodsId + '" target="_blank">' + goods.goodsName + "</a>" +
-                    "</td>" +
-                    '<td class="cell-price">' + "￥" + goods.goodsPrice + "</td>" +
-                    '<td class="cell-count">' + count + "</td>" +
-                    '<td class="cell-total">' + "￥" + count * goods.goodsPrice + "</td>" +
-                    "</tr>";
-                $(".product-table").append(element);
-                $(".submit-total").html("￥" + count * goods.goodsPrice);
+                var cartItemList = data.obj;
+                sessionStorage.setItem("cartItemList", JSON.stringify(cartItemList));
+
+                for (var i = 0; i < cartItemList.length; i++) {
+                    var cartItem = cartItemList[i];
+
+                    var element = "<tr>" +
+                        '<td class="cell-img">' +
+                        '<a href="../../goods/detail.html?goodsId=' + cartItem.goodsId + '" target="_blank">' +
+                        '<img class="p-img" src="' + cartItem.goodsImage + '" alt="' + cartItem.goodsName + '"/>' +
+                        "</a>" +
+                        "</td>" +
+                        '<td class="cell-info">' +
+                        '<a class="link" href="../../goods/detail.html?goodsId=' + cartItem.goodsId + '" target="_blank">' + cartItem.goodsName + "</a>" +
+                        "</td>" +
+                        '<td class="cell-price">' + "￥" + cartItem.goodsPrice + "</td>" +
+                        '<td class="cell-count">' + cartItem.goodsCount + "</td>" +
+                        '<td class="cell-total">' + "￥" + cartItem.cartItemSubtotal + "</td>" +
+                        "</tr>";
+
+                    $(".product-table").append(element);
+                }
+
+                $(".submit-total").html("￥" + totalPrice);
+
+                fromCartSubmit(JSON.parse(sessionStorage.getItem("cartItemList")), JSON.parse(sessionStorage.getItem("totalPrice")));
+            } else {
+                layer.msg(data.msg, {time: 1000}, function () {
+                    $(window).attr("location", "cart.html")
+                })
             }
         }
     });
+}
+
+/**
+ * 普通订单确认数据初始化(立即购买)
+ * @param buyGoods
+ * @param count
+ */
+function normalInit(buyGoods, count) {
+    queryAllShipping();
+
+    var goods = buyGoods;
+    var element = "<tr>" +
+        '<td class="cell-img">' +
+        '<a href="../../goods/detail.html?goodsId=' + goods.goodsId + '" target="_blank">' +
+        '<img class="p-img" src="' + goods.goodsImage + '" alt="' + goods.goodsName + '"/>' +
+        "</a>" +
+        "</td>" +
+        '<td class="cell-info">' +
+        '<a class="link" href="../../goods/detail.html?goodsId=' + goods.goodsId + '" target="_blank">' + goods.goodsName + "</a>" +
+        "</td>" +
+        '<td class="cell-price">' + "￥" + goods.goodsPrice + "</td>" +
+        '<td class="cell-count">' + count + "</td>" +
+        '<td class="cell-total">' + "￥" + count * goods.goodsPrice + "</td>" +
+        "</tr>";
+    $(".product-table").append(element);
+    $(".submit-total").html("￥" + count * goods.goodsPrice);
 }
 
 /**
@@ -314,28 +357,47 @@ function shippingCancel() {
 }
 
 /**
- * 验证手机号码
+ * 购物车订单提交
+ * @param cartItemList
+ * @param totalPrice
  */
-function mobileValid(mobileNumber) {
-    var result = true;
-    var mobileValidate = /^(1[3-9])\d{9}$/;
+function fromCartSubmit(cartItemList, totalPrice) {
+    $("#submit").click(function () {
+        var cartOrderSubmitVo = {
+            cartItemList: cartItemList,
+            shippingId: $(".address.active").attr("id"),
+            totalPrice: totalPrice
+        };
 
-    if (!(mobileValidate.test(mobileNumber))) {
-        result = false;
-    }
-
-    return result;
+        $.ajax({
+            type: "PUT",
+            url: "/order/cart",
+            data: JSON.stringify(cartOrderSubmitVo),
+            contentType: 'application/json;charset=UTF-8',
+            success: function (data) {
+                if (data.status === true) {
+                    layer.msg(data.msg, {time: 1200}, function () {
+                        $(window).attr("location", "orderDetail.html?orderId=" + data.obj)
+                    });
+                } else {
+                    layer.msg(data.msg, {time: 1000}, function () {
+                        $(window).attr("location", "../../index.html");
+                    });
+                }
+            }
+        });
+    });
 }
 
 /**
  * 普通订单提交（立即购买）
- * @param goodsId
+ * @param buyGoods
  * @param count
  */
-function normalSubmit(goodsId, count) {
+function normalSubmit(buyGoods, count) {
     $("#submit").click(function () {
-        var json = {
-            goodsId: goodsId,
+        var orderSubmitVo = {
+            goods: buyGoods,
             shippingId: $(".address.active").attr("id"),
             count: count
         };
@@ -343,7 +405,8 @@ function normalSubmit(goodsId, count) {
         $.ajax({
             type: "PUT",
             url: "/order/normal",
-            data: json,
+            data: JSON.stringify(orderSubmitVo),
+            contentType: 'application/json;charset=UTF-8',
             success: function (data) {
                 if (data.status === true) {
                     layer.msg(data.msg, {time: 1200}, function () {
@@ -389,4 +452,18 @@ function seckillSubmit(seckillGoodsId, path) {
             }
         });
     });
+}
+
+/**
+ * 验证手机号码
+ */
+function mobileValid(mobileNumber) {
+    var result = true;
+    var mobileValidate = /^(1[3-9])\d{9}$/;
+
+    if (!(mobileValidate.test(mobileNumber))) {
+        result = false;
+    }
+
+    return result;
 }

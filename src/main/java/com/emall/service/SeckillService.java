@@ -6,7 +6,7 @@ import com.emall.entity.User;
 import com.emall.redis.RedisKeyUtil;
 import com.emall.result.Result;
 import com.emall.shiro.ShiroEncrypt;
-import com.emall.utils.SnowFlakeConfig;
+import com.emall.utils.SnowflakeIdWorker;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class SeckillService {
     RedisTemplate redisTemplate;
 
     @Resource
-    SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
+    SnowflakeIdWorker snowflakeIdWorker;
 
     @Resource
     SeckillGoodsService seckillGoodsService;

@@ -1,10 +1,12 @@
 package com.emall.redis;
 
-import com.emall.entity.Category;
 import com.emall.entity.Goods;
 import com.emall.entity.SeckillGoods;
 import com.emall.utils.StringUnicode;
 
+/**
+ * Redis键生成类
+ */
 public class RedisKeyUtil {
     public static final String GOODS_VERSION = "Goods:Version";
     public static final String GOODS_PREFIX = "Goods:";

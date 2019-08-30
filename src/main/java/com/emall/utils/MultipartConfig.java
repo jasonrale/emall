@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Configuration;
 import javax.servlet.MultipartConfigElement;
 import java.io.File;
 
+/**
+ * 文件上传配置
+ */
 @Configuration
 public class MultipartConfig {
     /**

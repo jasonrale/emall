@@ -5,6 +5,10 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
+/**
+ * 分页模型类
+ * @param <T>
+ */
 @Data
 public class PageModel<T> {
     @NotNull(message = "页码不能为空")

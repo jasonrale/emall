@@ -1,13 +1,18 @@
 package com.emall.dao;
 
 import com.emall.entity.CartItem;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface CartItemMapper {
-    int deleteByPrimaryKey(String cartItemId);
+    int deleteByCartItemId(String cartItemId);
 
-    int insert(CartItem record);
+    int insert(CartItem cartItem);
 
-    CartItem selectByPrimaryKey(String cartItemId);
+    CartItem selectByCartItemId(String cartItemId);
 
-    int updateByPrimaryKey(CartItem record);
+    Integer countByUserId(@Param("userId") String userId);
+
+    List<CartItem> queryAllByUserId(@Param("userId") String userId);
 }

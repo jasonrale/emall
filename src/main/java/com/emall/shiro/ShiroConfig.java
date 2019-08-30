@@ -21,6 +21,9 @@ import javax.annotation.Resource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * shiro配置
+ */
 @Configuration
 public class ShiroConfig {
     @Resource

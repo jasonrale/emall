@@ -4,7 +4,7 @@ import com.emall.entity.*;
 import com.emall.result.Result;
 import com.emall.service.*;
 import com.emall.utils.LoginSession;
-import com.emall.utils.SnowFlakeConfig;
+import com.emall.utils.SnowflakeIdWorker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -29,7 +29,7 @@ public class SeckillOrderController {
     SeckillGoodsService seckillGoodsService;
 
     @Resource
-    SnowFlakeConfig.SnowflakeIdWorker snowflakeIdWorker;
+    SnowflakeIdWorker snowflakeIdWorker;
 
     @Resource
     OrderService orderService;

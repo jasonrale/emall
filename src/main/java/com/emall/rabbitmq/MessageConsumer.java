@@ -16,6 +16,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.text.MessageFormat;
 
+/**
+ * 消息消费者
+ */
 @Service
 public class MessageConsumer {
     @Resource
