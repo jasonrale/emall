@@ -1,5 +1,6 @@
 package com.emall.controller;
 
+import com.emall.annotation.AccessLimit;
 import com.emall.entity.SeckillOrder;
 import com.emall.entity.User;
 import com.emall.rabbitmq.MessageProducer;
@@ -72,6 +73,7 @@ public class SeckillController {
      * @param captchaResult
      * @return
      */
+    @AccessLimit(seconds = 5, maxCount = 3)
     @GetMapping("/{seckillGoodsId}/{captchaResult}/captcha/path")
     @ResponseBody
     public Result<String> captchaPath(@PathVariable("seckillGoodsId") String seckillGoodsId, @PathVariable(value = "captchaResult") int captchaResult) {
@@ -129,7 +131,7 @@ public class SeckillController {
 
         //库存标记，减少redis访问
         if (stockFlagMap.containsKey(seckillGoodsId)) {
-            return Result.error("就差一点点哦，秒杀失败");
+            return Result.error("商品库存不足");
         }
 
         //判断是否已经秒杀到了
@@ -140,9 +142,11 @@ public class SeckillController {
 
         //预减库存
         int stock = seckillService.reduceCacheStock(seckillGoodsId);
-        if (stock < 0) {
+        if (stock == 0) {
             stockFlagMap.put(seckillGoodsId, true);
-            return Result.error("就差一点点哦，秒杀失败");
+        } else if (stock < 0) {
+            stockFlagMap.put(seckillGoodsId, true);
+            return Result.error("商品库存不足");
         }
 
         //入队

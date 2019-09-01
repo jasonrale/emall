@@ -92,9 +92,10 @@ public class SeckillService {
     public Result<String> checkCaptchaResult(User user, String seckillGoodsId, int captchaResult) {
         String captchaKey = RedisKeyUtil.captcha(user.getUserId(), seckillGoodsId);
 
-        Integer calcResult = (Integer) redisTemplate.opsForValue().get(captchaKey);
+        Integer calcResult = null;
 
         if (redisTemplate.hasKey(captchaKey)) {
+            calcResult = (Integer) redisTemplate.opsForValue().get(captchaKey);
             redisTemplate.delete(captchaKey);
         }
 
@@ -242,6 +243,10 @@ public class SeckillService {
     public int reduceCacheStock(String seckillGoodsId) {
         String seckillStockKey = RedisKeyUtil.seckillStockById(seckillGoodsId);
 
-        return Math.toIntExact(redisTemplate.opsForValue().decrement(seckillStockKey));
+        if ((int) redisTemplate.opsForValue().get(seckillStockKey) > 0) {
+            return Math.toIntExact(redisTemplate.opsForValue().decrement(seckillStockKey));
+        }
+
+        return -1;
     }
 }

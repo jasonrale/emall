@@ -44,6 +44,8 @@ public class SeckillGoodsController {
     public Result<SeckillGoodsVo> selectBySeckillGoodsIdForUser(@PathVariable("seckillGoodsId") String seckillGoodsId) {
         logger.info("根据秒杀商品id=" + seckillGoodsId + "查询商品信息");
         SeckillGoods seckillGoods = seckillGoodsService.selectBySeckillGoodsIdFromCache(seckillGoodsId);
+        int stock = seckillGoodsService.stockBySeckillGoodsId(seckillGoodsId);
+        seckillGoods.setSeckillGoodsStock(stock);
 
         if (seckillGoodsId == null) {
             return Result.error("查询商品信息失败");
@@ -56,11 +58,14 @@ public class SeckillGoodsController {
         if (now < startTime) {//秒杀准备中，倒计时
             seckillGoods.setSeckillGoodsStatus(SeckillGoods.PREPARING);
             remainSeconds = (int) (startTime - now);
-        } else if (now > endTime) {//秒杀已经结束
+        } else if (now == startTime) {//秒杀进行中
+            seckillGoods.setSeckillGoodsStatus(SeckillGoods.ONGOING);
+        } else if (now < endTime) {//秒杀进行中
+            remainSeconds = (int) (startTime - now);
+            seckillGoods.setSeckillGoodsStatus(SeckillGoods.ONGOING);
+        } else {//秒杀已经结束
             seckillGoods.setSeckillGoodsStatus(SeckillGoods.COMPLETE);
             remainSeconds = (int) (startTime - endTime);
-        } else {//秒杀进行中
-            seckillGoods.setSeckillGoodsStatus(SeckillGoods.ONGOING);
         }
         SeckillGoodsVo vo = new SeckillGoodsVo();
         vo.setSeckillGoods(seckillGoods);

@@ -137,6 +137,11 @@ public class SeckillGoodsService {
         return flag;
     }
 
+    public int stockBySeckillGoodsId(String seckillGoodsId) {
+        String seckillStockKey = RedisKeyUtil.seckillStockById(seckillGoodsId);
+        return (int) redisTemplate.opsForValue().get(seckillStockKey);
+    }
+
     /**
      * 查看已上架的秒杀商品数
      * @return

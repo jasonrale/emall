@@ -77,11 +77,14 @@
 		from `order` o,
 			 order_item oi,
 			 shipping s,
-			 (select order_id from `order` order by order_id limit #{limit} offset #{offset}) ids
+			 (select order_id
+			  from `order`
+			  where user_id = #{userId}
+			  order by order_id
+			  limit #{limit} offset #{offset}) ids
 		where o.order_id = oi.order_id
 		  and o.shipping_id = s.shipping_id
 		  and oi.order_id = ids.order_id
-		  and o.user_id = #{userId};
 	</select>
 	
 	<select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">

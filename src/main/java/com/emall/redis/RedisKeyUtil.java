@@ -13,6 +13,7 @@ public class RedisKeyUtil {
     public static final String CATEGORY_PREFIX = "Category:";
     public static final String SECKILL_GOODS_PREFIX = "SeckillGoods:";
     public static final String SECKILL_ORDER_PREFIX = "SeckillOrder:";
+    public static final String ACCESS_LIMIT_PREFIX = "AccessLimit:";
 
     /**
      * 所有商品分页键
@@ -139,5 +140,15 @@ public class RedisKeyUtil {
         return sort.equals("none") ? GOODS_PREFIX + "User:" + categoryId + ":" + "none:" + currentNo + ":" + pageSize :
                 sort.equals("asc") ? GOODS_PREFIX + "User:" + categoryId + ":" + Goods.PRICE_ASC + ":" + currentNo + ":" + pageSize :
                         GOODS_PREFIX + "User:" + categoryId + ":" + Goods.PRICE_DESC + ":" + currentNo + ":" + pageSize;
+    }
+
+    /**
+     * 访问限制次数键
+     *
+     * @param userId
+     * @return
+     */
+    public static String accessLimit(String userId) {
+        return ACCESS_LIMIT_PREFIX + userId;
     }
 }
