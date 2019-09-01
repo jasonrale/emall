@@ -11,7 +11,7 @@
  Target Server Version : 80017
  File Encoding         : 65001
 
- Date: 31/08/2019 06:58:55
+ Date: 01/09/2019 23:43:20
 */
 
 SET NAMES utf8mb4;
@@ -172,6 +172,12 @@ INSERT INTO `order` VALUES ('616486320495132672', '605196406440853504', 2199.00,
 INSERT INTO `order` VALUES ('616486429354098688', '605196406440853504', 5694.00, '-1', '2019-08-31 06:24:15', NULL, NULL, NULL, '613848033091649536');
 INSERT INTO `order` VALUES ('616488061747855360', '605196406440853504', 2758.00, '0', '2019-08-29 04:23:28', NULL, NULL, NULL, '613848033091649536');
 INSERT INTO `order` VALUES ('617245375924797440', '605196406440853504', 30686.00, '0', '2019-08-31 06:32:45', NULL, NULL, NULL, '613847900761358336');
+INSERT INTO `order`
+VALUES ('617866390933602304', '605196406440853504', 9.90, '0', '2019-09-01 23:40:27', NULL, NULL, NULL,
+        '613836499053445120');
+INSERT INTO `order`
+VALUES ('617866449821630464', '605210786658254848', 9.90, '0', '2019-09-01 23:40:41', NULL, NULL, NULL,
+        '617823144937259008');
 
 -- ----------------------------
 -- Table structure for order_item
@@ -211,6 +217,12 @@ INSERT INTO `order_item` VALUES ('616711035767750656', '616711035713224704', '60
 INSERT INTO `order_item` VALUES ('617245376390365184', '617245375924797440', '611673381086953472', 'Apple iPad mini 5 2019年新款平板电脑', 'http://192.168.153.130/images/2019/08/15/611673380227121152.jpg', 2888.00, 1, 2888.00);
 INSERT INTO `order_item` VALUES ('617245376646217728', '617245375924797440', '610149310432018432', 'Apple 2019新品 Macbook Pro 15.4  笔记本电脑', 'http://192.168.153.130/images/2019/08/11/610149309567991808.jpg', 20399.00, 1, 20399.00);
 INSERT INTO `order_item` VALUES ('617245376700743680', '617245375924797440', '609418584468226048', 'Apple iPhone XS Max 64GB 深空灰色 移动联通电信4G手机 双卡双待', 'http://192.168.153.130/images/2019/08/09/609418584409505792.jpg', 7399.00, 1, 7399.00);
+INSERT INTO `order_item`
+VALUES ('617866390950379520', '617866390933602304', '612344137449996288', 'Apple iPhone XR (A2108) 256GB 全网通4G手机',
+        'http://192.168.153.130/images/2019/08/17/612344137357721600.jpg', 9.90, 1, 9.90);
+INSERT INTO `order_item`
+VALUES ('617866449834213376', '617866449821630464', '612344137449996288', 'Apple iPhone XR (A2108) 256GB 全网通4G手机',
+        'http://192.168.153.130/images/2019/08/17/612344137357721600.jpg', 9.90, 1, 9.90);
 
 -- ----------------------------
 -- Table structure for seckill_goods
@@ -238,8 +250,17 @@ CREATE TABLE `seckill_goods`  (
 INSERT INTO `seckill_goods` VALUES ('610776125458612224', 'Apple 2019新品 Macbook Pro 15.4  笔记本电脑', '609417039383101440', '九代八核i9 16G 512G 深空灰 笔记本电脑 轻薄本【带触控栏】', 2, 9.90, 'http://192.168.153.130/images/2019/08/11/610149309567991808.jpg', 'http://192.168.153.130/images/2019/08/11/610149309567991809.jpg', '2019-08-28 02:59:44', '2019-08-29 02:58:49', 3);
 INSERT INTO `seckill_goods` VALUES ('610949710110261248', '耐克NIKE Air Jordan Legacy 312 NRG联名', '609417278848499712', 'NRG联名 AJ312男篮球鞋 女神樱花粉白AT4040-106', 2, 9.90, 'http://192.168.153.130/images/2019/08/13/610954262830120960.jpg', 'http://192.168.153.130/images/2019/08/13/610954262863675392.jpg', '2019-08-28 01:19:11', '2019-08-29 01:18:15', 3);
 INSERT INTO `seckill_goods` VALUES ('610954262905618432', '华为HUAWEI MateBook X Pro 2019款', '609417039383101440', '英特尔酷睿i7 13.9英寸全面屏轻薄笔记本(i7 8G 512G MX250 3K触控) 灰', 2, 9.90, 'http://192.168.153.130/images/2019/08/13/610949709950877696.jpg', 'http://192.168.153.130/images/2019/08/13/610949710051540992.jpg', '2019-08-28 03:01:50', '2019-08-29 03:01:34', 3);
-INSERT INTO `seckill_goods` VALUES ('612344137449996288', 'Apple iPhone XR (A2108) 256GB 全网通4G手机', '609417120333168640', '珊瑚色 A12仿生处理器 移动联通电信4G手机 双卡双待', 3, 9.90, 'http://192.168.153.130/images/2019/08/17/612344137357721600.jpg', 'http://192.168.153.130/images/2019/08/17/612344137403858944.jpg', '2019-08-26 22:26:09', '2019-08-26 22:29:10', 0);
-INSERT INTO `seckill_goods` VALUES ('612438698197254144', 'Apple AirPods 配充电盒 苹果蓝牙耳机', '609417220304404480', '新款配备有线充电盒的AirPods，Apple新款蓝牙耳机，升级更有魅力！', 3, 9.90, 'http://192.168.153.130/images/2019/08/18/612438697735880704.jpg', 'http://192.168.153.130/images/2019/08/18/612438698109173760.jpg', '2019-08-19 07:20:45', '2019-08-19 07:20:50', 0);
+INSERT INTO `seckill_goods`
+VALUES ('612344137449996288', 'Apple iPhone XR (A2108) 256GB 全网通4G手机', '609417120333168640',
+        '珊瑚色 A12仿生处理器 移动联通电信4G手机 双卡双待', 0, 9.90, 'http://192.168.153.130/images/2019/08/17/612344137357721600.jpg',
+        'http://192.168.153.130/images/2019/08/17/612344137403858944.jpg', '2019-09-01 23:40:20', '2019-09-01 23:41:20',
+        3);
+INSERT INTO `seckill_goods`
+VALUES ('612438698197254144', 'Apple AirPods 配充电盒 苹果蓝牙耳机', '609417220304404480',
+        '新款配备有线充电盒的AirPods，Apple新款蓝牙耳机，升级更有魅力！', 3, 9.90,
+        'http://192.168.153.130/images/2019/08/18/612438697735880704.jpg',
+        'http://192.168.153.130/images/2019/08/18/612438698109173760.jpg', '2019-09-01 23:05:30', '2019-09-02 23:05:19',
+        0);
 INSERT INTO `seckill_goods` VALUES ('612440749979467776', 'Apple iPad mini 5 2019年新款平板电脑 7.9英寸', '609417150616043520', '（256G WLAN+Cellular版/A12芯片/Retina屏/MUXY2CH/A）银色', 3, 9.90, 'http://192.168.153.130/images/2019/08/18/612440749715226624.jpg', 'http://192.168.153.130/images/2019/08/18/612440749929136128.jpg', '2019-08-19 06:50:45', '2019-08-19 06:51:00', 0);
 INSERT INTO `seckill_goods` VALUES ('612448816896933888', 'MishkaNYC 圆领短袖 大眼球 T恤', '609417258346741760', '男士短袖T恤圆领 mishka女半袖上衣大眼球潮牌情侣装多色', 10, 1.10, 'http://192.168.153.130/images/2019/08/18/612448816787881984.png', 'http://192.168.153.130/images/2019/08/18/612448816829825024.jpg', '2019-08-19 06:52:30', '2019-08-19 06:52:40', 0);
 INSERT INTO `seckill_goods` VALUES ('612449440669630464', 'MishkaNYC新品情侣装T恤', '609417258346741760', 'mishka潮牌复古超市系列 短袖T恤男 休闲 女半袖', 10, 1.10, 'http://192.168.153.130/images/2019/08/18/612449440543801344.jpg', 'http://192.168.153.130/images/2019/08/18/612449440564772864.jpg', '2019-08-20 00:00:00', '2019-08-21 00:00:00', 0);
@@ -253,14 +274,12 @@ INSERT INTO `seckill_goods` VALUES ('612457825909604352', 'Air Jordan Legacy AJ3
 -- ----------------------------
 DROP TABLE IF EXISTS `seckill_order`;
 CREATE TABLE `seckill_order`  (
-  `seckill_order_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀订单id',
-  `order_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单id',
-  `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀订单用户id',
-  `seckill_goods_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品id',
-  PRIMARY KEY (`seckill_order_id`) USING BTREE,
-  UNIQUE INDEX `order_id`(`order_id`) USING BTREE COMMENT '订单id索引',
-  INDEX `user_id`(`user_id`) USING BTREE COMMENT '秒杀用户id索引',
-  INDEX `seckill_goods_id`(`seckill_goods_id`) USING BTREE COMMENT '秒杀商品id索引'
+                                  `seckill_order_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀订单id',
+                                  `order_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '订单id',
+                                  `user_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀订单用户id',
+                                  `seckill_goods_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '秒杀商品id',
+                                  PRIMARY KEY (`seckill_order_id`) USING BTREE,
+                                  UNIQUE INDEX `user_id` (`user_id`, `seckill_goods_id`) USING BTREE COMMENT '用户id与秒杀商品id组合索引'
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '此表为秒杀订单表。' ROW_FORMAT = Dynamic;
 
 -- ----------------------------
@@ -269,6 +288,10 @@ CREATE TABLE `seckill_order`  (
 INSERT INTO `seckill_order` VALUES ('616079314680545280', '616082745231147008', '605196406440853504', '610949710110261248');
 INSERT INTO `seckill_order` VALUES ('616104615359807488', '616104913130225664', '605196406440853504', '610776125458612224');
 INSERT INTO `seckill_order` VALUES ('616105153199603712', '616116970739204096', '605196406440853504', '610954262905618432');
+INSERT INTO `seckill_order`
+VALUES ('617866378287775744', '617866390933602304', '605196406440853504', '612344137449996288');
+INSERT INTO `seckill_order`
+VALUES ('617866438123716608', '617866449821630464', '605210786658254848', '612344137449996288');
 
 -- ----------------------------
 -- Table structure for shipping
@@ -291,6 +314,8 @@ INSERT INTO `shipping` VALUES ('613836499053445120', '605196406440853504', 'Jaso
 INSERT INTO `shipping` VALUES ('613847900761358336', '605196406440853504', 'Martin', '18584839287', '四川省成都市双流区天府大道南段成都玩家2栋2单元');
 INSERT INTO `shipping` VALUES ('613848033091649536', '605196406440853504', 'Avicii', '18584839287', '四川省成都市双流区天府大道南段成都玩家2栋2单元');
 INSERT INTO `shipping` VALUES ('616111732397441024', '605196406440853504', 'Kshmr', '18584839287', '四川省成都市双流区天府大道南段成都玩家2栋2单元');
+INSERT INTO `shipping`
+VALUES ('617823144937259008', '605210786658254848', 'xxx', '18584839287', '四川成都');
 
 -- ----------------------------
 -- Table structure for user
