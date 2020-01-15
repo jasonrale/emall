@@ -14,6 +14,6 @@ public class SeckillGoodsScheduled {
     @Bean
     public ScheduledExecutorService getScheduledThreadPool() {
         //延时任务线程池
-        return Executors.newScheduledThreadPool(12);
+        return Executors.newScheduledThreadPool(5);
     }
 }

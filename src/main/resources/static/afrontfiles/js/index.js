@@ -27,7 +27,7 @@ function carousel() {
 function querySeckillGoods(ins) {
     $.ajax({
         type: "GET",
-        url: "/seckillGoods",
+        url: "/emall/seckillGoods",
         success: function (data) {
             if (data.status === true) {
                 var seckillGoodsList = data.obj;

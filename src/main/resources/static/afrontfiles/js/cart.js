@@ -10,7 +10,7 @@ $(document).ready(function () {
 function queryAll() {
     $.ajax({
         type: "GET",
-        url: "/cartItem",
+        url: "/emall/cartItem",
         success: function (data) {
             if (data.status === true) {
                 var cartItemList = data.obj;
@@ -167,7 +167,7 @@ function delSelect() {
         function (index) {
             $.ajax({
                 type: "DELETE",
-                url: "/cartItem/select",
+                url: "/emall/cartItem/select",
                 data: JSON.stringify(cartItemIdList),
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {
@@ -198,7 +198,7 @@ function del(cartItemId) {
         function (index) {
             $.ajax({
                 type: "DELETE",
-                url: "/cartItem",
+                url: "/emall/cartItem",
                 data: cartItemId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {

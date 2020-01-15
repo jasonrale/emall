@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>emall</name>
     <description>Emall project for Spring Boot</description>
+	<packaging>war</packaging>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,14 +21,28 @@
     </properties>
 
     <dependencies>
-        <!--消息队列-->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	
+		<!--消息队列-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
         </dependency>
-        <dependency>
+	
+		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+			<!--			<exclusions>-->
+			<!--				&lt;!&ndash;排除内置得Tomcat,打war包&ndash;&gt;-->
+			<!--				<exclusion>-->
+			<!--					<groupId>org.springframework.boot</groupId>-->
+			<!--					<artifactId>spring-boot-starter-tomcat</artifactId>-->
+			<!--				</exclusion>-->
+			<!--			</exclusions>-->
         </dependency>
 
         <!--JSR303-->
@@ -154,6 +169,7 @@
 
 
     <build>
+		<finalName>emall</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

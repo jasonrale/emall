@@ -53,7 +53,7 @@ function adminQuery(currentNo, pageSize, listType, param) {
 
     $.ajax({
         type: "GET",
-        url: "/goods/admin/" + listType + "/" + param,
+        url: "/emall/goods/admin/" + listType + "/" + param,
         data: pageModel,
         success: function (data) {
             var tbody = $(".goodsTable");
@@ -208,7 +208,7 @@ function pull(goodsId) {
         function (index) {
             $.ajax({
                 type: "POST",
-                url: "/goods/pull",
+                url: "/emall/goods/pull",
                 data: goodsId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {
@@ -242,7 +242,7 @@ function put(goodsId, listType) {
             function (index) {
                 $.ajax({
                     type: "POST",
-                    url: "/goods/put",
+                    url: "/emall/goods/put",
                     data: goodsId,
                     contentType: 'application/json;charset=UTF-8',
                     success: function (data) {
@@ -306,7 +306,7 @@ function put(goodsId, listType) {
                 var timeInfo = {"seckillGoodsId": goodsId, "startTime": startTime, "endTime": endTime};
                 $.ajax({
                     type: "POST",
-                    url: "/seckillGoods",
+                    url: "/emall/seckillGoods",
                     data: timeInfo,
                     success: function (data) {
                         if (data.status === true) {
@@ -346,7 +346,7 @@ function del(seckillGoodsId) {
         function (index) {
             $.ajax({
                 type: "DELETE",
-                url: "/seckillGoods",
+                url: "/emall/seckillGoods",
                 data: seckillGoodsId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {

@@ -12,7 +12,7 @@ $(document).ready(function () {
 function payment(orderId) {
     $.ajax({
         type: "GET",
-        url: "/order/valid/" + orderId + "/orderId",
+        url: "/emall/order/valid/" + orderId + "/orderId",
         success: function (data) {
             if (data.status === false) {
                 layer.msg(data.msg, {time: 1000}, function f() {

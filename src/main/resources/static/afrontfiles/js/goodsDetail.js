@@ -12,7 +12,7 @@ $(document).ready(function () {
 function goodsDetail(goodsId) {
     $.ajax({
         type: "GET",
-        url: "/goods/" + goodsId + "/goodsId",
+        url: "/emall/goods/" + goodsId + "/goodsId",
         success: function (data) {
             var goods = data.obj;
             $("#goodsName").html(goods.goodsName);
@@ -22,7 +22,7 @@ function goodsDetail(goodsId) {
             $("#goodsStock").html(goods.goodsStock + "件");
             $.ajax({
                 type: "GET",
-                url: "/category/" + goods.categoryId + "/categoryId",
+                url: "/emall/category/" + goods.categoryId + "/categoryId",
                 success: function (data) {
                     $("#category").html(data.obj.categoryName);
                 }

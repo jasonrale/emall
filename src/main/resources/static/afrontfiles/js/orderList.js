@@ -15,7 +15,7 @@ function orderList(currentNo, pageSize) {
 
     $.ajax({
         type: "GET",
-        url: "/order",
+        url: "/emall/order",
         data: pageModel,
         success: function (data) {
             var orderVoList = data.obj.list;

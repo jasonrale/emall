@@ -3,8 +3,8 @@ $(document).ready(function () {
 
     showLoading();
 
-    var keyWord = decodeURI(getUrlParam("keyWord"));
-    var categoryId = decodeURI(getUrlParam("categoryId"));
+    var keyWord = encodeURI(encodeURI(getUrlParam("keyWord")));
+    var categoryId = encodeURI(getUrlParam("categoryId"));
 
     if (keyWord !== "null" && categoryId === "null") {
         listByKey(keyWord, "none", 1, 20);
@@ -24,7 +24,7 @@ function listByKey(keyWord, sort, currentNo, pageSize) {
 
     $.ajax({
         type: "GET",
-        url: "/goods/" + keyWord + "/keyWord/" + sort + "/sort",
+        url: "/emall/goods/" + keyWord + "/keyWord/" + sort + "/sort",
         data: pageModel,
         success: function (data) {
             if (data.status === true) {
@@ -111,7 +111,7 @@ function listByCategory(categoryId, sort, currentNo, pageSize) {
 
     $.ajax({
         type: "GET",
-        url: "/goods/" + categoryId + "/categoryId/" + sort + "/sort",
+        url: "/emall/goods/" + categoryId + "/categoryId/" + sort + "/sort",
         data: pageModel,
         success: function (data) {
             if (data.status === true) {

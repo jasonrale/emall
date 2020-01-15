@@ -1,7 +1,13 @@
 ﻿/*修改信息验证*/
 $(document).ready(function () {
+    navInfo();
+
     $("#return").click(function () {
         $(window).attr("location","../../authenticated/user/userCenter.html");
+    });
+
+    $("#submit").click(function () {
+        userUpdate();
     });
 
     $(document).keyup(function (event) {
@@ -19,7 +25,7 @@ $(document).ready(function () {
 function userUpdateInit() {
     $.ajax({
         type: "GET",
-        url: "/user",
+        url: "/emall/user",
         success: function (data) {
             if (data.status === true) {
                 $("#login").css("display", "none");
@@ -60,7 +66,7 @@ function userUpdate() {
     showLoading();
     $.ajax({
         type: "POST",
-        url: "/user",
+        url: "/emall/user",
         dataType: "json",
         data: JSON.stringify(update),
         contentType: 'application/json;charset=UTF-8',

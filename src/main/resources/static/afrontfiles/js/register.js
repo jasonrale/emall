@@ -1,7 +1,7 @@
 ﻿/*注册验证*/
 $(document).ready(function () {
     $("#goLogin").click(function () {
-        $(window).attr("location", "/user/login.html");
+        $(window).attr("location", "/emall/user/login.html");
     });
 
     $(document).keyup(function (event) {
@@ -101,7 +101,7 @@ function submitValid() {
         showLoading();
         $.ajax({
             type: "PUT",
-            url: "/user",
+            url: "/emall/user",
             dataType: "json",
             data: JSON.stringify(submit),
             contentType: 'application/json;charset=UTF-8',

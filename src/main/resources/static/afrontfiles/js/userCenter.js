@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    navInfo();
+
     userInfoInit();
 });
 
@@ -8,7 +10,7 @@
 function userInfoInit() {
     $.ajax({
         type: "GET",
-        url: "/user",
+        url: "/emall/user",
         success: function (data) {
             if (data.status === true) {
                 $("#login").css("display", "none");

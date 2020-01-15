@@ -3,7 +3,7 @@ $(document).ready(function () {
     layer.msg("您的登录已过期，请重新登录", {time : 1000});
 
     $("#register").click(function () {
-        $(window).attr("location", "/user/register.html");
+        $(window).attr("location", "/emall/user/register.html");
     });
 
     $(document).keyup(function (event) {
@@ -27,7 +27,7 @@ function authenticate() {
         var login = {"userName": username, "userPassword": password};
         $.ajax({
             type: "POST",
-            url: "/user/unauthorized",
+            url: "/emall/user/unauthorized",
             data: JSON.stringify(login),
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {

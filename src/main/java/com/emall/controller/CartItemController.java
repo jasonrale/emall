@@ -1,15 +1,19 @@
 package com.emall.controller;
 
 import com.emall.entity.CartItem;
+import com.emall.entity.User;
 import com.emall.result.Result;
 import com.emall.service.CartItemService;
 import com.emall.utils.LoginSession;
 import com.emall.utils.SnowflakeIdWorker;
+import org.apache.shiro.authz.annotation.RequiresUser;
+import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -47,8 +51,14 @@ public class CartItemController {
      */
     @PutMapping("")
     @ResponseBody
-    public Result cartAdd(@RequestBody CartItem cartItem) {
-        String userId = loginSession.getUserSession().getUserId();
+    public Result cartAdd(@RequestBody CartItem cartItem, HttpServletRequest request) {
+        User user = loginSession.getUserSession();
+
+        if (user == null) {
+            return Result.error("Authc");
+        }
+
+        String userId = user.getUserId();
 
         cartItem.setCartItemId(String.valueOf(snowflakeIdWorker.nextId()));
         cartItem.setUserId(userId);

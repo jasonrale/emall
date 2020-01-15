@@ -16,7 +16,7 @@ $(document).ready(function () {
 function categoryList() {
     $.ajax({
         type: "get",
-        url: "/category",
+        url: "/emall/category",
         dataType: "json",
         success: function (data) {
             var categoryList = data.obj;
@@ -117,7 +117,7 @@ function addSubmit() {
     showLoading();
     $.ajax({
         type: "PUT",
-        url: "/goods",
+        url: "/emall/goods",
         data: formData,
         processData: false,
         contentType: false,

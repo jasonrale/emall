@@ -28,7 +28,7 @@ function showLoading(){
 function navInfo() {
     $.ajax({
         type: "GET",
-        url: "/user",
+        url: "/emall/user",
         success: function (data) {
             if (data.status === true) {
                 $("#login").css("display", "none");
@@ -41,7 +41,7 @@ function navInfo() {
 
     $.ajax({
         type: "GET",
-        url: "/cartItem/count",
+        url: "/emall/cartItem/count",
         success: function (data) {
             if (data.status === true) {
                 $(".cart-count").html(data.obj);
@@ -56,7 +56,7 @@ function navInfo() {
 function adminInfo() {
     $.ajax({
         type: "GET",
-        url: "/user/admin",
+        url: "/emall/user/admin",
         success: function (data) {
             if (data.status === true) {
                 $("#adminName").html(data.obj.userName);
@@ -87,19 +87,19 @@ function adminSkip() {
  */
 function userSkip() {
     $("#login").click(function () {
-        $(window).attr('location', '/user/login.html');
+        $(window).attr('location', '/emall/user/login.html');
     });
 
     $("#logout").click(function () {
-        $(window).attr("location", "/user/logout")
+        $(window).attr("location", "/emall/user/logout")
     });
 
     $(".logo").click(function () {
-        $(window).attr('location', '/index.html');
+        $(window).attr('location', '/emall/index.html');
     });
 
     $("#emall").click(function () {
-        $(window).attr('location', '/index.html');
+        $(window).attr('location', '/emall/index.html');
     });
 }
 
@@ -114,7 +114,7 @@ function query() {
         return false;
     }
 
-    $(window).attr('location', '/goods/goodsList.html?keyWord=' + encodeURI(keyWord));
+    $(window).attr('location', '/emall/goods/goodsList.html?keyWord=' + encodeURI(keyWord));
 }
 
 

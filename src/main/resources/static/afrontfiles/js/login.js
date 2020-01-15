@@ -1,7 +1,7 @@
 ﻿//登录验证
 $(document).ready(function () {
     $("#register").click(function () {
-        $(window).attr("location", "/user/register.html");
+        $(window).attr("location", "/emall/user/register.html");
     });
 
     $(document).keyup(function (event) {
@@ -22,16 +22,16 @@ function login() {
         var login = {"userName": userName, "userPassword": userPassword};
         $.ajax({
             type: "POST",
-            url: "/user/loginValidate",
+            url: "/emall/user/loginValidate",
             data: JSON.stringify(login),
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
                 if (data.status === true) {
                     layer.msg(data.msg, {time: 1000}, function () {
                         if (data.obj.userRole === 0) {
-                            $(window).attr("location", "/index.html");
+                            $(window).attr("location", "/emall/index.html");
                         } else {
-                            $(window).attr("location", "/authenticated/admin/index.html");
+                            $(window).attr("location", "/emall/authenticated/admin/index.html");
                         }
                     });
                 } else {

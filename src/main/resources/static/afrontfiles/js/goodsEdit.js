@@ -19,7 +19,7 @@ $(document).ready(function () {
 function goodsInit(goodsId) {
     $.ajax({
         type: "GET",
-        url: "/goods/" + goodsId + "/goodsId",
+        url: "/emall/goods/" + goodsId + "/goodsId",
         success: function (data) {
             var goods = data.obj;
             $("#name").val(goods.goodsName);
@@ -28,7 +28,7 @@ function goodsInit(goodsId) {
             $("#stock").val(goods.goodsStock);
             $.ajax({
                 type: "get",
-                url: "/category",
+                url: "/emall/category",
                 dataType: "json",
                 success: function (data) {
                     var categoryList = data.obj;
@@ -136,7 +136,7 @@ function updateSubmit(goodsId) {
     showLoading();
     $.ajax({
         type: "POST",
-        url: "/goods",
+        url: "/emall/goods",
         data: formData,
         processData: false,
         contentType: false,

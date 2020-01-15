@@ -19,7 +19,7 @@ function adminQueryAll(currentNo, pageSize) {
 
     $.ajax({
         type: "GET",
-        url: "/category/admin",
+        url: "/emall/category/admin",
         data: pageModel,
         success: function (data) {
             var categoryList = data.obj.list;
@@ -111,7 +111,7 @@ function insert() {
                 } else {
                     $.ajax({
                         type: "PUT",
-                        url: "/category/admin",
+                        url: "/emall/category/admin",
                         data: {"categoryName": categoryName},
                         success: function (data) {
                             if (data.status === true) {
@@ -155,14 +155,13 @@ function update(categoryId) {
         btn: ['确定', '取消'],
         btn1: function (index) {
             var categoryName = $("#add").val();
-alert(categoryName);
             if (categoryName === undefined || categoryName.trim() === "") {
                 layer.msg("品类名称不能为空", {time : 1000});
             } else {
                 var category = {"categoryId": categoryId, "categoryName": categoryName};
                 $.ajax({
                     type: "POST",
-                    url: "/category/admin",
+                    url: "/emall/category/admin",
                     data: JSON.stringify(category),
                     contentType: 'application/json;charset=UTF-8',
                     success: function (data) {
@@ -195,7 +194,7 @@ function del(categoryId) {
 
             $.ajax({
                 type: "DELETE",
-                url: "/category/admin",
+                url: "/emall/category/admin",
                 data: categoryId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {

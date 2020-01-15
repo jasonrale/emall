@@ -13,7 +13,7 @@ $(document).ready(function () {
 function detail(goodsId) {
     $.ajax({
         type: "GET",
-        url: "/goods/" + goodsId + "/goodsId",
+        url: "/emall/goods/" + goodsId + "/goodsId",
         success: function (data) {
             var goods = data.obj;
             if (goods === null) {
@@ -54,7 +54,7 @@ function countValid(goodsStock) {
 function seckillGoodsDetail(seckillGoodsId) {
     $.ajax({
         type: "GET",
-        url: "/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
+        url: "/emall/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
             var seckillGoods = data.obj;
             tempDetailGoods = seckillGoods;
@@ -104,14 +104,18 @@ function cartAdd(goods) {
 
         $.ajax({
             type: "PUT",
-            url: "/cartItem",
+            url: "/emall/cartItem",
             data: JSON.stringify(cartItem),
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
                 if (data.status === true) {
                     layer.msg(data.msg, {time: 1000});
                 } else {
-                    layer.msg(data.msg, {time: 1000});
+                    if (data.msg === "Authc") {
+                        $(window).attr("location", "../user/login.html");
+                    } else {
+                        layer.msg(data.msg, {time: 1000});
+                    }
                 }
             }
         });

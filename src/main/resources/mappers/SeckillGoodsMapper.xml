@@ -45,9 +45,9 @@
 			   s.seckill_goods_start_time,
 			   s.seckill_goods_end_time,
 			   s.seckill_goods_status
-		from seckill_goods s
-		inner join (select seckill_goods_id from seckill_goods order by seckill_goods_id limit #{limit} offset #{offset}) ids
-		on s.seckill_goods_id = ids.seckill_goods_id
+		from (select seckill_goods_id from seckill_goods order by seckill_goods_id limit #{limit} offset #{offset}) ids
+				 inner join seckill_goods s
+							on ids.seckill_goods_id = s.seckill_goods_id
 	</select>
 	
 	<select id="selectBySeckillGoodsId" parameterType="java.lang.String" resultMap="BaseResultMap">

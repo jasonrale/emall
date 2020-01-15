@@ -147,7 +147,8 @@
     font-size: 36px;
     color: #c60023;
     font-weight: 700;
-    text-decoration: none
+    text-decoration: none;
+    cursor: pointer
 }
 
 .header .search-con {

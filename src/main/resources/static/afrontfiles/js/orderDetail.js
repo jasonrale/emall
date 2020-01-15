@@ -13,7 +13,7 @@ $(document).ready(function () {
 function orderDetail(orderId) {
     $.ajax({
         type: "GET",
-        url: "/order/" + orderId + "/orderId",
+        url: "/emall/order/" + orderId + "/orderId",
         success: function (data) {
             if (data.status === true) {
                 var orderVo = data.obj;
@@ -82,7 +82,7 @@ function cancel(orderId) {
         function (index) {
             $.ajax({
                 type: "POST",
-                url: "/order/cancel",
+                url: "/emall/order/cancel",
                 data: orderId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {

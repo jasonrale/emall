@@ -53,9 +53,9 @@
 			   g.goods_image,
 			   g.goods_details,
 			   g.goods_status
-		from goods g
-		inner join (select goods_id from goods order by goods_id limit #{limit} offset #{offset}) ids
-		on g.goods_id = ids.goods_id
+		from (select goods_id from goods order by goods_id limit #{limit} offset #{offset}) ids
+				 inner join goods g
+							on ids.goods_id = g.goods_id
 	</select>
 	
 	<select id="selectByKeyWord" resultMap="BaseResultMap">
@@ -68,14 +68,14 @@
 			   g.goods_image,
 			   g.goods_details,
 			   g.goods_status
-		from goods g
-				 inner join (select goods_id
-							 from goods
-							 where goods_status = 1
-							   and goods_name like #{keyWord,jdbcType=VARCHAR}
-							 order by goods_id
-							 limit #{limit} offset #{offset}) ids
-							on g.goods_id = ids.goods_id
+		from (select goods_id
+			  from goods
+			  where goods_status = 1
+				and goods_name like #{keyWord,jdbcType=VARCHAR}
+			  order by goods_id
+			  limit #{limit} offset #{offset}) ids
+				 inner join goods g
+							on ids.goods_id = g.goods_id
 	</select>
 	
 	<select id="selectByKeyWordPaged" resultMap="BaseResultMap">
@@ -88,9 +88,13 @@
 			   g.goods_image,
 			   g.goods_details,
 			   g.goods_status
-		from goods g
-		inner join (select goods_id from goods where goods_name like #{keyWord,jdbcType=VARCHAR} order by goods_id limit #{limit} offset #{offset}) ids
-		on g.goods_id = ids.goods_id
+		from (select goods_id
+			  from goods
+			  where goods_name like #{keyWord,jdbcType=VARCHAR}
+			  order by goods_id
+			  limit #{limit} offset #{offset}) ids
+				 inner join goods g
+							on ids.goods_id = g.goods_id
 	</select>
 	
 	<select id="selectByKeyWordAsc" resultMap="BaseResultMap">
@@ -103,14 +107,14 @@
 			   g.goods_image,
 			   g.goods_details,
 			   g.goods_status
-		from goods g
-				 inner join (select goods_id
-							 from goods
-							 where goods_status = 1
-							   and goods_name like #{keyWord,jdbcType=VARCHAR}
-							 order by goods_price
-							 limit #{limit} offset #{offset}) ids
-							on g.goods_id = ids.goods_id
+		from (select goods_id
+			  from goods
+			  where goods_status = 1
+				and goods_name like #{keyWord,jdbcType=VARCHAR}
+			  order by goods_price
+			  limit #{limit} offset #{offset}) ids
+				 inner join goods g
+							on ids.goods_id = g.goods_id
 	</select>
 	
 	<select id="selectByKeyWordDesc" resultMap="BaseResultMap">
@@ -123,14 +127,14 @@
 			   g.goods_image,
 			   g.goods_details,
 			   g.goods_status
-		from goods g
-				 inner join (select goods_id
-							 from goods
-							 where goods_status = 1
-							   and goods_name like #{keyWord,jdbcType=VARCHAR}
-							 order by goods_price desc
-							 limit #{limit} offset #{offset}) ids
-							on g.goods_id = ids.goods_id
+		from (select goods_id
+			  from goods
+			  where goods_status = 1
+				and goods_name like #{keyWord,jdbcType=VARCHAR}
+			  order by goods_price desc
+			  limit #{limit} offset #{offset}) ids
+				 inner join goods g
+							on ids.goods_id = g.goods_id
 	</select>
 	
 	<select id="selectByCategoryId" resultMap="BaseResultMap">
@@ -143,14 +147,14 @@
 			   g.goods_image,
 			   g.goods_details,
 			   g.goods_status
-		from goods g
-				 inner join (select goods_id
-							 from goods
-							 where goods_status = 1
-							   and category_id = #{categoryId,jdbcType=VARCHAR}
-							 order by goods_id
-							 limit #{limit} offset #{offset}) ids
-							on g.goods_id = ids.goods_id
+		from (select goods_id
+			  from goods
+			  where goods_status = 1
+				and category_id = #{categoryId,jdbcType=VARCHAR}
+			  order by goods_id
+			  limit #{limit} offset #{offset}) ids
+				 inner join goods g
+							on ids.goods_id = g.goods_id
 	</select>
 	
 	<select id="selectByCategoryIdAsc" resultMap="BaseResultMap">
@@ -163,14 +167,14 @@
 			   g.goods_image,
 			   g.goods_details,
 			   g.goods_status
-		from goods g
-				 inner join (select goods_id
-							 from goods
-							 where goods_status = 1
-							   and category_id = #{categoryId,jdbcType=VARCHAR}
-							 order by goods_price asc
-							 limit #{limit} offset #{offset}) ids
-							on g.goods_id = ids.goods_id
+		from (select goods_id
+			  from goods
+			  where goods_status = 1
+				and category_id = #{categoryId,jdbcType=VARCHAR}
+			  order by goods_price
+			  limit #{limit} offset #{offset}) ids
+				 inner join goods g
+							on ids.goods_id = g.goods_id
 	</select>
 	
 	<select id="selectByCategoryIdDesc" resultMap="BaseResultMap">
@@ -183,14 +187,14 @@
 			   g.goods_image,
 			   g.goods_details,
 			   g.goods_status
-		from goods g
-				 inner join (select goods_id
-							 from goods
-							 where goods_status = 1
-							   and category_id = #{categoryId,jdbcType=VARCHAR}
-							 order by goods_price desc
-							 limit #{limit} offset #{offset}) ids
-							on g.goods_id = ids.goods_id
+		from (select goods_id
+			  from goods
+			  where goods_status = 1
+				and category_id = #{categoryId,jdbcType=VARCHAR}
+			  order by goods_price desc
+			  limit #{limit} offset #{offset}) ids
+				 inner join goods g
+							on ids.goods_id = g.goods_id
 	</select>
 	
 	<select id="selectByGoodsId" parameterType="java.lang.String" resultMap="BaseResultMap">

@@ -14,7 +14,7 @@ function seckillDetail(seckillGoodsId) {
     $.ajax({
         type: "GET",
         async: false,
-        url: "/seckillGoods/" + seckillGoodsId + "/seckillGoodsId",
+        url: "/emall/seckillGoods/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
             if (data.status === false) {
                 $(".page-wrap").html('<p class="err-tip">此商品太淘气，找不到了</p>');
@@ -39,7 +39,7 @@ function seckillDetail(seckillGoodsId) {
                     } else if (status === 2) {
                         $("#goodsStatus").html("进行中");
                         $("#countDown").html(remainSeconds).css("display", "none");
-                        $("#captchaImg").attr("src", "/seckill/" + seckillGoodsId + "/captcha");
+                        $("#captchaImg").attr("src", "/emall/seckill/" + seckillGoodsId + "/captcha");
                         $("#captcha").css("display", "block");
                     } else {
                         $("#goodsStatus").html("已结束");
@@ -88,7 +88,7 @@ function countDown(timeFlag, stock, goingSeconds, seckillGoodsId) {
     } else if (remainSeconds === 0) {//秒杀进行中
         timeFlag = true;
         $("#countDownDiv").css("display", "none");
-        $("#captchaImg").attr("src", "/seckill/" + seckillGoodsId + "/captcha");
+        $("#captchaImg").attr("src", "/emall/seckill/" + seckillGoodsId + "/captcha");
         $("#captcha").css("display", "block");
         $("#goodsStatus").html("进行中");
         $("#seckill").attr("disabled", false);
@@ -147,7 +147,7 @@ function captchaPath(seckillGoodsId) {
     showLoading();
     $.ajax({
         type: "GET",
-        url: "/seckill/" + seckillGoodsId + "/" + captchaResult + "/captcha/path",
+        url: "/emall/seckill/" + seckillGoodsId + "/" + captchaResult + "/captcha/path",
         success: function (data) {
             if (data.status === true) {
                 layer.closeAll();
@@ -155,7 +155,7 @@ function captchaPath(seckillGoodsId) {
                 trySeckill(path, seckillGoodsId);
             } else {
                 layer.msg(data.msg, {time: 1000}, function () {
-                    $("#captchaImg").attr("src", "/seckill/" + seckillGoodsId + "/captcha?v=" + Math.floor(Math.random() * 100));
+                    $("#captchaImg").attr("src", "/emall/seckill/" + seckillGoodsId + "/captcha?v=" + Math.floor(Math.random() * 100));
                 });
             }
         }
@@ -169,7 +169,7 @@ function captchaPath(seckillGoodsId) {
  */
 function trySeckill(path, seckillGoodsId) {
     $.ajax({
-        url: "/seckill/" + path + "/trySeckill",
+        url: "/emall/seckill/" + path + "/trySeckill",
         type: "POST",
         data: {
             seckillGoodsId: seckillGoodsId
@@ -197,7 +197,7 @@ function trySeckill(path, seckillGoodsId) {
 function seckillResult(path, seckillGoodsId) {
     showLoading();
     $.ajax({
-        url: "/seckill/" + seckillGoodsId + "/result",
+        url: "/emall/seckill/" + seckillGoodsId + "/result",
         type: "GET",
         success: function (data) {
             if (data.status === true) {
@@ -212,7 +212,7 @@ function seckillResult(path, seckillGoodsId) {
                     layer.confirm("恭喜您，秒杀成功！请确认订单？",
                         {btn: ["确定", "取消"]},
                         function () {
-                            window.location.href = "/authenticated/user/orderConfirm.html?seckillGoodsId=" + result + "&path=" + path;
+                            window.location.href = "/emall/authenticated/user/orderConfirm.html?seckillGoodsId=" + result + "&path=" + path;
                         },
                         function () {
                             layer.closeAll();

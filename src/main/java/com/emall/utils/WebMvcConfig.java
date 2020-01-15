@@ -9,8 +9,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 配置MVC拦截器
+ */
 @Configuration
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebMvcConfig extends WebMvcConfigurerAdapter {
 
     @Resource
     UserArgumentResolver userArgumentResolver;

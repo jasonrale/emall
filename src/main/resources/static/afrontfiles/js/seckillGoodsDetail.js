@@ -9,7 +9,7 @@ $(document).ready(function () {
 function seckillGoodsDetail(seckillGoodsId) {
     $.ajax({
         type: "GET",
-        url: "/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
+        url: "/emall/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
             var seckillGoods = data.obj;
             var status = seckillGoods.seckillGoodsStatus;
@@ -22,7 +22,7 @@ function seckillGoodsDetail(seckillGoodsId) {
             $("#endTime").html(new Date(seckillGoods.seckillGoodsEndTime).format("yyyy-MM-dd hh:mm:ss"));
             $.ajax({
                 type: "GET",
-                url: "/category/" + seckillGoods.categoryId + "/categoryId",
+                url: "/emall/category/" + seckillGoods.categoryId + "/categoryId",
                 success: function (data) {
                     $("#category").html(data.obj.categoryName);
                 }

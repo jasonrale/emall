@@ -32,7 +32,7 @@ function pathValid(seckillGoodsId, path) {
     $.ajax({
         type: "GET",
         async: false,
-        url: "/seckill/" + seckillGoodsId + "/" + path + "/checkPath",
+        url: "/emall/seckill/" + seckillGoodsId + "/" + path + "/checkPath",
         success: function (data) {
             result = data.status;
 
@@ -50,7 +50,7 @@ function fromCartInit(cartItemIdList, totalPrice) {
 
     $.ajax({
         type: "POST",
-        url: "/cartItem/orderConfirm",
+        url: "/emall/cartItem/orderConfirm",
         data: JSON.stringify(cartItemIdList),
         contentType: 'application/json;charset=UTF-8',
         success: function (data) {
@@ -140,7 +140,7 @@ function seckillOrder(seckillGoodsId) {
     $.ajax({
         type: "GET",
         async: false,
-        url: "/seckillGoods/" + seckillGoodsId + "/seckillGoodsId",
+        url: "/emall/seckillGoods/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
             if (data.status === true) {
                 var seckillGoods = data.obj.seckillGoods;
@@ -170,7 +170,7 @@ function seckillOrder(seckillGoodsId) {
 function queryAllShipping() {
     $.ajax({
         type: "GET",
-        url: "/shipping/all",
+        url: "/emall/shipping/all",
         success: function (data) {
             if (data.status === true) {
                 var shippingList = data.obj;
@@ -231,6 +231,7 @@ function select(ele) {
  */
 function newShipping() {
     $("#update").css("display", "none");
+    $("#add").css("display", "block");
     var str = "'new'";
     $("#shippingSave").replaceWith('<a class="btn address-btn" id="shippingSave" onclick="shippingSave(' + str + ')">保存</a>');
     $("#modal").css("display", "block");
@@ -241,6 +242,7 @@ function newShipping() {
  */
 function updateShipping(shippingId) {
     $("#add").css("display", "none");
+    $("#update").css("display", "block");
     $("#shippingId").val(shippingId);
     $("#shippingName").val(document.getElementById("name:" + shippingId).innerHTML);
     $("#shippingAddress").val(document.getElementById("detail:" + shippingId).innerHTML);
@@ -260,7 +262,7 @@ function deleteShipping(shippingId) {
         function () {
             $.ajax({
                 type: "DELETE",
-                url: "/shipping",
+                url: "/emall/shipping",
                 data: shippingId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {
@@ -307,7 +309,7 @@ function shippingSave(type) {
         };
         $.ajax({
             type: "PUT",
-            url: "/shipping",
+            url: "/emall/shipping",
             data: JSON.stringify(shipping),
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
@@ -330,7 +332,7 @@ function shippingSave(type) {
         };
         $.ajax({
             type: "POST",
-            url: "/shipping",
+            url: "/emall/shipping",
             data: JSON.stringify(shipping),
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
@@ -371,7 +373,7 @@ function fromCartSubmit(cartItemList, totalPrice) {
 
         $.ajax({
             type: "PUT",
-            url: "/order/cart",
+            url: "/emall/order/cart",
             data: JSON.stringify(cartOrderSubmitVo),
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
@@ -404,7 +406,7 @@ function normalSubmit(buyGoods, count) {
 
         $.ajax({
             type: "PUT",
-            url: "/order/normal",
+            url: "/emall/order/normal",
             data: JSON.stringify(orderSubmitVo),
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
@@ -437,7 +439,7 @@ function seckillSubmit(seckillGoodsId, path) {
 
         $.ajax({
             type: "PUT",
-            url: "/seckillOrder",
+            url: "/emall/seckillOrder",
             data: json,
             success: function (data) {
                 if (data.status === true) {

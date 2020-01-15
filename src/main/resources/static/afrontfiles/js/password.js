@@ -1,5 +1,7 @@
 ﻿/*密码修改验证*/
 $(document).ready(function () {
+    navInfo();
+
     userPasswordInit();
 
     $(document).keyup(function (event) {
@@ -15,7 +17,7 @@ $(document).ready(function () {
 function userPasswordInit() {
     $.ajax({
         type: "GET",
-        url: "/user",
+        url: "/emall/user",
         success: function (data) {
             if (data.status === true) {
 
@@ -70,7 +72,7 @@ function password() {
     showLoading();
     $.ajax({
         type: "POST",
-        url: "/user/password",
+        url: "/emall/user/password",
         dataType: "json",
         data: JSON.stringify(passwordVo),
         contentType: 'application/json;charset=UTF-8',

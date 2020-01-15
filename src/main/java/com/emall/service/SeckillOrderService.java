@@ -66,7 +66,7 @@ public class SeckillOrderService {
     }
 
     /**
-     * 才能够数据库获取秒杀订单
+     * 从数据库获取秒杀订单
      *
      * @param seckillOrderId
      * @return

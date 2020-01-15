@@ -15,6 +15,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Service
@@ -134,6 +135,7 @@ public class SeckillGoodsService {
 
         Future future = scheduleThreadPool.scheduleAtFixedRate(task, 1, 1, TimeUnit.SECONDS);
         task.setFuture(future);
+
         return flag;
     }
 
