@@ -25,7 +25,7 @@ public class UserArgumentResolver implements HandlerMethodArgumentResolver {
     }
 
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-        return loginSession.getUserSession();
+        return loginSession.getCustomerSession();
     }
 
 }

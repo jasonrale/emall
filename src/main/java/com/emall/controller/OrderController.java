@@ -57,7 +57,7 @@ public class OrderController {
     @ResponseBody
     public Result<PageModel> queryAll(@Valid PageModel<OrderVo> pageModel) {
         logger.info("根据用户id查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
 
         return Result.success("订单号验证成功", orderService.queryAll(user.getUserId(), pageModel));
     }
@@ -71,7 +71,7 @@ public class OrderController {
     @GetMapping("/{orderId}/orderId")
     @ResponseBody
     public Result<OrderVo> selectByOrderId(@PathVariable("orderId") String orderId) {
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
         Order order = orderService.selectByOrderId(orderId);
         if (order == null) {
             return Result.error("未查询到该订单");
@@ -101,7 +101,7 @@ public class OrderController {
     @ResponseBody
     @Transactional
     public Result<String> normalSubmit(@RequestBody OrderSubmitVo orderSubmitVo) {
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
         String userId = user.getUserId();
 
         Goods goods = orderSubmitVo.getGoods();
@@ -139,7 +139,7 @@ public class OrderController {
     @ResponseBody
     @Transactional
     public Result<String> fromCartSubmit(@RequestBody CartOrderSubmitVo cartOrderSubmitVo) {
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
         String userId = user.getUserId();
 
         //生成订单
@@ -182,7 +182,7 @@ public class OrderController {
     @GetMapping("/valid/{orderId}/orderId")
     @ResponseBody
     public Result<String> orderIdValid(@PathVariable("orderId") String orderId) {
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
 
         return orderService.orderIdValid(user.getUserId(), orderId) ? Result.success("订单号验证成功", orderId) : Result.error("请求非法");
     }
@@ -196,7 +196,7 @@ public class OrderController {
     @PostMapping("/cancel")
     @ResponseBody
     public Result<String> orderCancel(@RequestBody String orderId) {
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
 
         if (!orderService.orderIdValid(user.getUserId(), orderId)) {
             return Result.error("请求非法");

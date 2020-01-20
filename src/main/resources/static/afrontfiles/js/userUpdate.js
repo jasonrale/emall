@@ -55,10 +55,9 @@ function userUpdate() {
     var userMobileNumber = $("#mobileNumber").val();
 
     if (userName === undefined || userName.trim() === "") {
-        layer.msg("用户名称不能为空", {time : 1000});
+        layer.msg("用户名不能为空", {time: 1000});
         return false;
     } else if (!mobileValid(userMobileNumber)) {
-        layer.msg("手机号码格式错误", {time : 1000});
         return false;
     }
     var update = {"userId": userId, "userName": userName, "userSex": userSex, "userMobileNumber": userMobileNumber};

@@ -36,7 +36,7 @@ public class CartItemController {
     @GetMapping("")
     @ResponseBody
     public Result queryAll() {
-        String userId = loginSession.getUserSession().getUserId();
+        String userId = loginSession.getCustomerSession().getUserId();
 
         List<CartItem> cartItemList = cartItemService.queryAllByUserId(userId);
 
@@ -52,7 +52,7 @@ public class CartItemController {
     @PutMapping("")
     @ResponseBody
     public Result cartAdd(@RequestBody CartItem cartItem, HttpServletRequest request) {
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
 
         if (user == null) {
             return Result.error("Authc");
@@ -106,7 +106,7 @@ public class CartItemController {
     @GetMapping("/count")
     @ResponseBody
     public Result<Integer> count() {
-        String userId = loginSession.getUserSession().getUserId();
+        String userId = loginSession.getCustomerSession().getUserId();
 
         return Result.success("获取购物车明细数量", cartItemService.countByUserId(userId));
     }

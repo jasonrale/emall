@@ -4,7 +4,9 @@ import com.emall.result.Result;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.springframework.validation.BindException;
+import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +29,13 @@ public class GlobalExceptionHandler {
     public Result ExceptionHandler(HttpServletRequest request, BindException exception) {
         ObjectError error = exception.getAllErrors().get(0);
         return Result.error(error.getDefaultMessage());
+    }
+
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public Result ExceptionHandler(HttpServletRequest request, MethodArgumentNotValidException exception) {
+        FieldError fieldError = exception.getBindingResult().getFieldError();
+        assert fieldError != null;
+        return Result.error(fieldError.getDefaultMessage());
     }
 
     @ExceptionHandler(value = UnknownAccountException.class)

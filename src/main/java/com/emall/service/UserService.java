@@ -12,6 +12,9 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
+import java.io.IOException;
+import java.sql.SQLIntegrityConstraintViolationException;
+
 import static com.emall.shiro.ShiroEncrypt.shiroEncrypt;
 
 @Service
@@ -61,9 +64,19 @@ public class UserService {
      * @return
      */
     public boolean userUpdate(@Valid UserUpdateVo userUpdateVo) {
-        return userMapper.updateByUserId(userUpdateVo) != 0;
+        try {
+            return userMapper.updateByUserId(userUpdateVo) != 0;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
+    /**
+     * 用户密码修改
+     *
+     * @param passwordVo
+     * @return
+     */
     public boolean password(PasswordVo passwordVo) {
         return userMapper.pwdById(passwordVo) != 0;
     }

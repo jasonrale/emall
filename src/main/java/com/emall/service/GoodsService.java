@@ -565,6 +565,7 @@ public class GoodsService {
         String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
         boolean flag = goodsMapper.pull(goodsId) != 0;
 
+        //缓存失效
         if (redisTemplate.hasKey(goodsKey)) {
             redisTemplate.delete(goodsKey);
         }
@@ -579,6 +580,7 @@ public class GoodsService {
         String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
         boolean flag = goodsMapper.put(goodsId) != 0;
 
+        //缓存失效
         if (redisTemplate.hasKey(goodsKey)) {
             redisTemplate.delete(goodsKey);
         }

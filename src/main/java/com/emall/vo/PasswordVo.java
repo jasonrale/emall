@@ -14,18 +14,14 @@ import javax.validation.constraints.Size;
 public class PasswordVo {
     private String userId;               //用户id
 
-    private String userSalt;              //用户密码盐值
-
-    private String passwordReal;      //正确原密码
-
     @NotEmpty(message = "请输入原密码")
-    private String passwordOld;       //输入原密码
+    private String passwordOld;          //输入原密码
 
     @NotEmpty(message = "用户密码不能为空")
     @Size(min = 6, message = "密码长度不能少于6位")
-    private String passwordNew;       //输入新密码
+    private String passwordNew;          //输入新密码
 
     @NotEmpty(message = "用户密码不能为空")
     @Size(min = 6, message = "密码长度不能少于6位")
-    private String passwordConfirm;        //确认密码
+    private String passwordConfirm;      //确认密码
 }

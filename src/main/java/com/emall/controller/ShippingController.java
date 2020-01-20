@@ -32,7 +32,7 @@ public class ShippingController {
     @GetMapping("/all")
     @ResponseBody
     public Result<List> queryAll() {
-        return Result.success("查询所有收货地址成功", shippingService.queryAll(loginSession.getUserSession().getUserId()));
+        return Result.success("查询所有收货地址成功", shippingService.queryAll(loginSession.getCustomerSession().getUserId()));
     }
 
     /**
@@ -44,7 +44,7 @@ public class ShippingController {
     @PutMapping("")
     @ResponseBody
     public Result insert(@Valid @RequestBody Shipping shipping) {
-        String userId = loginSession.getUserSession().getUserId();
+        String userId = loginSession.getCustomerSession().getUserId();
 
         if (shippingService.count(userId) >= Shipping.MAXCOUNT) {
             return Result.error("收货地址数量已达上限");
@@ -77,7 +77,7 @@ public class ShippingController {
     @DeleteMapping("")
     @ResponseBody
     public Result delete(@RequestBody String shippingId) {
-        String userId = loginSession.getUserSession().getUserId();
+        String userId = loginSession.getCustomerSession().getUserId();
         if (!shippingService.shippingIdValid(userId, shippingId)) {
             return Result.error("请求非法");
         }

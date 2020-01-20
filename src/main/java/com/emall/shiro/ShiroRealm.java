@@ -4,6 +4,7 @@ import com.emall.entity.User;
 import com.emall.exception.GeneralException;
 import com.emall.service.UserService;
 import com.emall.utils.ClassCastUtil;
+import com.emall.utils.LoginSession;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -28,6 +29,9 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Resource
     private UserService userService;
+
+    @Resource
+    private LoginSession loginSession;
 
     @Resource
     private ClassCastUtil castUtil;
@@ -86,9 +90,7 @@ public class ShiroRealm extends AuthorizingRealm {
         try {
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, byteSalt, getName());
             //认证通过后将用户信息放在session里
-            Session session = SecurityUtils.getSubject().getSession();
-            session.setAttribute(user.getUserRole() == 0 ? "CurrentUser" : user.getUserRole() == 1 ? "SysAdmin" : "", user);
-
+            loginSession.setUserSession(user);
             return info;
         } catch (IncorrectCredentialsException exception) {
             throw new IncorrectCredentialsException("用户名或密码错误");

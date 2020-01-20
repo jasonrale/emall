@@ -54,7 +54,7 @@ public class SeckillOrderController {
     public Result<String> insert(@RequestParam("seckillGoodsId") String seckillGoodsId, @RequestParam("shippingId") String shippingId, @RequestParam("path") String path) {
         logger.info("生成完整秒杀订单");
 
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
         String userId = user.getUserId();
 
         boolean valid = seckillService.pathValid(user, seckillGoodsId, path);

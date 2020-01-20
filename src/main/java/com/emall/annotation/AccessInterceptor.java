@@ -36,7 +36,7 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
             if (accessLimit == null) {
                 return true;
             }
-            String userId = loginSession.getUserSession().getUserId();
+            String userId = loginSession.getCustomerSession().getUserId();
             int seconds = accessLimit.seconds();
             int maxCount = accessLimit.maxCount();
             String limitKey = RedisKeyUtil.accessLimit(userId);

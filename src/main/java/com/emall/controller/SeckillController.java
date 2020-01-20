@@ -54,7 +54,7 @@ public class SeckillController {
         logger.info("生成秒杀验证码");
 
         try {
-            BufferedImage image = seckillService.createCaptcha(loginSession.getUserSession(), seckillGoodsId);
+            BufferedImage image = seckillService.createCaptcha(loginSession.getCustomerSession(), seckillGoodsId);
             OutputStream out = response.getOutputStream();
             ImageIO.write(image, "JPEG", out);
             out.flush();
@@ -79,8 +79,8 @@ public class SeckillController {
     public Result<String> captchaPath(@PathVariable("seckillGoodsId") String seckillGoodsId, @PathVariable(value = "captchaResult") int captchaResult) {
         logger.info("验证计算结果并生成秒杀路径参数");
 
-        User user = loginSession.getUserSession();
-        Result<String> result = seckillService.checkCaptchaResult(loginSession.getUserSession(), seckillGoodsId, captchaResult);
+        User user = loginSession.getCustomerSession();
+        Result<String> result = seckillService.checkCaptchaResult(loginSession.getCustomerSession(), seckillGoodsId, captchaResult);
         if (!result.isStatus()) {
             return result;
         }
@@ -101,7 +101,7 @@ public class SeckillController {
     public Result<String> checkPath(@PathVariable("seckillGoodsId") String seckillGoodsId, @PathVariable(value = "path") String path) {
         logger.info("验证秒杀路径参数：" + path);
 
-        boolean valid = seckillService.pathValid(loginSession.getUserSession(), seckillGoodsId, path);
+        boolean valid = seckillService.pathValid(loginSession.getCustomerSession(), seckillGoodsId, path);
         if (!valid) {
             return Result.error("请求非法");
         }
@@ -121,7 +121,7 @@ public class SeckillController {
     public Result<Integer> trySeckill(@RequestParam("seckillGoodsId") String seckillGoodsId, @PathVariable("path") String path) {
         logger.info("尝试秒杀，秒杀商品id：" + seckillGoodsId);
 
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
 
         //验证path
         boolean valid = seckillService.pathValid(user, seckillGoodsId, path);
@@ -166,7 +166,7 @@ public class SeckillController {
     public Result<String> seckillResult(@PathVariable("seckillGoodsId") String seckillGoodsId) {
         logger.info("获取秒杀结果");
 
-        User user = loginSession.getUserSession();
+        User user = loginSession.getCustomerSession();
         String result = seckillService.getSeckillResult(user.getUserId(), seckillGoodsId);
         return Result.success("正在秒杀", result);
     }

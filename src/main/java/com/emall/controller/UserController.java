@@ -36,9 +36,6 @@ public class UserController {
     @Resource
     private UserService userService;
 
-    @Resource
-    private ClassCastUtil castUtil;
-
     /**
      * 获取用户登录信息
      * @param
@@ -49,7 +46,7 @@ public class UserController {
     public Result<Object> userInfo() {
         logger.info("获取用户登录信息中......");
 
-        User userInfo = loginSession.getUserSession();
+        User userInfo = loginSession.getCustomerSession();
 
         return userInfo != null ? Result.success("用户" + userInfo.getUserName() + "已登录", userInfo) : Result.error("用户未登录");
     }
@@ -146,22 +143,14 @@ public class UserController {
                 Result.success("用户信息修改成功", null) : Result.error("用户信息修改失败");
 
         if (result.isStatus()) {
-            Session session = SecurityUtils.getSubject().getSession();
-            Object object = session.getAttribute("CurrentUser");
-            User user;
-            try {
-                user = castUtil.classCast(object, User.class);
-            } catch (IllegalAccessException | InstantiationException e) {
-                throw new GeneralException("登录已过期");
-            }
+            User user = loginSession.getCustomerSession();
+
             if (user != null) {
                 user.setUserName(userUpdateVo.getUserName());
                 user.setUserMobileNumber(userUpdateVo.getUserMobileNumber());
-            } else {
-                session.removeAttribute("CurrentUser");
             }
 
-            session.setAttribute("CurrentUser", user);
+            loginSession.setUserSession(user);
         }
 
         return result;
@@ -175,16 +164,18 @@ public class UserController {
     @PostMapping("/password")
     @ResponseBody
     public Result password(@Valid @RequestBody PasswordVo passwordVo) {
+        User user = loginSession.getCustomerSession();
         //输入原密码加密验证
-        String pwdOld = ShiroEncrypt.shiroEncrypt(passwordVo.getPasswordOld(), passwordVo.getUserSalt());
+        String pwdOld = ShiroEncrypt.shiroEncrypt(passwordVo.getPasswordOld(), user.getUserSalt());
         //密码校验
-        if (! pwdOld.equals(passwordVo.getPasswordReal())) {
+        if (!pwdOld.equals(user.getUserPassword())) {
             throw new GeneralException("原密码输入错误");
         } else if (!passwordVo.getPasswordNew().equals(passwordVo.getPasswordConfirm())) {
             throw new GeneralException("两次输入密码不一致");
         }
 
-        String pwdNew = ShiroEncrypt.shiroEncrypt(passwordVo.getPasswordNew(), passwordVo.getUserSalt());
+        String pwdNew = ShiroEncrypt.shiroEncrypt(passwordVo.getPasswordNew(), user.getUserSalt());
+        passwordVo.setUserId(user.getUserId());
         passwordVo.setPasswordNew(pwdNew);
         passwordVo.setPasswordConfirm(pwdNew);
 

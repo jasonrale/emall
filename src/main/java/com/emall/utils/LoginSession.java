@@ -3,6 +3,7 @@ package com.emall.utils;
 import com.emall.entity.User;
 import com.emall.exception.GeneralException;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -16,13 +17,13 @@ public class LoginSession {
     private ClassCastUtil castUtil;
 
     /**
-     * 获取用户登录信息
+     * 获取顾客登录信息
      *
      * @return
      */
-    public User getUserSession() {
+    public User getCustomerSession() {
         User user = null;
-        Object object = SecurityUtils.getSubject().getSession().getAttribute("CurrentUser");
+        Object object = SecurityUtils.getSubject().getSession().getAttribute("Customer");
         if (object != null) {
             try {
                 user = castUtil.classCast(object, User.class);
@@ -40,7 +41,7 @@ public class LoginSession {
      */
     public User getAdminSession() {
         User admin = null;
-        Object object = SecurityUtils.getSubject().getSession().getAttribute("SysAdmin");
+        Object object = SecurityUtils.getSubject().getSession().getAttribute("Admin");
         if (object != null) {
             try {
                 admin = castUtil.classCast(object, User.class);
@@ -49,5 +50,14 @@ public class LoginSession {
             }
         }
         return admin;
+    }
+
+    /**
+     * 设置用户登录信息
+     *
+     * @param user
+     */
+    public void setUserSession(User user) {
+        SecurityUtils.getSubject().getSession().setAttribute(user.getUserRole() == 0 ? "Customer" : "Admin", user);
     }
 }
