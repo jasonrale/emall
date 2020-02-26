@@ -42,6 +42,25 @@
 		</collection>
 	</resultMap>
 	
+	<resultMap id="OrderManageVo" type="com.emall.vo.OrderManageVo">
+		<id column="order_id" jdbcType="VARCHAR" property="orderId"/>
+		<result column="user_id" jdbcType="VARCHAR" property="userId"/>
+		<result column="order_payment" jdbcType="DECIMAL" property="orderPayment"/>
+		<result column="order_status" jdbcType="INTEGER" property="orderStatus"/>
+		<result column="order_create_time" jdbcType="TIMESTAMP" property="orderCreateTime"/>
+		<result column="order_payment_time" jdbcType="TIMESTAMP" property="orderPaymentTime"/>
+		<result column="order_send_time" jdbcType="TIMESTAMP" property="orderSendTime"/>
+		<result column="order_end_time" jdbcType="TIMESTAMP" property="orderEndTime"/>
+		<result column="shipping_id" jdbcType="VARCHAR" property="shippingId"/>
+		<association property="shipping" javaType="com.emall.entity.Shipping">
+			<id column="shipping_id" jdbcType="VARCHAR" property="shippingId"/>
+			<result column="user_id" jdbcType="VARCHAR" property="userId"/>
+			<result column="shipping_name" jdbcType="VARCHAR" property="shippingName"/>
+			<result column="shipping_mobile_number" jdbcType="VARCHAR" property="shippingMobileNumber"/>
+			<result column="shipping_address" jdbcType="VARCHAR" property="shippingAddress"/>
+		</association>
+	</resultMap>
+	
 	<sql id="Base_Column_List">
 		order_id, user_id, order_payment, order_status, order_create_time, order_payment_time, order_send_time, order_end_time, shipping_id
 	</sql>
@@ -51,7 +70,13 @@
 		from `order`
 	</select>
 	
-	<select id="queryAll" resultMap="OrderVo">
+	<select id="countByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+		select count(1)
+		from `order`
+		where user_id = #{userId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="queryCurrentUser" resultMap="OrderVo">
 		select o.order_id,
 			   o.user_id,
 			   o.order_payment,
@@ -82,9 +107,9 @@
 			  where user_id = #{userId}
 			  order by order_id
 			  limit #{limit} offset #{offset}) ids
-		where o.order_id = oi.order_id
+		where o.order_id = ids.order_id
 		  and o.shipping_id = s.shipping_id
-		  and oi.order_id = ids.order_id
+		  and oi.order_id = o.order_id
 	</select>
 	
 	<select id="selectByOrderId" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -109,6 +134,96 @@
 			order_payment_time = null,
 			order_send_time    = null,
 			order_end_time     = null
+		where order_id = #{orderId,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="pay">
+		update `order`
+		set order_status       = 1,
+			order_payment_time = #{currentDate,jdbcType=TIMESTAMP}
+		where order_id = #{orderId,jdbcType=VARCHAR}
+	</update>
+	
+	<select id="queryAll" resultMap="OrderManageVo">
+		select o.order_id,
+			   o.user_id,
+			   o.order_payment,
+			   o.order_status,
+			   o.order_create_time,
+			   o.order_payment_time,
+			   o.order_send_time,
+			   o.order_end_time,
+			   o.shipping_id,
+			   s.shipping_id,
+			   s.user_id,
+			   s.shipping_name,
+			   s.shipping_mobile_number,
+			   s.shipping_address
+		from `order` o,
+			 shipping s
+		where o.shipping_id = s.shipping_id
+		order by o.order_id
+		limit #{limit} offset #{offset}
+	</select>
+	
+	<select id="queryAllByUserId" resultMap="OrderManageVo">
+		select o.order_id,
+			   o.user_id,
+			   o.order_payment,
+			   o.order_status,
+			   o.order_create_time,
+			   o.order_payment_time,
+			   o.order_send_time,
+			   o.order_end_time,
+			   o.shipping_id,
+			   s.shipping_id,
+			   s.user_id,
+			   s.shipping_name,
+			   s.shipping_mobile_number,
+			   s.shipping_address
+		from `order` o,
+			 shipping s,
+			 (select order_id
+			  from `order`
+			  where user_id = #{userId}
+			  order by order_id
+			  limit #{limit} offset #{offset}) ids
+		where o.order_id = ids.order_id
+		  and o.shipping_id = s.shipping_id
+	</select>
+	
+	<select id="queryByOrderId" resultMap="OrderManageVo">
+		select o.order_id,
+			   o.user_id,
+			   o.order_payment,
+			   o.order_status,
+			   o.order_create_time,
+			   o.order_payment_time,
+			   o.order_send_time,
+			   o.order_end_time,
+			   o.shipping_id,
+			   s.shipping_id,
+			   s.user_id,
+			   s.shipping_name,
+			   s.shipping_mobile_number,
+			   s.shipping_address
+		from `order` o,
+			 shipping s
+		where o.shipping_id = s.shipping_id
+		  and o.order_id = #{orderId,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="send">
+		update `order`
+		set order_status    = 2,
+			order_send_time = #{currentDate,jdbcType=TIMESTAMP}
+		where order_id = #{orderId,jdbcType=VARCHAR}
+	</update>
+	
+	<update id="received">
+		update `order`
+		set order_status   = 3,
+			order_end_time = #{currentDate,jdbcType=TIMESTAMP}
 		where order_id = #{orderId,jdbcType=VARCHAR}
 	</update>
 </mapper>

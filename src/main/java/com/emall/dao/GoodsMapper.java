@@ -10,6 +10,8 @@ public interface GoodsMapper {
 
     int count();
 
+    int deleteByGoodsId(@Param("goodsId") String goodsId);
+
     int countByKeyWord(@Param("keyWord") String keyWord);
 
     int countByKeyWordForUser(@Param("keyWord") String keyWord);
@@ -44,4 +46,6 @@ public interface GoodsMapper {
     int updateByGoodsId(Goods goods);
 
     int reduceStock(@Param("goodsId") String goodsId, @Param("count") Integer count);
+
+    int recoverStock(@Param("goodsId") String goodsId, @Param("count") Integer count);
 }

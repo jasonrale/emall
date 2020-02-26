@@ -57,7 +57,7 @@ public class GoodsService {
             int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
             //判断是否没有增加数据
             if (newVersion == oldVersion) {
-                //从Redis缓存中获取列表中所有商品的键
+                //从Redis缓存中获取列表中所有商品的键（排除商品总数量与缓存版本号）
                 List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
                 if (goodsKeyList == null || goodsKeyList.size() == 0) {
                     return queryAllFromDB(pageModel);
@@ -282,9 +282,11 @@ public class GoodsService {
         }
         //将商品总数量追加到list末尾
         redisTemplate.opsForList().rightPush(listKey, count);
+        //如果不存在缓存版本号则设置缓存版本
         if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
             redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
         }
+        //将缓存版本追加到list末尾
         redisTemplate.opsForList().rightPush(listKey, redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION));
         redisTemplate.expire(listKey, 1800, TimeUnit.SECONDS);
 
@@ -368,6 +370,19 @@ public class GoodsService {
     }
 
     /**
+     * 商品删除
+     *
+     * @param goodsId
+     * @return
+     */
+    @Transactional
+    public boolean deleteByGoodsId(String goodsId) {
+        redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
+
+        return goodsMapper.deleteByGoodsId(goodsId) != 0;
+    }
+
+    /**
      * 商品修改
      *
      * @param goods
@@ -379,6 +394,7 @@ public class GoodsService {
     @Transactional
     public Result<Goods> update(Goods goods, MultipartFile imageFile, MultipartFile detailFile, String path) {
         String goodsKey = RedisKeyUtil.goodsByGoodsId(goods);
+
         if (redisTemplate.hasKey(goodsKey)) {
             redisTemplate.delete(goodsKey);
         }
@@ -485,6 +501,16 @@ public class GoodsService {
         return urlList;
     }
 
+    /**
+     * 文件上传操作
+     * @param clientFile
+     * @param path
+     * @param tmpPath
+     * @param ftpPath
+     * @param ftp
+     * @param urlList
+     * @return
+     */
     @Transactional
     public InputStream upload(MultipartFile clientFile, String path, String tmpPath, String ftpPath, FTPClient ftp, List<String> urlList) {
         InputStream inputLocal = null;
@@ -560,6 +586,11 @@ public class GoodsService {
         }
     }
 
+    /**
+     * 下架商品
+     * @param goodsId
+     * @return
+     */
     @Transactional
     public boolean pull(String goodsId) {
         String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
@@ -575,6 +606,11 @@ public class GoodsService {
         return flag;
     }
 
+    /**
+     * 上架商品
+     * @param goodsId
+     * @return
+     */
     @Transactional
     public boolean put(String goodsId) {
         String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
@@ -603,6 +639,28 @@ public class GoodsService {
 
         //先减库存
         boolean success = goodsMapper.reduceStock(goodsId, count) != 0;
+
+        //缓存失效
+        if (redisTemplate.hasKey(goodsKey)) {
+            redisTemplate.delete(goodsKey);
+        }
+
+        return success;
+    }
+
+    /**
+     * 恢复库存
+     *
+     * @param goodsId
+     * @param count
+     * @return
+     */
+    @Transactional
+    public boolean recoverStock(String goodsId, Integer count) {
+        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
+
+        //先减库存
+        boolean success = goodsMapper.recoverStock(goodsId, count) != 0;
 
         //缓存失效
         if (redisTemplate.hasKey(goodsKey)) {

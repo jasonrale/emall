@@ -50,6 +50,19 @@ public class GoodsController {
     }
 
     /**
+     * 删除商品
+     *
+     * @return
+     */
+    @DeleteMapping(value = "")
+    @ResponseBody
+    public Result delete(@RequestBody String goodsId) {
+        logger.info("根据商品id=" + goodsId + "删除商品");
+
+        return goodsService.deleteByGoodsId(goodsId) ? Result.success("商品删除成功", null) : Result.error("商品删除失败");
+    }
+
+    /**
      * 修改商品
      *
      * @return
@@ -68,6 +81,12 @@ public class GoodsController {
         return goodsService.update(result.getObj(), imageFile, detailFile, path);
     }
 
+    /**
+     * 商品参数验证
+     *
+     * @param goodsJson
+     * @return
+     */
     private Result<Goods> goodsValid(String goodsJson) {
         logger.info("商品参数验证中...");
 
@@ -110,7 +129,8 @@ public class GoodsController {
     @GetMapping(value = "/admin/{listType}/{param}")
     @ResponseBody
     public Result queryByType(@Valid PageModel<Goods> pageModel, @PathVariable("listType") String listType, @PathVariable("param") String param) {
-        logger.info("查询商品--By " + listType);
+        logger.info("查询商品--By " + listType + "--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+
         switch (listType) {
             case "all":
                 return Result.success("分页查询所有商品", goodsService.queryAll(pageModel));
@@ -118,8 +138,12 @@ public class GoodsController {
                 return Result.success("根据关键字分页查询商品", goodsService.selectByKeyWordPaged(param, pageModel));
             case "goodsId":
                 return Result.success("根据商品id查询商品", goodsService.selectByGoodsId(param));
-            case "seckill":
-                return Result.success("秒杀商品分页查询成功", seckillGoodsService.queryAllPaged(pageModel));
+            case "seckillAll":
+                return Result.success("分页查询所有秒杀商品", seckillGoodsService.queryAllPaged(pageModel));
+            case "seckillGoodsName":
+                return Result.success("根据关键字分页查询秒杀商品", seckillGoodsService.selectByKeyWordPaged(param, pageModel));
+            case "seckillGoodsId":
+                return Result.success("根据秒杀商品id查询秒杀商品", seckillGoodsService.selectBySeckillGoodsId(param));
             default:
                 return Result.error("查询失败");
         }

@@ -47,7 +47,7 @@ public class RedisKeyUtil {
     }
 
     /**
-     * 所有秒杀商品键
+     * 所有上架秒杀商品键
      * @return
      */
     public static String seckillGoodsAll() {

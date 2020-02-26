@@ -8,6 +8,7 @@
     <link rel="icon" href="../../afrontfiles/images/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="../../afrontfiles/css/admin.css">
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
+    <script src="../../afrontfiles/layer/layer.js"></script>
     <script src="../../afrontfiles/js/admin.js"></script>
     <script src="../../afrontfiles/js/orderManage.js"></script>
     <script src="../../afrontfiles/js/common.js"></script>
@@ -51,14 +52,15 @@
         <div class="search-wrap col-md-12">
             <div class="form-inline">
                 <div class="form-group">
-                    <label>
-                        <select class="form-control">
-                            <option value="orderNumber">按订单号查询</option>
+                    <label for="type">
+                        <select id="listType" class="form-control">
+                            <option value="orderId">按订单号查询</option>
+                            <option value="userId">按用户id查询</option>
                         </select>
                     </label>
                 </div>
-                <div class="form-group"><input type="text" class="form-control" placeholder="订单号"></div>
-                <button type="button" class="btn btn-default">查询</button>
+                <div class="form-group"><input type="text" class="form-control" id="param"></div>
+                <button type="button" class="btn btn-default" id="query">查询</button>
             </div>
         </div>
         <div class="table-wrap col-lg-12">
@@ -66,47 +68,39 @@
                 <thead>
                 <tr>
                     <th>订单号</th>
+                    <th>订单用户id</th>
                     <th>收件人</th>
+                    <th>收件人联系方式</th>
+                    <th>收货地址</th>
                     <th>订单状态</th>
                     <th>订单总价</th>
                     <th>创建时间</th>
                     <th>操作</th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td><a class="opear" href="">1491753014256</a></td>
-                    <td></td>
-                    <td></td>
-                    <td>13998</td>
-                    <td>1491753014000</td>
-                    <td><a class="opear" href="">查看</a></td>
-                </tr>
+                <tbody class="orderTable">
+
                 </tbody>
             </table>
         </div>
-        <ul class="rc-pagination " unselectable="unselectable">
-            <li title="上一页" class="rc-pagination-disabled rc-pagination-prev" aria-disabled="true">
-                <a class="rc-pagination-item-link"></a>
+        <ul id="pageControl" class="rc-pagination">
+            <li title="上一页" class=" rc-pagination-prev" aria-disabled="false" tabindex="0">
+                <a id="lastPage" class="rc-pagination-item-link"></a>
             </li>
-            <li title="1" class="rc-pagination-item rc-pagination-item-1 rc-pagination-item-active" tabindex="0">
-                <a>1</a>
+            <li title="页数" tabindex="0">
+                <input type="text" id="currentNo" value="" class="rc-pagination-item"/>
             </li>
-            <li title="2" class="rc-pagination-item rc-pagination-item-2" tabindex="0">
-                <a>2</a>
-            </li>
-            <li title="3" class="rc-pagination-item rc-pagination-item-3 rc-pagination-item-before-jump-next"
-                tabindex="0">
-                <a>3</a>
-            </li>
-            <li title="向后 3 页" tabindex="0" class="rc-pagination-jump-next">
-                <a class="rc-pagination-item-link"></a>
-            </li>
-            <li title="58" class="rc-pagination-item rc-pagination-item-58" tabindex="0">
-                <a>58</a>
+            <label class="rc-pagination-disabled rc-pagination-item">/</label>
+            <li title="总页数" class="rc-pagination-disabled rc-pagination-item" tabindex="0">
+                <a id="totalPages"></a>
             </li>
             <li title="下一页" tabindex="0" class=" rc-pagination-next" aria-disabled="false">
-                <a class="rc-pagination-item-link"></a>
+                <a id="nextPage" class="rc-pagination-item-link"></a>
+            </li>
+            <li title="跳转" tabindex="0" class=" rc-pagination-item" id="skip">
+                <a id="turn" class="rc-pagination-item-link">跳转</a>
+                <input type="hidden" id="type">
+                <input type="hidden" id="word">
             </li>
         </ul>
     </div>

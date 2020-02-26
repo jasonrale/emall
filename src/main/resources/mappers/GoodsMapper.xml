@@ -232,18 +232,45 @@
 	
 	<update id="updateByGoodsId" parameterType="com.emall.entity.Goods">
 		update goods
-		set goods_name     = #{goodsName,jdbcType=VARCHAR},
+		<set>
+			<if test="goodsName != null">
+				goods_name = #{goodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsDescribe != null">
 			goods_describe = #{goodsDescribe,jdbcType=VARCHAR},
-			category_id    = #{categoryId,jdbcType=VARCHAR},
-			goods_price    = #{goodsPrice,jdbcType=DECIMAL},
-			goods_stock    = #{goodsStock,jdbcType=INTEGER},
-			goods_status   = #{goodsStatus,jdbcType=INTEGER}
+			</if>
+			<if test="categoryId != null">
+				category_id = #{categoryId,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsPrice != null">
+				goods_price = #{goodsPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="goodsStock != null">
+				goods_stock = #{goodsStock,jdbcType=INTEGER},
+			</if>
+			<if test="goodsImage != null">
+				goods_image = #{goodsImage,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsDetails != null">
+				goods_details = #{goodsDetails,jdbcType=VARCHAR},
+			</if>
+			<if test="goodsStatus != null">
+				goods_status = #{goodsStatus,jdbcType=INTEGER},
+			</if>
+		</set>
 		where goods_id = #{goodsId,jdbcType=VARCHAR}
 	</update>
 	
 	<update id="reduceStock">
 		update goods
 		set goods_stock = goods_stock - #{count,jdbcType=INTEGER}
+		where goods_id = #{goodsId,jdbcType=VARCHAR}
+		  and goods_stock >= #{count,jdbcType=INTEGER};
+	</update>
+	
+	<update id="recoverStock">
+		update goods
+		set goods_stock = goods_stock + #{count,jdbcType=INTEGER}
 		where goods_id = #{goodsId,jdbcType=VARCHAR}
 		  and goods_stock >= #{count,jdbcType=INTEGER};
 	</update>

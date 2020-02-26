@@ -33,6 +33,12 @@
 		from seckill_goods
 	</select>
 	
+	<select id="countByKeyWord" resultType="java.lang.Integer">
+		select count(1)
+		from seckill_goods
+		where seckill_goods_name like #{keyWord,jdbcType=VARCHAR}
+	</select>
+	
 	<select id="queryAll" resultMap="BaseResultMap">
 		select s.seckill_goods_id,
 			   s.seckill_goods_name,
@@ -46,6 +52,27 @@
 			   s.seckill_goods_end_time,
 			   s.seckill_goods_status
 		from (select seckill_goods_id from seckill_goods order by seckill_goods_id limit #{limit} offset #{offset}) ids
+				 inner join seckill_goods s
+							on ids.seckill_goods_id = s.seckill_goods_id
+	</select>
+	
+	<select id="queryByKeyWord" resultMap="BaseResultMap">
+		select s.seckill_goods_id,
+			   s.seckill_goods_name,
+			   s.category_id,
+			   s.seckill_goods_describe,
+			   s.seckill_goods_price,
+			   s.seckill_goods_stock,
+			   s.seckill_goods_image,
+			   s.seckill_goods_details,
+			   s.seckill_goods_start_time,
+			   s.seckill_goods_end_time,
+			   s.seckill_goods_status
+		from (select seckill_goods_id
+			  from seckill_goods
+			  where seckill_goods_name like #{keyWord,jdbcType=VARCHAR}
+			  order by seckill_goods_id
+			  limit #{limit} offset #{offset}) ids
 				 inner join seckill_goods s
 							on ids.seckill_goods_id = s.seckill_goods_id
 	</select>
@@ -149,16 +176,32 @@
 	
 	<update id="update" parameterType="com.emall.entity.SeckillGoods">
 		update seckill_goods
-		set seckill_goods_name       = #{seckillGoodsName,jdbcType=VARCHAR},
-			category_id              = #{categoryId,jdbcType=VARCHAR},
-			seckill_goods_describe   = #{seckillGoodsDescribe,jdbcType=VARCHAR},
-			seckill_goods_stock      = #{seckillGoodsStock,jdbcType=INTEGER},
-			seckill_goods_price      = #{seckillGoodsPrice,jdbcType=DECIMAL},
-			seckill_goods_image      = #{seckillGoodsImage,jdbcType=VARCHAR},
-			seckill_goods_details    = #{seckillGoodsDetails,jdbcType=VARCHAR},
-			seckill_goods_start_time = #{seckillGoodsStartTime,jdbcType=TIMESTAMP},
-			seckill_goods_end_time   = #{seckillGoodsEndTime,jdbcType=TIMESTAMP},
-			seckill_goods_status     = #{seckillGoodsStatus,jdbcType=INTEGER}
+		<set>
+			<if test="seckillGoodsName != null">
+				seckill_goods_name = #{seckillGoodsName,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsDescribe != null">
+				seckill_goods_describe = #{seckillGoodsDescribe,jdbcType=VARCHAR},
+			</if>
+			<if test="categoryId != null">
+				category_id = #{categoryId,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsPrice != null">
+				seckill_goods_price = #{seckillGoodsPrice,jdbcType=DECIMAL},
+			</if>
+			<if test="seckillGoodsStock != null">
+				seckill_goods_stock = #{seckillGoodsStock,jdbcType=INTEGER},
+			</if>
+			<if test="seckillGoodsImage != null">
+				seckill_goods_image = #{seckillGoodsImage,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsDetails != null">
+				seckill_goods_details = #{seckillGoodsDetails,jdbcType=VARCHAR},
+			</if>
+			<if test="seckillGoodsStatus != null">
+				seckill_goods_status = #{seckillGoodsStatus,jdbcType=INTEGER},
+			</if>
+		</set>
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</update>
 	
@@ -170,9 +213,9 @@
 
 	<update id="put">
 		update seckill_goods
-		set seckill_goods_start_time = #{startTime,jdbcType=TIMESTAMP},
-		 	seckill_goods_end_time = #{endTime,jdbcType=TIMESTAMP},
-		 	seckill_goods_status = 1
+		set seckill_goods_start_time = #{seckillGoodsStartTime,jdbcType=TIMESTAMP},
+			seckill_goods_end_time   = #{seckillGoodsEndTime,jdbcType=TIMESTAMP},
+			seckill_goods_status     = 1
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</update>
 	

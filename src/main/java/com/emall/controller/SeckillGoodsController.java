@@ -1,5 +1,6 @@
 package com.emall.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.emall.entity.SeckillGoods;
 import com.emall.result.Result;
 import com.emall.service.SeckillGoodsService;
@@ -7,7 +8,9 @@ import com.emall.vo.SeckillGoodsVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -110,7 +113,7 @@ public class SeckillGoodsController {
      * @param endTime
      * @return
      */
-    @PostMapping("")
+    @PostMapping("/put")
     @ResponseBody
     public Result put(@RequestParam("seckillGoodsId") String seckillGoodsId, @RequestParam("startTime") Date startTime, @RequestParam("endTime") Date endTime) {
         if (startTime == null) {
@@ -119,15 +122,74 @@ public class SeckillGoodsController {
             return Result.error("结束时间不能为空");
         } else if (startTime.after(endTime)) {
             return Result.error("开始时间不能大于结束时间");
+        } else if (startTime.before(new Date(System.currentTimeMillis()))) {
+            return Result.error("开始时间不能小于当前时间");
         }
-//        else if (startTime.before(new Date(System.currentTimeMillis() + 900 * 1000))) {
-//            return Result.error("开始时间至少在当前时间半小时以后");
-//        }
 
         if (seckillGoodsService.countOnShelf() >= 12) {
             return Result.error("秒杀商品同时上架不可超过十二种");
         }
 
         return seckillGoodsService.put(seckillGoodsId, startTime, endTime) ? Result.success("商品上架成功", null) : Result.error("商品上架失败");
+    }
+
+    /**
+     * 秒杀商品下架
+     *
+     * @param seckillGoodsId
+     * @return
+     */
+    @PostMapping("/pull")
+    @ResponseBody
+    public Result pull(@RequestBody String seckillGoodsId) {
+        logger.info("根据秒杀商品id=" + seckillGoodsId + "下架");
+
+        return seckillGoodsService.pull(seckillGoodsId) ? Result.success("商品下架成功", null) : Result.error("商品下架失败");
+    }
+
+    /**
+     * 修改秒杀商品
+     *
+     * @return
+     */
+    @PostMapping(value = "")
+    @ResponseBody
+    public Result<SeckillGoods> update(@RequestParam("seckillGoods") String goodsJson, @RequestParam(value = "imageFile", required = false) MultipartFile imageFile, @RequestParam(value = "detailFile", required = false) MultipartFile detailFile) {
+        logger.info("修改商品");
+
+        Result<SeckillGoods> result = seckillGoodsValid(goodsJson);
+        if (!result.isStatus()) {
+            return result;
+        }
+
+        String path = "/tmp/";
+        return seckillGoodsService.update(result.getObj(), imageFile, detailFile, path);
+    }
+
+    /**
+     * 秒杀商品参数验证
+     *
+     * @param goodsJson
+     * @return
+     */
+    private Result<SeckillGoods> seckillGoodsValid(String goodsJson) {
+        logger.info("商品参数验证中...");
+
+        SeckillGoods seckillGoods = JSONObject.parseObject(goodsJson, SeckillGoods.class);
+
+        if (seckillGoods.getCategoryId().equals("none")) {
+            return Result.error("商品类别不能为空");
+        } else if (StringUtils.isEmpty(seckillGoods.getSeckillGoodsName().trim())) {
+            return Result.error("商品名称不能为空");
+        } else if (StringUtils.isEmpty(seckillGoods.getSeckillGoodsDescribe().trim())) {
+            return Result.error("商品描述不能为空");
+        } else if (seckillGoods.getSeckillGoodsPrice() == null) {
+            return Result.error("商品价格不能为空");
+        } else if (seckillGoods.getSeckillGoodsStock() == null) {
+            return Result.error("商品库存不能为空");
+        } else {
+            logger.info("商品参数验证通过");
+            return Result.success("商品参数验证通过", seckillGoods);
+        }
     }
 }

@@ -3,11 +3,13 @@ package com.emall.service;
 import com.emall.dao.SeckillGoodsMapper;
 import com.emall.entity.SeckillGoods;
 import com.emall.redis.RedisKeyUtil;
+import com.emall.result.Result;
 import com.emall.utils.FutureRunnable;
 import com.emall.utils.PageModel;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -15,11 +17,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Service
 public class SeckillGoodsService {
+    @Resource
+    GoodsService goodsService;
+
     @Resource
     SeckillGoodsMapper seckillGoodsMapper;
 
@@ -41,6 +45,29 @@ public class SeckillGoodsService {
 
         List seckillGoodsList = seckillGoodsMapper.queryAll(limit, offset);
         int count = seckillGoodsMapper.count();
+
+        pageModel.setCount(count);
+        pageModel.setList(seckillGoodsList);
+        pageModel.setTotalPages();
+
+        return pageModel;
+    }
+
+
+    /**
+     * 管理员根据秒杀商品关键字分页查询
+     *
+     * @param keyWord
+     * @param pageModel
+     * @return
+     */
+    public PageModel selectByKeyWordPaged(String keyWord, PageModel pageModel) {
+        long limit = pageModel.getPageSize();
+        long offset = (pageModel.getCurrentNo() - 1) * limit;
+
+        keyWord = "%" + keyWord + "%";
+        List seckillGoodsList = seckillGoodsMapper.queryByKeyWord(keyWord, limit, offset);
+        int count = seckillGoodsMapper.countByKeyWord(keyWord);
 
         pageModel.setCount(count);
         pageModel.setList(seckillGoodsList);
@@ -102,7 +129,7 @@ public class SeckillGoodsService {
         seckillGoods.setSeckillGoodsEndTime(endTime);
         seckillGoods.setSeckillGoodsStatus(1);
 
-        boolean flag = seckillGoodsMapper.update(seckillGoods) != 0;
+        boolean flag = seckillGoodsMapper.put(seckillGoods) != 0;
         long end = endTime.getTime() / 1000;
         long now = System.currentTimeMillis() / 1000;
         //秒杀商品缓存 结束10分钟后时失效
@@ -139,6 +166,22 @@ public class SeckillGoodsService {
         return flag;
     }
 
+
+    /**
+     * 下架秒杀商品
+     *
+     * @param seckillGoodsId
+     * @return
+     */
+    public boolean pull(String seckillGoodsId) {
+        return seckillGoodsMapper.pull(seckillGoodsId) != 0;
+    }
+
+    /**
+     * 用户从缓存查询秒杀商品库存
+     * @param seckillGoodsId
+     * @return
+     */
     public int stockBySeckillGoodsId(String seckillGoodsId) {
         String seckillStockKey = RedisKeyUtil.seckillStockById(seckillGoodsId);
         return (int) redisTemplate.opsForValue().get(seckillStockKey);
@@ -192,9 +235,59 @@ public class SeckillGoodsService {
         return seckillGoodsList;
     }
 
+    /**
+     * 数据库减库存
+     * @param seckillGoods
+     * @return
+     */
     public boolean reduceStock(SeckillGoods seckillGoods) {
         String seckillGoodsId = seckillGoods.getSeckillGoodsId();
 
         return seckillGoodsMapper.reduceStock(seckillGoodsId) != 0;
+    }
+
+    /**
+     * 秒杀商品商品修改
+     *
+     * @param seckillGoods
+     * @param imageFile
+     * @param detailFile
+     * @param path
+     * @return
+     */
+    @Transactional
+    public Result<SeckillGoods> update(SeckillGoods seckillGoods, MultipartFile imageFile, MultipartFile detailFile, String path) {
+        String seckillGoodsKey = RedisKeyUtil.seckillGoodsById(seckillGoods);
+
+        if (redisTemplate.hasKey(seckillGoodsKey)) {
+            redisTemplate.delete(seckillGoodsKey);
+        }
+
+        if (imageFile == null && detailFile == null) {
+            if (seckillGoodsMapper.update(seckillGoods) != 0) {
+                return Result.success("商品修改成功", seckillGoods);
+            }
+        } else if (imageFile != null && detailFile != null) {
+            List<String> urlList = goodsService.upLoadToServer(imageFile, detailFile, path);
+            seckillGoods.setSeckillGoodsImage(urlList.get(0));
+            seckillGoods.setSeckillGoodsDetails(urlList.get(1));
+            if (seckillGoodsMapper.update(seckillGoods) != 0) {
+                return Result.success("商品修改成功", seckillGoods);
+            }
+        } else if (imageFile != null) {
+            List<String> urlList = goodsService.upLoadToServer(imageFile, null, path);
+            seckillGoods.setSeckillGoodsImage(urlList.get(0));
+            if (seckillGoodsMapper.update(seckillGoods) != 0) {
+                return Result.success("商品修改成功", seckillGoods);
+            }
+        } else {
+            List<String> urlList = goodsService.upLoadToServer(null, detailFile, path);
+            seckillGoods.setSeckillGoodsDetails(urlList.get(0));
+            if (seckillGoodsMapper.update(seckillGoods) != 0) {
+                return Result.success("商品修改成功", seckillGoods);
+            }
+        }
+
+        return Result.error("商品修改失败");
     }
 }

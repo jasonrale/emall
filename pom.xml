@@ -26,7 +26,7 @@
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
 		</dependency>
-	
+
 		<!--消息队列-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

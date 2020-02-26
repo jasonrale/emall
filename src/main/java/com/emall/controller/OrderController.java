@@ -7,6 +7,7 @@ import com.emall.utils.LoginSession;
 import com.emall.utils.PageModel;
 import com.emall.utils.SnowflakeIdWorker;
 import com.emall.vo.CartOrderSubmitVo;
+import com.emall.vo.OrderManageVo;
 import com.emall.vo.OrderSubmitVo;
 import com.emall.vo.OrderVo;
 import org.slf4j.Logger;
@@ -48,18 +49,18 @@ public class OrderController {
     SnowflakeIdWorker snowflakeIdWorker;
 
     /**
-     * 根据用户id分页查询所有订单列表
+     * 分页查询当前用户所有订单列表（包含订单明细）
      *
      * @param pageModel
      * @return
      */
-    @GetMapping("")
+    @GetMapping("/currentUser")
     @ResponseBody
-    public Result<PageModel> queryAll(@Valid PageModel<OrderVo> pageModel) {
-        logger.info("根据用户id查询商品--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+    public Result<PageModel> queryCurrentUser(@Valid PageModel<OrderVo> pageModel) {
+        logger.info("查询当前用户订单--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
         User user = loginSession.getCustomerSession();
 
-        return Result.success("订单号验证成功", orderService.queryAll(user.getUserId(), pageModel));
+        return Result.success("订单查询成功", orderService.queryCurrentUser(user.getUserId(), pageModel));
     }
 
     /**
@@ -71,14 +72,10 @@ public class OrderController {
     @GetMapping("/{orderId}/orderId")
     @ResponseBody
     public Result<OrderVo> selectByOrderId(@PathVariable("orderId") String orderId) {
-        User user = loginSession.getCustomerSession();
+        logger.info("获取订单信息，订单号=" + orderId);
         Order order = orderService.selectByOrderId(orderId);
         if (order == null) {
             return Result.error("未查询到该订单");
-        }
-
-        if (!orderService.orderIdValid(user.getUserId(), orderId)) {
-            return Result.error("请求非法");
         }
 
         List<OrderItem> orderItemList = orderItemService.selectByOrderId(orderId);
@@ -109,6 +106,12 @@ public class OrderController {
         Integer count = orderSubmitVo.getCount();
         String goodsId = goods.getGoodsId();
 
+        //减库存
+        boolean outOfStock = goodsService.reduceStock(goodsId, count);
+        if (!outOfStock) {
+            return Result.error("库存不足");
+        }
+
         //生成订单
         Order order = new Order(String.valueOf(snowflakeIdWorker.nextId()), userId, goods.getGoodsPrice().multiply(new BigDecimal(count)),
                 Order.UNPAID, new Date(), null, null, null, shippingId);
@@ -123,10 +126,8 @@ public class OrderController {
 
         orderItemService.insert(orderItem);
 
-        //减库存
-        goodsService.reduceStock(goodsId, count);
 
-        return goodsService.reduceStock(goodsId, count) ? Result.success("订单已提交，快去看看吧", orderId) : Result.error("订单提交失败");
+        return Result.success("订单已提交，快去看看吧", orderId);
     }
 
     /**
@@ -142,6 +143,23 @@ public class OrderController {
         User user = loginSession.getCustomerSession();
         String userId = user.getUserId();
 
+        //减库存
+        boolean success = true;
+        List<CartItem> cartItemList = cartOrderSubmitVo.getCartItemList();
+        for (CartItem cartItem : cartItemList) {
+            String goodsId = cartItem.getGoodsId();
+            Integer count = cartItem.getGoodsCount();
+
+            if (!goodsService.reduceStock(goodsId, count)) {
+                success = false;
+                break;
+            }
+        }
+
+        if (!success) {
+            return Result.error("库存不足");
+        }
+
         //生成订单
         Order order = new Order(String.valueOf(snowflakeIdWorker.nextId()), userId, cartOrderSubmitVo.getTotalPrice(), Order.UNPAID,
                 new Date(), null, null, null, cartOrderSubmitVo.getShippingId());
@@ -151,8 +169,6 @@ public class OrderController {
         String orderId = order.getOrderId();
 
         //生成订单明细并删除购物车明细
-        boolean success = true;
-        List<CartItem> cartItemList = cartOrderSubmitVo.getCartItemList();
         for (CartItem cartItem : cartItemList) {
             String goodsId = cartItem.getGoodsId();
             Integer count = cartItem.getGoodsCount();
@@ -162,15 +178,9 @@ public class OrderController {
 
             orderItemService.insert(orderItem);
             cartItemService.deleteByCartItemId(cartItem.getCartItemId());
-
-            //减库存
-            if (!goodsService.reduceStock(goodsId, count)) {
-                success = false;
-                break;
-            }
         }
 
-        return success ? Result.success("订单已提交，快去看看吧", orderId) : Result.error("订单提交失败");
+        return Result.success("订单已提交，快去看看吧", orderId);
     }
 
 
@@ -188,7 +198,7 @@ public class OrderController {
     }
 
     /**
-     * 取消订单
+     * 取消订单，恢复库存
      *
      * @param orderId
      * @return
@@ -196,6 +206,7 @@ public class OrderController {
     @PostMapping("/cancel")
     @ResponseBody
     public Result<String> orderCancel(@RequestBody String orderId) {
+        logger.info("取消订单，订单号=" + orderId);
         User user = loginSession.getCustomerSession();
 
         if (!orderService.orderIdValid(user.getUserId(), orderId)) {
@@ -203,5 +214,74 @@ public class OrderController {
         }
 
         return orderService.orderCancel(orderId) ? Result.success("订单取消成功", orderId) : Result.error("订单取消失败");
+    }
+
+    /**
+     * 订单支付,修改订单状态
+     *
+     * @param orderId
+     * @return
+     */
+    @PostMapping("/pay/{orderId}/orderId")
+    @ResponseBody
+    public Result<String> pay(@PathVariable("orderId") String orderId) {
+        logger.info("订单支付中，订单号=" + orderId);
+        User user = loginSession.getCustomerSession();
+
+        if (!orderService.orderIdValid(user.getUserId(), orderId)) {
+            return Result.error("请求非法");
+        }
+
+        return orderService.pay(orderId) ? Result.success("订单支付成功", orderId) : Result.error("订单支付失败");
+    }
+
+
+    /**
+     * 后台管理--根据查询类型查询所有订单列表
+     *
+     * @param pageModel
+     * @return
+     */
+    @GetMapping("/{listType}/{param}")
+    @ResponseBody
+    public Result queryAllByUserId(@Valid PageModel<OrderManageVo> pageModel, @PathVariable("listType") String listType, @PathVariable("param") String param) {
+        logger.info("查询订单--By " + listType + "--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+
+        switch (listType) {
+            case "all":
+                return Result.success("分页查询所有订单", orderService.queryAll(pageModel));
+            case "orderId":
+                return Result.success("根据订单id查询订单", orderService.queryByOrderId(param));
+            case "userId":
+                return Result.success("根据用户id分页查询订单", orderService.queryAllByUserId(param, pageModel));
+            default:
+                return Result.error("查询失败");
+        }
+    }
+
+    /**
+     * 订单发货,修改订单状态
+     *
+     * @param orderId
+     * @return
+     */
+    @PostMapping("/send")
+    @ResponseBody
+    public Result<String> send(@RequestBody String orderId) {
+        logger.info("订单发货，订单号=" + orderId);
+        return orderService.send(orderId) ? Result.success("订单发货成功", orderId) : Result.error("订单发货失败");
+    }
+
+    /**
+     * 确认收货,修改订单状态
+     *
+     * @param orderId
+     * @return
+     */
+    @PostMapping("/received")
+    @ResponseBody
+    public Result<String> received(@RequestBody String orderId) {
+        logger.info("确认收货，订单号=" + orderId);
+        return orderService.received(orderId) ? Result.success("订单发货成功", orderId) : Result.error("订单发货失败");
     }
 }

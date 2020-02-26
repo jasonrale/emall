@@ -1,11 +1,9 @@
 $(document).ready(function () {
-    adminInfo();
-
     adminQuery(1, 10, "all", "none");
 
     querySeckillGoods(1, 10);
 
-    queryType();
+    queryByType();
 
     turn();
 });
@@ -13,7 +11,7 @@ $(document).ready(function () {
 /**
  * 商品管理--根据查询类型传参
  */
-function queryType() {
+function queryByType() {
     $(document).keyup(function (event) {
         if (event.keyCode === 13) {
             var listType = $("#listType").val();
@@ -22,7 +20,7 @@ function queryType() {
         }
     });
 
-    $("#queryType").click(function () {
+    $("#query").click(function () {
         var listType = $("#listType").val();
         var param = $("#param").val();
         adminQuery(1, 10, listType, param);
@@ -34,7 +32,10 @@ function queryType() {
  */
 function querySeckillGoods(currentNo, pageSize) {
     $("#seckillGoods").click(function () {
-        adminQuery(currentNo, pageSize, "seckill", "none")
+        adminQuery(currentNo, pageSize, "seckillAll", "none")
+        $("#listType").find("option[value='goodsId']").val("seckillGoodsId").text("按秒杀商品id查询");
+        $("#listType").find("option[value='goodsName']").val("seckillGoodsName").text("按秒杀商品名称查询");
+
     });
 }
 
@@ -42,7 +43,7 @@ function querySeckillGoods(currentNo, pageSize) {
  * 商品管理--分页查询
  */
 function adminQuery(currentNo, pageSize, listType, param) {
-    if ((listType === "goodsId" || listType === "goodsName") && param.trim() === "") {
+    if ((listType === "goodsId" || listType === "goodsName" || listType === "seckillGoodsId" || listType === "seckillGoodsName") && param.trim() === "") {
         return false;
     }
 
@@ -71,11 +72,12 @@ function adminQuery(currentNo, pageSize, listType, param) {
                         "<td>" + goods.goodsStock + "</td>" +
                         "<td>" + (goods.goodsStatus === 1 ?
                             '<a id="' + goodsId + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'" + goodsId + "'" + ')">下架</a>' :
-                            '<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + goodsId + "'" + ')">上架</a>') +
+                            '<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + goodsId + "', " + "'" + listType + "'" + ')">上架</a>') +
                         "</td>" +
                         "<td>" +
                         '<a class="opear" href="goodsDetail.html?goodsId=' + goodsId + '">查看</a>' +
                         '<a class="opear" href="goodsEdit.html?goodsId=' + goodsId + '">编辑</a>' +
+                        '<a class="opear" onclick="delGoods(' + "'" + goodsId + "'" + ')">删除</a>' +
                         "</td>" +
                         "</tr>";
                     tbody.append(goodsEle);
@@ -83,7 +85,34 @@ function adminQuery(currentNo, pageSize, listType, param) {
 
                 $("#pageControl").css("display", "none");
                 return false;
-            } else if (listType === "seckill") {
+            } else if (listType === "seckillGoodsId") {
+                var seckillGoods = data.obj;
+
+                if (seckillGoods !== null) {
+                    var seckillGoodsId = seckillGoods.seckillGoodsId;
+                    var status = seckillGoods.seckillGoodsStatus;
+                    var seckillGoodsEle = "<tr>" +
+                        "<td>" + seckillGoodsId + "</td>" +
+                        "<td><p>" + seckillGoods.seckillGoodsName + "</p><p>" + seckillGoods.seckillGoodsDescribe + "</p></td>" +
+                        "<td>" + seckillGoods.seckillGoodsPrice + "元" + "</td>" +
+                        "<td>" + seckillGoods.seckillGoodsStock + "件" + "</td>" +
+                        "<td>" + (status === 0 ? '<a id="' + seckillGoodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + seckillGoodsId + "', " + "'" + listType + "'" + ')">上架</a>' :
+                            status === 1 ? '<a id="' + seckillGoodsId + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'" + seckillGoodsId + "', " + "'" + listType + "'" + ')">下架</a>' : status === 2 ? "进行中" : "已结束") +
+                        "</td>" +
+                        "<td>" +
+                        '<a class="opear" href="seckillGoodsDetail.html?seckillGoodsId=' + seckillGoodsId + '">查看</a>';
+
+                    if (status !== 2 && status !== 3) {
+                        seckillGoodsEle += '<a class="opear" href="goodsEdit.html?seckillGoodsId=' + seckillGoodsId + '">编辑</a>' +
+                            '<a class="opear" onclick="delSeckillGoods(' + "'" + seckillGoodsId + "'" + ')">删除</a></td></tr>';
+                    }
+
+                    tbody.append(seckillGoodsEle);
+                }
+
+                $("#pageControl").css("display", "none");
+                return false;
+            } else if (listType === "seckillAll" || listType === "seckillGoodsName") {
                 var seckillGoodsList = data.obj.list;
 
                 if (seckillGoodsList.length !== 0) {
@@ -96,17 +125,24 @@ function adminQuery(currentNo, pageSize, listType, param) {
                             "<td>" + seckillGoodsList[i].seckillGoodsPrice + "元" + "</td>" +
                             "<td>" + seckillGoodsList[i].seckillGoodsStock + "件" + "</td>" +
                             "<td>" + (status === 0 ? '<a id="' + seckillGoodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + seckillGoodsId + "', " + "'" + listType + "'" + ')">上架</a>' :
-                                status === 1 || status === 2 ? "上架中" : "已结束") +
+                                status === 1 ? '<a id="' + seckillGoodsId + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'" + seckillGoodsId + "', " + "'" + listType + "'" + ')">下架</a>' : status === 2 ? "进行中" : "已结束") +
                             "</td>" +
                             "<td>" +
-                            '<a class="opear" href="seckillGoodsDetail.html?seckillGoodsId=' + seckillGoodsId + '">查看</a>' +
-                            '<a class="opear" onclick="del(' + "'" + seckillGoodsId + "'" + ')">删除</a>' +
-                            "</td>" +
-                            "</tr>";
+                            '<a class="opear" href="seckillGoodsDetail.html?seckillGoodsId=' + seckillGoodsId + '">查看</a>';
+
+                        if (status !== 2 && status !== 3) {
+                            ele += '<a class="opear" href="goodsEdit.html?seckillGoodsId=' + seckillGoodsId + '">编辑</a>' +
+                                '<a class="opear" onclick="delSeckillGoods(' + "'" + seckillGoodsId + "'" + ')">删除</a></td></tr>';
+                        }
+
                         tbody.append(ele);
                     }
 
-                    $("#pageControl").css("display", "block");
+                    if (data.obj.totalPages === 1) {
+                        $("#pageControl").css("display", "none");
+                    } else {
+                        $("#pageControl").css("display", "block");
+                    }
                 } else {
                     $("#pageControl").css("display", "none");
                     return false;
@@ -116,25 +152,30 @@ function adminQuery(currentNo, pageSize, listType, param) {
 
                 if (goodsList.length !== 0) {
                     for (var j = 0; j < goodsList.length; j++) {
-                        var id = goodsList[j].goodsId;
+                        var goodsId = goodsList[j].goodsId;
                         var element = "<tr>" +
-                            "<td>" + id + "</td>" +
+                            "<td>" + goodsId + "</td>" +
                             "<td><p>" + goodsList[j].goodsName + "</p><p>" + goodsList[j].goodsDescribe + "</p></td>" +
                             "<td>" + goodsList[j].goodsPrice + "元" + "</td>" +
                             "<td>" + goodsList[j].goodsStock + "件" +"</td>" +
                             "<td>" + (goodsList[j].goodsStatus === 1 ?
-                                '<a id="' + id + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'" + id + "'" + ')">下架</a>' :
-                                '<a id="' + id + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + id + "'" + ')">上架</a>') +
+                                '<a id="' + goodsId + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'" + goodsId + "'" + ')">下架</a>' :
+                                '<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + goodsId + "', " + "'" + listType + "'" + ')">上架</a>') +
                             "</td>" +
                             "<td>" +
-                            '<a class="opear" href="goodsDetail.html?goodsId=' + id + '">查看</a>' +
-                            '<a class="opear" href="goodsEdit.html?goodsId=' + id + '">编辑</a>' +
+                            '<a class="opear" href="goodsDetail.html?goodsId=' + goodsId + '">查看</a>' +
+                            '<a class="opear" href="goodsEdit.html?goodsId=' + goodsId + '">编辑</a>' +
+                            '<a class="opear" onclick="delGoods(' + "'" + goodsId + "'" + ')">删除</a>' +
                             "</td>" +
                             "</tr>";
                         tbody.append(element);
                     }
 
-                    $("#pageControl").css("display", "block");
+                    if (data.obj.totalPages === 1) {
+                        $("#pageControl").css("display", "none");
+                    } else {
+                        $("#pageControl").css("display", "block");
+                    }
                 } else {
                     $("#pageControl").css("display", "none");
                     return false;
@@ -176,7 +217,7 @@ function adminQuery(currentNo, pageSize, listType, param) {
 }
 
 /**
- * 商品类别管理--分页跳转
+ * 商品管理--分页跳转
  */
 function turn() {
     var element = document.getElementById("currentNo");
@@ -201,32 +242,61 @@ function turn() {
  * 下架商品
  * @param goodsId
  */
-function pull(goodsId) {
-    layer.confirm(
-        "您确定要下架该商品？",
-        {btn: ["确定", "取消"]},
-        function (index) {
-            $.ajax({
-                type: "POST",
-                url: "/emall/goods/pull",
-                data: goodsId,
-                contentType: 'application/json;charset=UTF-8',
-                success: function (data) {
-                    if (data.status === true) {
-                        layer.msg(data.msg, {time: 800}, function () {
-                            layer.close(index);
-                            $("#" + goodsId).replaceWith('<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="put(' + "'" + goodsId + "'" + ')">上架</a>');
-                        });
-                    } else {
-                        layer.msg(data.msg, {time: 1000});
+function pull(goodsId, listType) {
+    if (listType === "all" || listType === "goodsId" || listType === "goodsName") {
+        layer.confirm(
+            "您确定要下架该商品？",
+            {btn: ["确定", "取消"]},
+            function (index) {
+                $.ajax({
+                    type: "POST",
+                    url: "/emall/goods/pull",
+                    data: goodsId,
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        if (data.status === true) {
+                            layer.msg(data.msg, {time: 800}, function () {
+                                layer.close(index);
+                                $("#" + goodsId).replaceWith('<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="put(' + "'" + goodsId + "', " + "'" + listType + "'" + ')">上架</a>');
+                            });
+                        } else {
+                            layer.msg(data.msg, {time: 1000});
+                        }
                     }
-                }
-            });
-        },
-        function (index) {
-            layer.close(index);
-        }
-    );
+                });
+            },
+            function (index) {
+                layer.close(index);
+            }
+        );
+    } else {
+        layer.confirm(
+            "您确定要下架该商品？",
+            {btn: ["确定", "取消"]},
+            function (index) {
+                $.ajax({
+                    type: "POST",
+                    url: "/emall/seckillGoods/pull",
+                    data: goodsId,
+                    contentType: 'application/json;charset=UTF-8',
+                    success: function (data) {
+                        if (data.status === true) {
+                            layer.msg(data.msg, {time: 800}, function () {
+                                layer.close(index);
+                                $("#" + goodsId).replaceWith('<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="put(' + "'" + goodsId + "', " + "'" + listType + "'" + ')">上架</a>');
+                            });
+                        } else {
+                            layer.msg(data.msg, {time: 1000});
+                        }
+                    }
+                });
+            },
+            function (index) {
+                layer.close(index);
+            }
+        );
+    }
+
 }
 
 /**
@@ -235,7 +305,7 @@ function pull(goodsId) {
  * @param listType
  */
 function put(goodsId, listType) {
-    if (listType !== "seckill") {
+    if (listType === "all" || listType === "goodsId" || listType === "goodsName") {
         layer.confirm(
             "您确定要上架该商品？",
             {btn: ["确定", "取消"]},
@@ -295,24 +365,24 @@ function put(goodsId, listType) {
                 var startTime = new Date(Date.parse(start));
                 var endTime = new Date(Date.parse(end));
                 if (startTime > endTime) {
-                    layer.msg("开始时间不能大于结束时间", {time: 1200});
+                    layer.msg("开始时间不能大于结束时间", {time: 1000});
+                    return false;
+                } else if (startTime < new Date(new Date().getTime())) {
+                    layer.msg("开始时间不能小于当前时间", {time: 1000});
                     return false;
                 }
-                // else if (startTime < new Date(new Date().getTime() + 1800 * 1000)) {
-                //     layer.msg("开始时间至少在当前时间一小时以后", {time: 1200});
-                //     return false;
-                // }
 
                 var timeInfo = {"seckillGoodsId": goodsId, "startTime": startTime, "endTime": endTime};
                 $.ajax({
                     type: "POST",
-                    url: "/emall/seckillGoods",
+                    url: "/emall/seckillGoods/put",
                     data: timeInfo,
                     success: function (data) {
                         if (data.status === true) {
                             layer.msg(data.msg, {time: 800});
                             layer.close(index);
-                            $("#" + goodsId).replaceWith("上架中");
+                            $("#" + goodsId).replaceWith('<a id="' + goodsId + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'"
+                                + goodsId + "', " + "'" + listType + "'" + ')">下架</a>');
                         } else {
                             layer.msg(data.msg, {time: 1000});
                         }
@@ -339,7 +409,46 @@ function put(goodsId, listType) {
     }
 }
 
-function del(seckillGoodsId) {
+/**
+ * 删除商品
+ * @param goodsId
+ */
+function delGoods(goodsId) {
+    layer.confirm(
+        "您确定要删除该商品吗？",
+        {btn: ["确定", "取消"]},
+        function (index) {
+            $.ajax({
+                type: "DELETE",
+                url: "/emall/goods",
+                data: goodsId,
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.status === true) {
+                        layer.msg(data.msg, {time: 800}, function () {
+                            layer.close(index);
+                            var listType = $("#listType").val();
+                            var param = $("#param").val();
+                            var currentNo = $("#currentNo").val();
+                            adminQuery(currentNo, 10, listType, param);
+                        });
+                    } else {
+                        layer.msg(data.msg, {time: 1000});
+                    }
+                }
+            });
+        },
+        function (index) {
+            layer.close(index);
+        }
+    );
+}
+
+/**
+ * 删除秒杀商品
+ * @param seckillGoodsId
+ */
+function delSeckillGoods(seckillGoodsId) {
     layer.confirm(
         "您确定要删除该商品吗？",
         {btn: ["确定", "取消"]},

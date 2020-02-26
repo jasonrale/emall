@@ -4,6 +4,8 @@ $(document).ready(function () {
     var orderId = getUrlParam("orderId");
 
     payment(orderId);
+
+    pay();
 });
 
 /**
@@ -15,12 +17,31 @@ function payment(orderId) {
         url: "/emall/order/valid/" + orderId + "/orderId",
         success: function (data) {
             if (data.status === false) {
-                layer.msg(data.msg, {time: 1000}, function f() {
+                layer.msg(data.msg, {time: 1000}, function () {
                     $(window).attr("location", "../../index.html");
                 });
             } else {
-                $("#orderId").html(orderId)
+                $("#orderId").html(orderId);
             }
         }
+    });
+}
+
+/**
+ * 订单支付
+ */
+function pay() {
+    $(".qr-code").click(function () {
+        var orderId = $("#orderId").html();
+
+        $.ajax({
+            type: "POST",
+            url: "/emall/order/pay/" + orderId + "/orderId",
+            success: function (data) {
+                layer.msg(data.msg, {time: 1000}, function () {
+                    $(window).attr("location", "orderDetail.html?orderId=" + orderId);
+                });
+            }
+        });
     });
 }

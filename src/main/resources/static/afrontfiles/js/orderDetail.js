@@ -39,6 +39,11 @@ function orderDetail(orderId) {
                     $("#orderStatus").html("待发货");
                 } else if (orderStatus === 2) {
                     $("#orderStatus").html("待收货");
+                    $(".order-info").append(
+                        '<div class="text-line">' +
+                        '<a class="btn order-received" id="received" onclick="received(' + "'" + orderVo.orderId + "'" + ')">确认收货</a>' +
+                        "</div>"
+                    );
                 } else {
                     $("#orderStatus").html("已完成");
                 }
@@ -83,6 +88,36 @@ function cancel(orderId) {
             $.ajax({
                 type: "POST",
                 url: "/emall/order/cancel",
+                data: orderId,
+                contentType: 'application/json;charset=UTF-8',
+                success: function (data) {
+                    if (data.status === true) {
+                        layer.msg(data.msg, {time: 1000}, function () {
+                            window.location.reload();
+                        });
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+        },
+        function (index) {
+            layer.close(index);
+        }
+    );
+}
+
+/**
+ * 确认收货
+ */
+function received(orderId) {
+    layer.confirm(
+        "您确定要确认收货吗？",
+        {btn: ["确定", "取消"]},
+        function (index) {
+            $.ajax({
+                type: "POST",
+                url: "/emall/order/received",
                 data: orderId,
                 contentType: 'application/json;charset=UTF-8',
                 success: function (data) {

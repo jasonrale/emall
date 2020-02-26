@@ -4,7 +4,6 @@ import com.emall.entity.Goods;
 import com.emall.entity.SeckillGoods;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.Date;
 import java.util.List;
 
 public interface SeckillGoodsMapper {
@@ -18,9 +17,15 @@ public interface SeckillGoodsMapper {
 
     int countOnShelf();
 
+    int countByKeyWord(@Param("keyWord") String keyWord);
+
     SeckillGoods selectBySeckillGoodsId(@Param("seckillGoodsId") String seckillGoodsId);
 
     List<SeckillGoods> queryAll(@Param("limit") long limit, @Param("offset") long offset);
+
+    List<SeckillGoods> queryByKeyWord(@Param("keyWord") String keyWord, @Param("limit") long limit, @Param("offset") long offset);
+
+    int put(SeckillGoods seckillGoods);
 
     int pull(@Param("seckillGoodsId") String seckillGoodsId);
 

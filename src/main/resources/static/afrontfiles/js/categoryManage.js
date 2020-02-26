@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    adminInfo();
-
     adminQueryAll(1, 10);
 
     turn();

@@ -1,15 +1,26 @@
 $(document).ready(function () {
     adminInfo();
 
-    var goodsId = (getUrlParam("goodsId"));
+    var goodsId = encodeURI(getUrlParam("goodsId"));
+    var seckillGoodsId = encodeURI(getUrlParam("seckillGoodsId"));
 
-    goodsInit(goodsId);
+    if (goodsId !== "null") {
+        goodsInit(goodsId);
+        $(document).keyup(function (event) {
+            if (event.keyCode === 13) {
+                updateSubmit(goodsId, 'goods');
+            }
+        });
+    } else {
+        seckillGoodsInit(seckillGoodsId)
+        $(document).keyup(function (event) {
+            if (event.keyCode === 13) {
+                updateSubmit(seckillGoodsId, 'seckillGoods');
+            }
+        });
+    }
 
-    $(document).keyup(function (event) {
-        if (event.keyCode === 13) {
-            updateSubmit(goodsId);
-        }
-    });
+
 });
 
 /**
@@ -41,10 +52,47 @@ function goodsInit(goodsId) {
                     }
                 }
             });
-            $("#submit").replaceWith('<input type="button" class="btn btn-xl btn-primary" id="submit" value="提交" onclick="updateSubmit(' + goodsId + ')">');
+            $("#submit").replaceWith('<input type="button" class="btn btn-xl btn-primary" id="submit" value="提交" onclick="updateSubmit(' + "'" + goodsId + "'" + ", 'goods'" + ')">');
             $("#viewImage").attr("src", goods.goodsImage).css("display", "block");
             $("#viewDetail").attr("src", goods.goodsDetails).css("display", "block");
             $("#status").val(goods.goodsStatus);
+        }
+    });
+}
+
+/**
+ * 秒杀商品信息初始化
+ * @param goodsId
+ */
+function seckillGoodsInit(seckillGoodsId) {
+    $.ajax({
+        type: "GET",
+        url: "/emall/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
+        success: function (data) {
+            var seckillGoods = data.obj;
+            $("#name").val(seckillGoods.seckillGoodsName);
+            $("#describe").val(seckillGoods.seckillGoodsDescribe);
+            $("#price").val(seckillGoods.seckillGoodsPrice);
+            $("#stock").val(seckillGoods.seckillGoodsStock);
+            $.ajax({
+                type: "get",
+                url: "/emall/category",
+                dataType: "json",
+                success: function (data) {
+                    var categoryList = data.obj;
+                    for (var i = 0; i < categoryList.length; i++) {
+                        if (categoryList[i].categoryId !== seckillGoods.categoryId) {
+                            $("#category").append("<option value='" + categoryList[i].categoryId + "'>" + categoryList[i].categoryName + "</option>");
+                        } else {
+                            $("#category").append("<option value='" + categoryList[i].categoryId + "' selected>" + categoryList[i].categoryName + "</option>");
+                        }
+                    }
+                }
+            });
+            $("#submit").replaceWith('<input type="button" class="btn btn-xl btn-primary" id="submit" value="提交" onclick="updateSubmit(' + "'" + seckillGoodsId + "'" + ", 'seckillGoods'" + ')">');
+            $("#viewImage").attr("src", seckillGoods.seckillGoodsImage).css("display", "block");
+            $("#viewDetail").attr("src", seckillGoods.seckillGoodsDetails).css("display", "block");
+            $("#status").val(seckillGoods.seckillGoodsStatus);
         }
     });
 }
@@ -88,7 +136,7 @@ function viewDetail() {
 /**
  * 商品管理--修改上传
  */
-function updateSubmit(goodsId) {
+function updateSubmit(goodsId, type) {
     var goodsName = $("#name").val();
     var goodsDescribe = $("#describe").val();
     var categoryId = $("#category").val();
@@ -115,43 +163,86 @@ function updateSubmit(goodsId) {
         return false;
     }
 
-    var goods = {
-        "goodsId": goodsId,
-        "goodsName": goodsName,
-        "goodsDescribe": goodsDescribe,
-        "categoryId": categoryId,
-        "goodsStock": goodsStock,
-        "goodsPrice": goodsPrice,
-        "goodsStatus": goodsStatus
-    };
+    if (type === "goods") {
+        var goods = {
+            "goodsId": goodsId,
+            "goodsName": goodsName,
+            "goodsDescribe": goodsDescribe,
+            "categoryId": categoryId,
+            "goodsStock": goodsStock,
+            "goodsPrice": goodsPrice,
+            "goodsStatus": goodsStatus
+        };
 
-    var formData = new FormData();
-    if (image.val() !== "") {
-        formData.append("imageFile", image[0].files[0]);
-    } else if (detail.val() !== "") {
-        formData.append("detailFile", detail[0].files[0]);
-    }
-    formData.append("goods", JSON.stringify(goods));
-
-    showLoading();
-    $.ajax({
-        type: "POST",
-        url: "/emall/goods",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            if (data.status === true) {
-                layer.msg(data.msg, {time: 1000}, function () {
-                    $(window).attr("location", "goodsmanage.html")
-                });
-            } else {
-                layer.msg(data.msg);
-            }
-        },
-        error: function () {
-            layer.msg("商品修改失败", {time: 1000});
+        var formData = new FormData();
+        if (image.val() !== "") {
+            formData.append("imageFile", image[0].files[0]);
+        } else if (detail.val() !== "") {
+            formData.append("detailFile", detail[0].files[0]);
         }
-    });
+        formData.append("goods", JSON.stringify(goods));
+
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: "/emall/goods",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.status === true) {
+                    layer.msg(data.msg, {time: 1000}, function () {
+                        $(window).attr("location", "goodsmanage.html")
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error: function () {
+                layer.msg("商品修改失败", {time: 1000});
+            }
+        });
+    } else {
+        var seckillGoods = {
+            "seckillGoodsId": goodsId,
+            "seckillGoodsName": goodsName,
+            "seckillGoodsDescribe": goodsDescribe,
+            "categoryId": categoryId,
+            "seckillGoodsStock": goodsStock,
+            "seckillGoodsPrice": goodsPrice,
+            "seckillGoodsStatus": goodsStatus
+        };
+
+        var formData = new FormData();
+        if (image.val() !== "") {
+            formData.append("imageFile", image[0].files[0]);
+        } else if (detail.val() !== "") {
+            formData.append("detailFile", detail[0].files[0]);
+        }
+        formData.append("seckillGoods", JSON.stringify(seckillGoods));
+
+        showLoading();
+        $.ajax({
+            type: "POST",
+            url: "/emall/seckillGoods",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.status === true) {
+                    layer.msg(data.msg, {time: 1000}, function () {
+                        $(window).attr("location", "goodsmanage.html")
+                    });
+                } else {
+                    layer.msg(data.msg);
+                }
+            },
+            error: function () {
+                layer.msg("商品修改失败", {time: 1000});
+            }
+        });
+    }
+
+
 }
 

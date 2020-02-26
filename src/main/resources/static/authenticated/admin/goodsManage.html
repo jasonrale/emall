@@ -10,6 +10,7 @@
     <script src="https://cdn.staticfile.org/jquery/3.4.1/jquery.min.js"></script>
     <script src="../../afrontfiles/laydate/laydate.js"></script>
     <script src="../../afrontfiles/layer/layer.js"></script>
+    <script src="../../afrontfiles/js/admin.js"></script>
     <script src="../../afrontfiles/js/goodsManage.js"></script>
     <script src="../../afrontfiles/js/common.js"></script>
 </head>
@@ -66,7 +67,7 @@
                 <div class="form-group">
                     <input type="text" class="form-control" placeholder="关键词" id="param">
                 </div>
-                <input type="button" class="btn btn-default" value="查询" id="queryType"/>
+                <input type="button" class="btn btn-default" value="查询" id="query"/>
                 <input type="button" class="btn btn-default" value="秒杀商品" id="seckillGoods" style="background-color: #ec8825; color: #ffffff"/>
             </div>
         </div>
@@ -93,9 +94,7 @@
             <li title="页数" tabindex="0">
                 <input type="text" id="currentNo" value="" class="rc-pagination-item"/>
             </li>
-            <li>
-                <label class="rc-pagination-disabled rc-pagination-item">/</label>
-            </li>
+            <label class="rc-pagination-disabled rc-pagination-item">/</label>
             <li title="总页数" class="rc-pagination-disabled rc-pagination-item" tabindex="0">
                 <a id="totalPages"></a>
             </li>

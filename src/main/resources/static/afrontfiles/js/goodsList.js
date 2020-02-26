@@ -6,9 +6,9 @@ $(document).ready(function () {
     var keyWord = encodeURI(encodeURI(getUrlParam("keyWord")));
     var categoryId = encodeURI(getUrlParam("categoryId"));
 
-    if (keyWord !== "null" && categoryId === "null") {
+    if (keyWord !== "null") {
         listByKey(keyWord, "none", 1, 20);
-    } else if (keyWord === "null" && categoryId !== "null") {
+    } else {
         listByCategory(categoryId, "none", 1, 20);
     }
 });

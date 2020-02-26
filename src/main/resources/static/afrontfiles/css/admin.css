@@ -2725,6 +2725,19 @@ caption, th {
     text-align: center;
 }
 
+.orderTable {
+    text-align: center;
+}
+
+.itemTable {
+    text-align: center;
+}
+
+.itemTable .cell {
+    text-align: center;
+    background-color: #f9f9f9;
+}
+
 table col[class*=col-] {
     position: static;
     display: table-column;
@@ -8662,4 +8675,10 @@ li {
     display: block;
     width: 80px;
     height: 80px
+}
+
+.itemImg {
+    display: block;
+    width: 180px;
+    height: 120px
 }
