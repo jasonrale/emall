@@ -33,8 +33,6 @@ public class OrderVo {
 
     private Date orderEndTime;              //订单完成时间
 
-    private String shippingId;              //订单收货地址
-
     private Shipping shipping;              //订单收货地址
 
     private List<OrderItem> orderItemList;  //订单明细列表

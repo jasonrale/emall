@@ -191,43 +191,6 @@ public class OrderController {
     }
 
     /**
-     * 取消订单，恢复库存
-     * @param orderId
-     * @return
-     */
-    @PostMapping("/cancel")
-    @ResponseBody
-    public Result<String> orderCancel(@RequestBody String orderId) {
-        logger.info("取消订单，订单号=" + orderId);
-        User user = loginSession.getCustomerSession();
-
-        if (!orderService.orderIdValid(user.getUserId(), orderId)) {
-            return Result.error("请求非法");
-        }
-
-        return orderService.orderCancel(orderId) ? Result.success("订单取消成功", orderId) : Result.error("订单取消失败");
-    }
-
-    /**
-     * 订单支付,修改订单状态
-     * @param orderId
-     * @return
-     */
-    @PostMapping("/pay/{orderId}/orderId")
-    @ResponseBody
-    public Result<String> pay(@PathVariable("orderId") String orderId) {
-        logger.info("订单支付中，订单号=" + orderId);
-        User user = loginSession.getCustomerSession();
-
-        if (!orderService.orderIdValid(user.getUserId(), orderId)) {
-            return Result.error("请求非法");
-        }
-
-        return orderService.pay(orderId) ? Result.success("订单支付成功", orderId) : Result.error("订单支付失败");
-    }
-
-
-    /**
      * 后台管理--根据查询类型查询所有订单列表
      * @param pageModel
      * @return
@@ -247,6 +210,25 @@ public class OrderController {
             default:
                 return Result.error("查询失败");
         }
+    }
+
+    /**
+     * 订单支付,修改订单状态
+     *
+     * @param orderId
+     * @return
+     */
+    @PostMapping("/pay/{orderId}/orderId")
+    @ResponseBody
+    public Result<String> pay(@PathVariable("orderId") String orderId) {
+        logger.info("订单支付中，订单号=" + orderId);
+        User user = loginSession.getCustomerSession();
+
+        if (!orderService.orderIdValid(user.getUserId(), orderId)) {
+            return Result.error("请求非法");
+        }
+
+        return orderService.pay(orderId) ? Result.success("订单支付成功", orderId) : Result.error("订单支付失败");
     }
 
     /**
@@ -271,5 +253,24 @@ public class OrderController {
     public Result<String> received(@RequestBody String orderId) {
         logger.info("确认收货，订单号=" + orderId);
         return orderService.received(orderId) ? Result.success("订单发货成功", orderId) : Result.error("订单发货失败");
+    }
+
+    /**
+     * 取消订单，恢复库存
+     *
+     * @param orderId
+     * @return
+     */
+    @PostMapping("/cancel")
+    @ResponseBody
+    public Result<String> cancel(@RequestBody String orderId) {
+        logger.info("取消订单，订单号=" + orderId);
+        User user = loginSession.getCustomerSession();
+
+        if (!orderService.orderIdValid(user.getUserId(), orderId)) {
+            return Result.error("请求非法");
+        }
+
+        return orderService.cancel(orderId) ? Result.success("订单取消成功", orderId) : Result.error("订单取消失败");
     }
 }

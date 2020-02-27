@@ -9,9 +9,10 @@ import com.emall.vo.OrderVo;
  * Redis键生成类
  */
 public class RedisKeyUtil {
-    public static final String GOODS_VERSION = "Goods:Version";
     public static final String GOODS_PREFIX = "Goods:";
+    public static final String GOODS_VERSION = "Goods:Version";
     public static final String ORDER_VO_PREFIX = "OrderVo:";
+    public static final String ORDER_VO_VERSION_PREFIX = "OrderVo:Version:";
     public static final String CATEGORY_PREFIX = "Category:";
     public static final String SECKILL_GOODS_PREFIX = "SeckillGoods:";
     public static final String SECKILL_ORDER_PREFIX = "SeckillOrder:";
@@ -175,5 +176,15 @@ public class RedisKeyUtil {
      */
     public static String orderVoByUserId(String userId, int currentNo, int pageSize) {
         return ORDER_VO_PREFIX + userId + ":" + currentNo + ":" + pageSize;
+    }
+
+    /**
+     * 用户订单业务缓存版本键
+     *
+     * @param userId
+     * @return
+     */
+    public static String versionByUserId(String userId) {
+        return ORDER_VO_VERSION_PREFIX + userId;
     }
 }

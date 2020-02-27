@@ -24,17 +24,17 @@ public interface OrderMapper {
 
     Order selectByOrderId(@Param("orderId") String orderId);
 
-    int orderCancel(@Param("orderId") String orderId);
-
-    int pay(@Param("orderId") String orderId, Date currentDate);
-
     List<OrderManageVo> queryAll(@Param("limit") long limit, @Param("offset") long offset);
 
     List<OrderManageVo> queryAllByUserId(@Param("userId") String userId, @Param("limit") long limit, @Param("offset") long offset);
 
     OrderManageVo queryManageByOrderId(@Param("orderId") String orderId);
 
+    int pay(@Param("orderId") String orderId, Date currentDate);
+
     int send(@Param("orderId") String orderId, Date currentDate);
 
     int received(@Param("orderId") String orderId, Date currentDate);
+
+    int cancel(@Param("orderId") String orderId);
 }

@@ -50,32 +50,18 @@ public class GoodsService {
      */
     public PageModel<Goods> queryAll(PageModel<Goods> pageModel) {
         String listKey = RedisKeyUtil.goodsAll(pageModel.getCurrentNo(), pageModel.getPageSize());
-        if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
-            redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
-        }
 
-        if (redisTemplate.hasKey(listKey)) {
+        PageModel<Goods> searchResult = accessCache(listKey, pageModel);
 
-            int newVersion = (int) redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION);
-            int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
-            //判断是否没有增加数据
-            if (newVersion == oldVersion) {
-                //从Redis缓存中获取列表中所有商品的键（排除商品总数量与缓存版本号）
-                List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
-                if (goodsKeyList == null || goodsKeyList.size() == 0) {
-                    return queryAllFromDB(pageModel);
-                }
-
-                int count = (int) redisTemplate.opsForList().index(listKey, -2);
-                return getFromRedis(count, goodsKeyList, pageModel);
-            }
-
-            return queryAllFromDB(pageModel);
-        }
-
-        return queryAllFromDB(pageModel);
+        return searchResult == null ? queryAllFromDB(pageModel) : pageModel;
     }
 
+    /**
+     * 从数据库查询所有商品
+     *
+     * @param pageModel
+     * @return
+     */
     private PageModel<Goods> queryAllFromDB(PageModel<Goods> pageModel) {
         String listKey = RedisKeyUtil.goodsAll(pageModel.getCurrentNo(), pageModel.getPageSize());
 
@@ -97,28 +83,9 @@ public class GoodsService {
     public PageModel<Goods> selectByKeyWordPaged(String keyWord, PageModel<Goods> pageModel) {
         String listKey = RedisKeyUtil.goodsByKeyWord(keyWord, pageModel.getCurrentNo(), pageModel.getPageSize());
 
-        if (redisTemplate.hasKey(listKey)) {
-            if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
-                redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
-            }
-            int newVersion = (int) redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION);
-            int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
-            //判断缓存版本是否改变
-            if (newVersion == oldVersion) {
-                //从Redis缓存中获取列表中所有商品的键
-                List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
-                if (goodsKeyList == null || goodsKeyList.size() == 0) {
-                    return selectByKeyWordFromDB(keyWord, pageModel);
-                }
+        PageModel<Goods> searchResult = accessCache(listKey, pageModel);
 
-                int count = (int) redisTemplate.opsForList().index(listKey, -2);
-                return getFromRedis(count, goodsKeyList, pageModel);
-            }
-
-            return selectByKeyWordFromDB(keyWord, pageModel);
-        }
-
-        return selectByKeyWordFromDB(keyWord, pageModel);
+        return searchResult == null ? selectByKeyWordFromDB(keyWord, pageModel) : pageModel;
     }
 
     /**
@@ -147,28 +114,9 @@ public class GoodsService {
     public PageModel<Goods> selectByKeyWord(String keyWord, String sort, PageModel<Goods> pageModel) {
         String listKey = RedisKeyUtil.keyWordOfSort(keyWord, sort, pageModel.getCurrentNo(), pageModel.getPageSize());
 
-        if (redisTemplate.hasKey(listKey)) {
-            if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
-                redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
-            }
-            int newVersion = (int) redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION);
-            int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
-            //判断缓存版本是否改变
-            if (newVersion == oldVersion) {
-                //从Redis缓存中获取列表中所有商品的键
-                List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
-                if (goodsKeyList == null || goodsKeyList.size() == 0) {
-                    return selectByKeyWordForUser(keyWord, sort, pageModel);
-                }
+        PageModel<Goods> searchResult = accessCache(listKey, pageModel);
 
-                int count = (int) redisTemplate.opsForList().index(listKey, -2);
-                return getFromRedis(count, goodsKeyList, pageModel);
-            }
-
-            return selectByKeyWordForUser(keyWord, sort, pageModel);
-        }
-
-        return selectByKeyWordForUser(keyWord, sort, pageModel);
+        return searchResult == null ? selectByKeyWordForUser(keyWord, sort, pageModel) : pageModel;
     }
 
 
@@ -206,28 +154,33 @@ public class GoodsService {
     public PageModel<Goods> selectByCategoryId(String categoryId, String sort, PageModel<Goods> pageModel) {
         String listKey = RedisKeyUtil.categoryOfSort(categoryId, sort, pageModel.getCurrentNo(), pageModel.getPageSize());
 
+        PageModel<Goods> searchResult = accessCache(listKey, pageModel);
+
+        return searchResult == null ? selectByCategoryIdForUser(categoryId, sort, pageModel) : pageModel;
+    }
+
+    /**
+     * 访问缓存
+     *
+     * @param listKey
+     * @param pageModel
+     * @return
+     */
+    public PageModel<Goods> accessCache(String listKey, PageModel<Goods> pageModel) {
         if (redisTemplate.hasKey(listKey)) {
-            if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
-                redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
-            }
             int newVersion = (int) redisTemplate.opsForValue().get(RedisKeyUtil.GOODS_VERSION);
             int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
             //判断缓存版本是否改变
             if (newVersion == oldVersion) {
-                //从Redis缓存中获取列表中所有商品的键
                 List<String> goodsKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
-                if (goodsKeyList == null || goodsKeyList.size() == 0) {
-                    return selectByCategoryIdForUser(categoryId, sort, pageModel);
+                if (goodsKeyList != null || goodsKeyList.size() != 0) {
+                    int count = (int) redisTemplate.opsForList().index(listKey, -2);
+                    return getFromRedis(count, goodsKeyList, pageModel);
                 }
-
-                int count = (int) redisTemplate.opsForList().index(listKey, -2);
-                return getFromRedis(count, goodsKeyList, pageModel);
             }
-
-            return selectByCategoryIdForUser(categoryId, sort, pageModel);
         }
 
-        return selectByCategoryIdForUser(categoryId, sort, pageModel);
+        return null;
     }
 
     /**
@@ -362,6 +315,10 @@ public class GoodsService {
             return seckillGoodsMapper.insert(goods) != 0 ? Result.success("秒杀商品添加成功", goods) : Result.error("秒杀商品添加失败");
         }
 
+        //如果不存在缓存版本号则设置缓存版本
+        if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+            redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+        }
         redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
         return goodsMapper.insert(goods) != 0 ? Result.success("商品添加成功", goods) : Result.error("商品添加失败");
@@ -582,6 +539,10 @@ public class GoodsService {
         //缓存失效
         deleteGoodsCache(goodsId);
 
+        //如果不存在缓存版本号则设置缓存版本
+        if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+            redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+        }
         redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
         return success;
@@ -599,6 +560,10 @@ public class GoodsService {
         //缓存失效
         deleteGoodsCache(goodsId);
 
+        //如果不存在缓存版本号则设置缓存版本
+        if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+            redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+        }
         redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
         return success;
@@ -616,6 +581,10 @@ public class GoodsService {
         //缓存失效
         deleteGoodsCache(goodsId);
 
+        //如果不存在缓存版本号则设置缓存版本
+        if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
+            redisTemplate.opsForValue().set(RedisKeyUtil.GOODS_VERSION, 1);
+        }
         redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
         return success;

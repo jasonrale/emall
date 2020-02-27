@@ -43,16 +43,19 @@ public class OrderService {
      */
     public PageModel<OrderVo> queryCurrentUser(String userId, PageModel<OrderVo> pageModel) {
         String listKey = RedisKeyUtil.orderVoByUserId(userId, pageModel.getCurrentNo(), pageModel.getPageSize());
+        String versionKey = RedisKeyUtil.versionByUserId(userId);
 
         if (redisTemplate.hasKey(listKey)) {
-            //从Redis缓存中获取列表中所有订单的键（排除订单总数量）
-            List<String> orderVoKeyList = redisTemplate.opsForList().range(listKey, 0, -2);
-            if (orderVoKeyList == null || orderVoKeyList.size() == 0) {
-                return queryCurrentUserFromDB(userId, pageModel);
+            int newVersion = (int) redisTemplate.opsForValue().get(versionKey);
+            int oldVersion = (int) redisTemplate.opsForList().index(listKey, -1);
+            //判断缓存版本是否改变
+            if (newVersion == oldVersion) {
+                List<String> orderVoKeyList = redisTemplate.opsForList().range(listKey, 0, -3);
+                if (orderVoKeyList != null && orderVoKeyList.size() != 0) {
+                    int count = (int) redisTemplate.opsForList().index(listKey, -2);
+                    return getFromRedis(count, orderVoKeyList, pageModel);
+                }
             }
-
-            int count = (int) redisTemplate.opsForList().index(listKey, -1);
-            return getFromRedis(count, orderVoKeyList, pageModel);
         }
 
         return queryCurrentUserFromDB(userId, pageModel);
@@ -66,15 +69,13 @@ public class OrderService {
      * @return
      */
     private PageModel<OrderVo> queryCurrentUserFromDB(String userId, PageModel<OrderVo> pageModel) {
-        String listKey = RedisKeyUtil.orderVoByUserId(userId, pageModel.getCurrentNo(), pageModel.getPageSize());
-
         long limit = pageModel.getPageSize();
         long offset = (pageModel.getCurrentNo() - 1) * limit;
 
         int count = orderMapper.countByUserId(userId);
         List<OrderVo> orderVoList = orderMapper.queryCurrentUser(userId, limit, offset);
 
-        return pageToRedis(listKey, orderVoList, count, pageModel);
+        return pageToRedis(userId, orderVoList, count, pageModel);
     }
 
     /**
@@ -109,13 +110,15 @@ public class OrderService {
     /**
      * 分页数据存入缓存
      *
-     * @param listKey
+     * @param userId
      * @param orderVoList
      * @param count
      * @param pageModel
      * @return
      */
-    private PageModel<OrderVo> pageToRedis(String listKey, List<OrderVo> orderVoList, int count, PageModel<OrderVo> pageModel) {
+    private PageModel<OrderVo> pageToRedis(String userId, List<OrderVo> orderVoList, int count, PageModel<OrderVo> pageModel) {
+        String listKey = RedisKeyUtil.orderVoByUserId(userId, pageModel.getCurrentNo(), pageModel.getPageSize());
+
         //如果存在该商品列表缓存，则清空，重新缓存
         if (redisTemplate.hasKey(listKey)) {
             redisTemplate.delete(listKey);
@@ -130,6 +133,14 @@ public class OrderService {
         }
         //将商品总数量追加到list末尾
         redisTemplate.opsForList().rightPush(listKey, count);
+
+        //如果不存在缓存版本号则设置缓存版本
+        String versionKey = RedisKeyUtil.versionByUserId(userId);
+        if (!redisTemplate.hasKey(versionKey)) {
+            redisTemplate.opsForValue().set(versionKey, 1);
+        }
+        //将缓存版本追加到list末尾
+        redisTemplate.opsForList().rightPush(listKey, redisTemplate.opsForValue().get(versionKey));
 
         redisTemplate.expire(listKey, 1800, TimeUnit.SECONDS);
 
@@ -152,6 +163,7 @@ public class OrderService {
         if (redisTemplate.hasKey(orderVoKey)) {
             return (OrderVo) redisTemplate.opsForValue().get(orderVoKey);
         }
+
         return orderMapper.queryByOrderId(orderId);
     }
 
@@ -161,7 +173,14 @@ public class OrderService {
      * @return
      */
     public boolean insert(Order order) {
-        return orderMapper.insert(order) != 0;
+        boolean success = orderMapper.insert(order) != 0;
+
+        String versionKey = RedisKeyUtil.versionByUserId(order.getUserId());
+        if (success) {
+            redisTemplate.opsForValue().increment(versionKey);
+        }
+
+        return success;
     }
 
     /**
@@ -182,41 +201,6 @@ public class OrderService {
     public boolean orderIdValid(String userId, String orderId) {
         Order order;
         return !StringUtils.isEmpty(orderId) && (order = selectByOrderId(orderId)) != null && userId.equals(order.getUserId());
-    }
-
-    /**
-     * 取消订单，恢复库存
-     * @param orderId
-     * @return
-     */
-    @Transactional
-    public boolean orderCancel(String orderId) {
-        List<OrderItem> orderItemList = orderItemService.selectByOrderId(orderId);
-
-        for (OrderItem orderItem : orderItemList) {
-            goodsService.recoverStock(orderItem.getGoodsId(), orderItem.getGoodsCount());
-        }
-
-        boolean success = orderMapper.orderCancel(orderId) != 0;
-
-        //订单管理业务缓存失效
-        deleteOrderVoCache(orderId);
-
-        return success;
-    }
-
-    /**
-     * 订单支付,修改订单状态
-     * @param orderId
-     * @return
-     */
-    public boolean pay(String orderId) {
-        boolean success = orderMapper.pay(orderId, new Date()) != 0;
-
-        //订单管理业务缓存失效
-        deleteOrderVoCache(orderId);
-
-        return success;
     }
 
     /**
@@ -268,6 +252,21 @@ public class OrderService {
     }
 
     /**
+     * 订单支付,修改订单状态
+     *
+     * @param orderId
+     * @return
+     */
+    public boolean pay(String orderId) {
+        boolean success = orderMapper.pay(orderId, new Date()) != 0;
+
+        //订单业务缓存失效
+        deleteOrderVoCache(orderId);
+
+        return success;
+    }
+
+    /**
      * 订单发货，修改订单状态
      * @param orderId
      * @return
@@ -275,7 +274,7 @@ public class OrderService {
     public boolean send(String orderId) {
         boolean success = orderMapper.send(orderId, new Date()) != 0;
 
-        //订单管理业务缓存失效
+        //订单业务缓存失效
         deleteOrderVoCache(orderId);
 
         return success;
@@ -289,14 +288,36 @@ public class OrderService {
     public boolean received(String orderId) {
         boolean success = orderMapper.received(orderId, new Date()) != 0;
 
-        //订单管理业务缓存失效
+        //订单业务缓存失效
         deleteOrderVoCache(orderId);
 
         return success;
     }
 
     /**
-     * 根据订单id删除订单管理业务缓存
+     * 取消订单，恢复库存
+     *
+     * @param orderId
+     * @return
+     */
+    @Transactional
+    public boolean cancel(String orderId) {
+        List<OrderItem> orderItemList = orderItemService.selectByOrderId(orderId);
+
+        for (OrderItem orderItem : orderItemList) {
+            goodsService.recoverStock(orderItem.getGoodsId(), orderItem.getGoodsCount());
+        }
+
+        boolean success = orderMapper.cancel(orderId) != 0;
+
+        //订单业务缓存失效
+        deleteOrderVoCache(orderId);
+
+        return success;
+    }
+
+    /**
+     * 根据订单id删除订单业务缓存
      *
      * @param orderId
      */

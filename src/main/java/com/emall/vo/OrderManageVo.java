@@ -31,7 +31,5 @@ public class OrderManageVo {
 
     private Date orderEndTime;              //订单完成时间
 
-    private String shippingId;              //订单收货地址
-
     private Shipping shipping;              //订单收货地址
 }
