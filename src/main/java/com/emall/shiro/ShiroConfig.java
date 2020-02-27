@@ -31,7 +31,6 @@ public class ShiroConfig {
 
     /**
      * Shiro生命周期处理器
-     *
      * @return
      */
     @Bean

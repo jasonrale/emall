@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 
 /**
- *   购物车明细实体类
+ * 购物车明细实体类
  */
 @Data
 @NoArgsConstructor

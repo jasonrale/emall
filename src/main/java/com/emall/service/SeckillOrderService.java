@@ -12,6 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+/**
+ * 秒杀订单业务层
+ */
 @Service
 public class SeckillOrderService {
     @Resource
@@ -25,7 +28,6 @@ public class SeckillOrderService {
 
     /**
      * 缓存秒杀订单
-     *
      * @param user
      * @param seckillGoods
      * @return
@@ -46,7 +48,6 @@ public class SeckillOrderService {
 
     /**
      * 生成完整秒杀订单
-     *
      * @param seckillOrder
      * @return
      */
@@ -56,7 +57,6 @@ public class SeckillOrderService {
 
     /**
      * 从缓存获取秒杀订单
-     *
      * @param userId
      * @param seckillGoodsId
      * @return
@@ -67,7 +67,6 @@ public class SeckillOrderService {
 
     /**
      * 从数据库获取秒杀订单
-     *
      * @param seckillOrderId
      * @return
      */

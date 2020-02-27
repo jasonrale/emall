@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 /**
- *   秒杀订单实体类。
+ * 秒杀订单实体类。
  */
 @Data
 @NoArgsConstructor

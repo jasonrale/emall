@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 商品类别数据接口层
+ */
 public interface CategoryMapper {
     Category selectByCategoryId(@Param("categoryId") String categoryId);
 

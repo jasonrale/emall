@@ -22,6 +22,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 订单控制层
+ */
 @Controller
 @RequestMapping("/order")
 public class OrderController {
@@ -50,7 +53,6 @@ public class OrderController {
 
     /**
      * 分页查询当前用户所有订单列表（包含订单明细）
-     *
      * @param pageModel
      * @return
      */
@@ -65,7 +67,6 @@ public class OrderController {
 
     /**
      * 获取订单信息
-     *
      * @param orderId
      * @return
      */
@@ -73,24 +74,17 @@ public class OrderController {
     @ResponseBody
     public Result<OrderVo> selectByOrderId(@PathVariable("orderId") String orderId) {
         logger.info("获取订单信息，订单号=" + orderId);
-        Order order = orderService.selectByOrderId(orderId);
-        if (order == null) {
-            return Result.error("未查询到该订单");
+        User user = loginSession.getCustomerSession();
+
+        if (!orderService.orderIdValid(user.getUserId(), orderId)) {
+            return Result.error("请求非法");
         }
 
-        List<OrderItem> orderItemList = orderItemService.selectByOrderId(orderId);
-
-        String shippingId = order.getShippingId();
-        Shipping shipping = shippingService.selectByShippingId(shippingId);
-        OrderVo orderVo = new OrderVo(order.getOrderId(), order.getUserId(), order.getOrderPayment(), order.getOrderStatus(), order.getOrderCreateTime(),
-                order.getOrderPaymentTime(), order.getOrderSendTime(), order.getOrderEndTime(), order.getShippingId(), shipping, orderItemList);
-
-        return Result.success("查询订单详情成功", orderVo);
+        return Result.success("查询订单详情成功", orderService.queryByOrderId(orderId));
     }
 
     /**
      * 提交订单(立即购买)
-     *
      * @param orderSubmitVo
      * @return
      */
@@ -132,7 +126,6 @@ public class OrderController {
 
     /**
      * 提交订单(购物车)
-     *
      * @param cartOrderSubmitVo
      * @return
      */
@@ -199,7 +192,6 @@ public class OrderController {
 
     /**
      * 取消订单，恢复库存
-     *
      * @param orderId
      * @return
      */
@@ -218,7 +210,6 @@ public class OrderController {
 
     /**
      * 订单支付,修改订单状态
-     *
      * @param orderId
      * @return
      */
@@ -238,20 +229,19 @@ public class OrderController {
 
     /**
      * 后台管理--根据查询类型查询所有订单列表
-     *
      * @param pageModel
      * @return
      */
     @GetMapping("/{listType}/{param}")
     @ResponseBody
     public Result queryAllByUserId(@Valid PageModel<OrderManageVo> pageModel, @PathVariable("listType") String listType, @PathVariable("param") String param) {
-        logger.info("查询订单--By " + listType + "--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
+        logger.info("查询订单--By " + listType + ":" + param + "--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
 
         switch (listType) {
             case "all":
                 return Result.success("分页查询所有订单", orderService.queryAll(pageModel));
             case "orderId":
-                return Result.success("根据订单id查询订单", orderService.queryByOrderId(param));
+                return Result.success("根据订单id查询订单", orderService.queryManageByOrderId(param));
             case "userId":
                 return Result.success("根据用户id分页查询订单", orderService.queryAllByUserId(param, pageModel));
             default:
@@ -261,7 +251,6 @@ public class OrderController {
 
     /**
      * 订单发货,修改订单状态
-     *
      * @param orderId
      * @return
      */
@@ -274,7 +263,6 @@ public class OrderController {
 
     /**
      * 确认收货,修改订单状态
-     *
      * @param orderId
      * @return
      */

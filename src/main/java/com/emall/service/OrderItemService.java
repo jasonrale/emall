@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 订单明细业务层
+ */
 @Service
 public class OrderItemService {
     @Resource
@@ -14,7 +17,6 @@ public class OrderItemService {
 
     /**
      * 生成订单明细
-     *
      * @param orderItem
      * @return
      */
@@ -24,7 +26,6 @@ public class OrderItemService {
 
     /**
      * 根据订单id查询订单明细列表
-     *
      * @param orderId
      * @return
      */

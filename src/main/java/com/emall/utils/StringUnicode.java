@@ -6,7 +6,6 @@ package com.emall.utils;
 public class StringUnicode {
     /**
      * 字符串转unicode
-     *
      * @param str
      * @return
      */
@@ -21,7 +20,6 @@ public class StringUnicode {
 
     /**
      * unicode转字符串
-     *
      * @param unicode
      * @return
      */

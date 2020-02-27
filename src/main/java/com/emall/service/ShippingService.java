@@ -8,6 +8,9 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.util.List;
 
+/**
+ * 收货地址业务层
+ */
 @Service
 public class ShippingService {
     @Resource
@@ -15,7 +18,6 @@ public class ShippingService {
 
     /**
      * 根据用户id查询所有收货地址
-     *
      * @param userId
      * @return
      */
@@ -52,7 +54,6 @@ public class ShippingService {
 
     /**
      * 根据用户id查询收货地址数量
-     *
      * @param userId
      * @return
      */
@@ -62,7 +63,6 @@ public class ShippingService {
 
     /**
      * 删除收货地址信息
-     *
      * @param shippingId
      * @return
      */
@@ -72,7 +72,6 @@ public class ShippingService {
 
     /**
      * 收货地址id验证
-     *
      * @param userId
      * @param shippingId
      */

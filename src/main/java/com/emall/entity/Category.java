@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import javax.validation.constraints.NotEmpty;
 
 /**
- *   商品类别实体类
+ * 商品类别实体类
  */
 @Data
 @NoArgsConstructor

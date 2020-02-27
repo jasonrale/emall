@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 收货地址数据接口层
+ */
 public interface ShippingMapper {
     Shipping selectByShippingId(@Param("shippingId") String shippingId);
 

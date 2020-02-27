@@ -20,6 +20,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+/**
+ * 秒杀业务层
+ */
 @Service
 public class SeckillService {
     @Resource
@@ -39,7 +42,6 @@ public class SeckillService {
 
     /**
      * 创建验证码
-     *
      * @param user
      * @param seckillGoodsId
      * @return
@@ -83,7 +85,6 @@ public class SeckillService {
 
     /**
      * 验证码计算结果验证
-     *
      * @param user
      * @param seckillGoodsId
      * @param captchaResult
@@ -110,7 +111,6 @@ public class SeckillService {
 
     /**
      * 计算数学表达式结果
-     *
      * @param exp
      * @return
      */
@@ -127,7 +127,6 @@ public class SeckillService {
 
     /**
      * 生成加减乘验证码
-     *
      * @param random
      * @return
      */
@@ -142,7 +141,6 @@ public class SeckillService {
 
     /**
      * 创建秒杀路径
-     *
      * @param user
      * @param seckillGoodsId
      * @return
@@ -160,7 +158,6 @@ public class SeckillService {
 
     /**
      * 秒杀接口验证
-     *
      * @param user
      * @param seckillGoodsId
      * @param path
@@ -176,7 +173,6 @@ public class SeckillService {
 
     /**
      * 秒杀
-     *
      * @param user
      * @param seckillGoods
      * @return
@@ -196,7 +192,6 @@ public class SeckillService {
 
     /**
      * 设置库存不足标记
-     *
      * @param seckillGoodsId
      */
     private void setStockOver(String seckillGoodsId) {
@@ -205,7 +200,6 @@ public class SeckillService {
 
     /**
      * 获取秒杀结果
-     *
      * @param userId
      * @param seckillGoodsId
      * @return
@@ -226,7 +220,6 @@ public class SeckillService {
 
     /**
      * 获取库存是否不足标记
-     *
      * @param seckillGoodsId
      * @return
      */
@@ -236,7 +229,6 @@ public class SeckillService {
 
     /**
      * 预减库存
-     *
      * @param seckillGoodsId
      * @return
      */

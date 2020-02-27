@@ -16,6 +16,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * 购物车明细控制层
+ */
 @Controller
 @RequestMapping("/cartItem")
 public class CartItemController {
@@ -30,7 +33,6 @@ public class CartItemController {
 
     /**
      * 根据用户id获取所有购物车明细
-     *
      * @return
      */
     @GetMapping("")
@@ -45,7 +47,6 @@ public class CartItemController {
 
     /**
      * 加入购物车
-     *
      * @param cartItem
      * @return
      */
@@ -68,7 +69,6 @@ public class CartItemController {
 
     /**
      * 删除单个购物车明细
-     *
      * @param cartItemId
      * @return
      */
@@ -84,7 +84,6 @@ public class CartItemController {
 
     /**
      * 删除所选中的购物车明细
-     *
      * @param cartItemIdList
      * @return
      */
@@ -100,7 +99,6 @@ public class CartItemController {
 
     /**
      * 根据用户id获取购物车明细数量
-     *
      * @return
      */
     @GetMapping("/count")
@@ -113,7 +111,6 @@ public class CartItemController {
 
     /**
      * 订单确认
-     *
      * @return
      */
     @PostMapping("/orderConfirm")

@@ -21,6 +21,9 @@ import java.awt.image.BufferedImage;
 import java.io.OutputStream;
 import java.util.HashMap;
 
+/**
+ * 秒杀控制层
+ */
 @Controller
 @RequestMapping("/seckill")
 public class SeckillController {
@@ -43,7 +46,6 @@ public class SeckillController {
 
     /**
      * 生成秒杀验证码
-     *
      * @param response
      * @param seckillGoodsId
      * @return
@@ -68,7 +70,6 @@ public class SeckillController {
 
     /**
      * 生成秒杀路径参数
-     *
      * @param seckillGoodsId
      * @param captchaResult
      * @return
@@ -91,7 +92,6 @@ public class SeckillController {
 
     /**
      * 验证path
-     *
      * @param seckillGoodsId
      * @param path
      * @return
@@ -111,7 +111,6 @@ public class SeckillController {
 
     /**
      * 尝试秒杀
-     *
      * @param seckillGoodsId
      * @param path
      * @return
@@ -157,7 +156,6 @@ public class SeckillController {
 
     /**
      * 获取秒杀结果
-     *
      * @param seckillGoodsId
      * @return
      */

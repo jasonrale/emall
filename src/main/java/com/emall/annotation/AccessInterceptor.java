@@ -55,6 +55,12 @@ public class AccessInterceptor extends HandlerInterceptorAdapter {
         return true;
     }
 
+    /**
+     * 向前端响应
+     *
+     * @param response
+     * @param msg
+     */
     private void render(HttpServletResponse response, String msg) {
         response.setContentType("application/json;charset=UTF-8");
         OutputStream out = null;

@@ -24,11 +24,11 @@ function orderManageDetail(orderId) {
                 $("#shippingName").html(shipping.shippingName);
                 $("#shippingMobileNumber").html(shipping.shippingMobileNumber);
                 $("#shippingAddress").html(shipping.shippingAddress);
-                if (orderStatus === -1) {
+                if (orderStatus === 4) {
                     $("#orderStatus").html("已取消");
-                } else if (orderStatus === 0) {
-                    $("#orderStatus").html("未支付");
                 } else if (orderStatus === 1) {
+                    $("#orderStatus").html("未支付");
+                } else if (orderStatus === 0) {
                     $("#orderStatus").html("待发货");
                 } else if (orderStatus === 2) {
                     $("#orderStatus").html("待收货");

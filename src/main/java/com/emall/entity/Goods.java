@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 /**
- *   商品实体类
+ * 商品实体类
  */
 @Data
 @NoArgsConstructor

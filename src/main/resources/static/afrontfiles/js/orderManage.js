@@ -51,8 +51,8 @@ function queryAllByType(currentNo, pageSize, listType, param) {
                 if (orderManageVo !== null) {
                     var orderId = orderManageVo.orderId;
 
-                    var status = orderManageVo.orderStatus === -1 ? "已取消" : orderManageVo.orderStatus === 0 ? "未支付" :
-                        orderManageVo.orderStatus === 1 ? "待发货" : orderManageVo.orderStatus === 2 ? "待收货" : "已完成";
+                    var status = orderManageVo.orderStatus === 4 ? "已取消" : orderManageVo.orderStatus === 1 ? "未支付" :
+                        orderManageVo.orderStatus === 0 ? "待发货" : orderManageVo.orderStatus === 2 ? "待收货" : "已完成";
                     var shipping = orderManageVo.shipping;
 
                     var element = "<tr>" +
@@ -66,8 +66,8 @@ function queryAllByType(currentNo, pageSize, listType, param) {
                         "<td>" + new Date(orderManageVo.orderCreateTime).format("yyyy-MM-dd hh:mm:ss") + "</td>" +
                         '<td><a class="opear" href="orderManageDetail.html?orderId=' + orderId + '">查看</a>';
 
-                    if (orderManageVo.orderStatus === 1) {
-                        element += '<a class="opear" id="send" onclick="send(' + "'" + orderId + "'" + ')">发货</a></td></tr>';
+                    if (orderManageVo.orderStatus === 0) {
+                        element += '<a class="opear" id="send' + orderId + '" onclick="send(' + "'" + orderId + "'" + ')">发货</a></td></tr>';
                     } else {
                         element += "</tr>"
                     }
@@ -88,8 +88,8 @@ function queryAllByType(currentNo, pageSize, listType, param) {
 
                         var orderId = orderManageVo.orderId;
 
-                        var status = orderManageVo.orderStatus === -1 ? "已取消" : orderManageVo.orderStatus === 0 ? "未支付" :
-                            orderManageVo.orderStatus === 1 ? "待发货" : orderManageVo.orderStatus === 2 ? "待收货" : "已完成";
+                        var status = orderManageVo.orderStatus === 4 ? "已取消" : orderManageVo.orderStatus === 1 ? "未支付" :
+                            orderManageVo.orderStatus === 0 ? "待发货" : orderManageVo.orderStatus === 2 ? "待收货" : "已完成";
                         var shipping = orderManageVo.shipping;
 
                         element += "<tr>" +
@@ -103,8 +103,8 @@ function queryAllByType(currentNo, pageSize, listType, param) {
                             "<td>" + new Date(orderManageVo.orderCreateTime).format("yyyy-MM-dd hh:mm:ss") + "</td>" +
                             '<td><a class="opear" href="orderManageDetail.html?orderId=' + orderId + '">查看</a>';
 
-                        if (orderManageVo.orderStatus === 1) {
-                            element += '<a class="opear" id="send" onclick="send(' + "'" + orderId + "'" + ')">发货</a></td></tr>';
+                        if (orderManageVo.orderStatus === 0) {
+                            element += '<a class="opear" id="send' + orderId + '" onclick="send(' + "'" + orderId + "'" + ')">发货</a></td></tr>';
                         } else {
                             element += "</tr>"
                         }
@@ -191,7 +191,7 @@ function send(orderId) {
                     if (data.status === true) {
                         layer.msg(data.msg, {time: 1000}, function () {
                             layer.close(index);
-                            $("#send").css("display", "none");
+                            $("#send" + orderId).css("display", "none");
                             $("#" + orderId).replaceWith('<td id="' + orderId + '">' + "待收货" + "</td>");
                         });
                     } else {

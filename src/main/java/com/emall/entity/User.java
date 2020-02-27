@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 /**
- *   用户实体类
+ * 用户实体类
  */
 @Data
 @NoArgsConstructor

@@ -8,12 +8,17 @@ import org.apache.ibatis.annotations.Param;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * 订单数据接口层
+ */
 public interface OrderMapper {
     int count();
 
     int countByUserId(@Param("userId") String userId);
 
     List<OrderVo> queryCurrentUser(@Param("userId") String userId, @Param("limit") long limit, @Param("offset") long offset);
+
+    OrderVo queryByOrderId(@Param("orderId") String orderId);
 
     int insert(Order order);
 
@@ -27,7 +32,7 @@ public interface OrderMapper {
 
     List<OrderManageVo> queryAllByUserId(@Param("userId") String userId, @Param("limit") long limit, @Param("offset") long offset);
 
-    OrderManageVo queryByOrderId(@Param("orderId") String orderId);
+    OrderManageVo queryManageByOrderId(@Param("orderId") String orderId);
 
     int send(@Param("orderId") String orderId, Date currentDate);
 

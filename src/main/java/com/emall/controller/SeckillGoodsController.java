@@ -15,6 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import java.util.Date;
 
+/**
+ * 秒杀商品控制层
+ */
 @Controller
 @RequestMapping("/seckillGoods")
 public class SeckillGoodsController {
@@ -148,14 +151,14 @@ public class SeckillGoodsController {
     }
 
     /**
-     * 修改秒杀商品
+     * 修改秒杀商品信息
      *
      * @return
      */
     @PostMapping(value = "")
     @ResponseBody
     public Result<SeckillGoods> update(@RequestParam("seckillGoods") String goodsJson, @RequestParam(value = "imageFile", required = false) MultipartFile imageFile, @RequestParam(value = "detailFile", required = false) MultipartFile detailFile) {
-        logger.info("修改商品");
+        logger.info("修改秒杀商品信息");
 
         Result<SeckillGoods> result = seckillGoodsValid(goodsJson);
         if (!result.isStatus()) {

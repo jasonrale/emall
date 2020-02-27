@@ -16,15 +16,15 @@ import java.util.Date;
 @AllArgsConstructor
 @Repository
 public class Order {
-    public static Integer CANCELED = -1;    //已完成
+    public static Integer TOBESHIPPED = 0;  //待发货
 
-    public static Integer UNPAID = 0;       //未支付
-
-    public static Integer TOBESHIPPED = 1;  //待发货
+    public static Integer UNPAID = 1;       //未支付
 
     public static Integer TOBERECEVIED = 2; //待收货
 
     public static Integer COMPLETED = 3;    //已完成
+
+    public static Integer CANCELED = 4;    //已取消
 
     private String orderId;                 //订单id
 

@@ -25,6 +25,9 @@ import javax.annotation.Resource;
 import javax.servlet.ServletRequest;
 import javax.validation.Valid;
 
+/**
+ * 用户控制层
+ */
 @Controller
 @RequestMapping(value = "/user")
 public class UserController {

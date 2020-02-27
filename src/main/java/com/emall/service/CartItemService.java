@@ -9,6 +9,9 @@ import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 购物车明细业务层
+ */
 @Service
 public class CartItemService {
     @Resource
@@ -16,7 +19,6 @@ public class CartItemService {
 
     /**
      * 根据用户id获取所有购物车明细
-     *
      * @param userId
      * @return
      */
@@ -26,7 +28,6 @@ public class CartItemService {
 
     /**
      * 加入购物车
-     *
      * @param cartItem
      * @return
      */
@@ -36,7 +37,6 @@ public class CartItemService {
 
     /**
      * 根据用户id获取购物车明细数量
-     *
      * @param userId
      * @return
      */
@@ -46,7 +46,6 @@ public class CartItemService {
 
     /**
      * 根据购物车明细id删除
-     *
      * @param cartItemId
      * @return
      */
@@ -56,7 +55,6 @@ public class CartItemService {
 
     /**
      * 批量删除选中购物车明细
-     *
      * @param cartItemIdList
      * @return
      */
@@ -75,7 +73,6 @@ public class CartItemService {
 
     /**
      * 根据购物车明细id列表查询购物车明细
-     *
      * @param cartItemIdList
      * @return
      */

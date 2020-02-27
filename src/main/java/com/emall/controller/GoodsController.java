@@ -19,6 +19,9 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * 商品控制层
+ */
 @Controller
 @RequestMapping("/goods")
 public class GoodsController {
@@ -32,7 +35,6 @@ public class GoodsController {
 
     /**
      * 添加商品
-     *
      * @return
      */
     @PutMapping(value = "")
@@ -51,7 +53,6 @@ public class GoodsController {
 
     /**
      * 删除商品
-     *
      * @return
      */
     @DeleteMapping(value = "")
@@ -64,7 +65,6 @@ public class GoodsController {
 
     /**
      * 修改商品
-     *
      * @return
      */
     @PostMapping(value = "")
@@ -83,7 +83,6 @@ public class GoodsController {
 
     /**
      * 商品参数验证
-     *
      * @param goodsJson
      * @return
      */
@@ -110,7 +109,6 @@ public class GoodsController {
 
     /**
      * 根据商品id查询商品
-     *
      * @return
      */
     @GetMapping(value = "{goodsId}/goodsId")
@@ -123,7 +121,6 @@ public class GoodsController {
 
     /**
      * 后台管理--分页查询商品
-     *
      * @return
      */
     @GetMapping(value = "/admin/{listType}/{param}")
@@ -151,7 +148,6 @@ public class GoodsController {
 
     /**
      * 用户端根据关键字分页查询商品
-     *
      * @return
      */
     @GetMapping(value = "/{keyWord}/keyWord/{sort}/sort")
@@ -176,7 +172,6 @@ public class GoodsController {
 
     /**
      * 下架商品
-     *
      * @param goodsId
      * @return
      */

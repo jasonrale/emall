@@ -19,6 +19,9 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 秒杀商品业务层
+ */
 @Service
 public class SeckillGoodsService {
     @Resource
@@ -35,7 +38,6 @@ public class SeckillGoodsService {
 
     /**
      * 管理员分页查询全部秒杀商品
-     *
      * @param pageModel
      * @return
      */
@@ -53,10 +55,8 @@ public class SeckillGoodsService {
         return pageModel;
     }
 
-
     /**
      * 管理员根据秒杀商品关键字分页查询
-     *
      * @param keyWord
      * @param pageModel
      * @return
@@ -78,7 +78,6 @@ public class SeckillGoodsService {
 
     /**
      * 根据秒杀商品id从缓存查询商品
-     *
      * @param seckillGoodsId
      * @return
      */
@@ -169,7 +168,6 @@ public class SeckillGoodsService {
 
     /**
      * 下架秒杀商品
-     *
      * @param seckillGoodsId
      * @return
      */
@@ -197,7 +195,6 @@ public class SeckillGoodsService {
 
     /**
      * 用户端查询所有秒杀商品
-     *
      * @return
      */
     public List<SeckillGoods> queryAll() {
@@ -216,7 +213,6 @@ public class SeckillGoodsService {
 
     /**
      * 从缓存查询所有秒杀商品
-     *
      * @return
      */
     public List<SeckillGoods> getFromRedis(List<String> seckillGoodsKeyList) {
@@ -248,7 +244,6 @@ public class SeckillGoodsService {
 
     /**
      * 秒杀商品商品修改
-     *
      * @param seckillGoods
      * @param imageFile
      * @param detailFile

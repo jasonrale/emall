@@ -37,8 +37,8 @@ function orderList(currentNo, pageSize) {
                     var orderVo = orderVoList[i];
 
                     var orderId = orderVo.orderId;
-                    var status = orderVo.orderStatus === -1 ? "已取消" : orderVo.orderStatus === 0 ? "未支付" :
-                        orderVo.orderStatus === 1 ? "待发货" : orderVo.orderStatus === 2 ? "待收货" : "已完成";
+                    var status = orderVo.orderStatus === 4 ? "已取消" : orderVo.orderStatus === 1 ? "未支付" :
+                        orderVo.orderStatus === 0 ? "待发货" : orderVo.orderStatus === 2 ? "待收货" : "已完成";
 
                     var shipping = orderVo.shipping;
 

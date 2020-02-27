@@ -26,6 +26,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 商品业务层
+ */
 @Service
 public class GoodsService {
     @Resource
@@ -139,7 +142,6 @@ public class GoodsService {
 
     /**
      * 用户端根据关键字查询商品列表（已上架）
-     *
      * @param keyWord
      * @return
      */
@@ -173,7 +175,6 @@ public class GoodsService {
 
     /**
      * 用户端根据关键字在数据库中查询商品列表并缓存到Redis
-     *
      * @param keyWord
      * @param pageModel
      * @return
@@ -199,7 +200,6 @@ public class GoodsService {
 
     /**
      * 用户端根据商品类别id分页查询商品列表
-     *
      * @param categoryId
      * @param pageModel
      * @return
@@ -233,7 +233,6 @@ public class GoodsService {
 
     /**
      * 用户端根据商品类别从数据库中查询并缓存到redis
-     *
      * @param categoryId
      * @param sort
      * @param pageModel
@@ -361,7 +360,7 @@ public class GoodsService {
 
         if (goods.getGoodsActivity() == 1) {
             //将Goods对应的字段保存到SeckillGoods
-            return seckillGoodsMapper.insert(goods) != 0 ? Result.success("商品添加成功", goods) : Result.error("商品添加失败");
+            return seckillGoodsMapper.insert(goods) != 0 ? Result.success("秒杀商品添加成功", goods) : Result.error("秒杀商品添加失败");
         }
 
         redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
@@ -377,9 +376,14 @@ public class GoodsService {
      */
     @Transactional
     public boolean deleteByGoodsId(String goodsId) {
+        boolean success = goodsMapper.deleteByGoodsId(goodsId) != 0;
+
+        //缓存失效
+        deleteGoodsCache(goodsId);
+
         redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
-        return goodsMapper.deleteByGoodsId(goodsId) != 0;
+        return success;
     }
 
     /**
@@ -393,15 +397,9 @@ public class GoodsService {
      */
     @Transactional
     public Result<Goods> update(Goods goods, MultipartFile imageFile, MultipartFile detailFile, String path) {
-        String goodsKey = RedisKeyUtil.goodsByGoodsId(goods);
-
-        if (redisTemplate.hasKey(goodsKey)) {
-            redisTemplate.delete(goodsKey);
-        }
-        redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
-
         if (imageFile == null && detailFile == null) {
             if (goodsMapper.updateByGoodsId(goods) != 0) {
+                deleteGoodsCache(goods.getGoodsId());
                 return Result.success("商品修改成功", goods);
             }
         } else if (imageFile != null && detailFile != null) {
@@ -409,18 +407,21 @@ public class GoodsService {
             goods.setGoodsImage(urlList.get(0));
             goods.setGoodsDetails(urlList.get(1));
             if (goodsMapper.updateByGoodsId(goods) != 0) {
+                deleteGoodsCache(goods.getGoodsId());
                 return Result.success("商品修改成功", goods);
             }
         } else if (imageFile != null) {
             List<String> urlList = upLoadToServer(imageFile, null, path);
             goods.setGoodsImage(urlList.get(0));
             if (goodsMapper.updateByGoodsId(goods) != 0) {
+                deleteGoodsCache(goods.getGoodsId());
                 return Result.success("商品修改成功", goods);
             }
         } else {
             List<String> urlList = upLoadToServer(null, detailFile, path);
             goods.setGoodsDetails(urlList.get(0));
             if (goodsMapper.updateByGoodsId(goods) != 0) {
+                deleteGoodsCache(goods.getGoodsId());
                 return Result.success("商品修改成功", goods);
             }
         }
@@ -593,17 +594,14 @@ public class GoodsService {
      */
     @Transactional
     public boolean pull(String goodsId) {
-        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
-        boolean flag = goodsMapper.pull(goodsId) != 0;
+        boolean success = goodsMapper.pull(goodsId) != 0;
 
         //缓存失效
-        if (redisTemplate.hasKey(goodsKey)) {
-            redisTemplate.delete(goodsKey);
-        }
+        deleteGoodsCache(goodsId);
 
         redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
-        return flag;
+        return success;
     }
 
     /**
@@ -613,17 +611,14 @@ public class GoodsService {
      */
     @Transactional
     public boolean put(String goodsId) {
-        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
-        boolean flag = goodsMapper.put(goodsId) != 0;
+        boolean success = goodsMapper.put(goodsId) != 0;
 
         //缓存失效
-        if (redisTemplate.hasKey(goodsKey)) {
-            redisTemplate.delete(goodsKey);
-        }
+        deleteGoodsCache(goodsId);
 
         redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
 
-        return flag;
+        return success;
     }
 
     /**
@@ -635,15 +630,11 @@ public class GoodsService {
      */
     @Transactional
     public boolean reduceStock(String goodsId, Integer count) {
-        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
-
         //先减库存
         boolean success = goodsMapper.reduceStock(goodsId, count) != 0;
 
         //缓存失效
-        if (redisTemplate.hasKey(goodsKey)) {
-            redisTemplate.delete(goodsKey);
-        }
+        deleteGoodsCache(goodsId);
 
         return success;
     }
@@ -657,16 +648,26 @@ public class GoodsService {
      */
     @Transactional
     public boolean recoverStock(String goodsId, Integer count) {
-        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
-
         //先减库存
         boolean success = goodsMapper.recoverStock(goodsId, count) != 0;
+
+        //缓存失效
+        deleteGoodsCache(goodsId);
+
+        return success;
+    }
+
+    /**
+     * 根据商品id删除商品缓存
+     *
+     * @param goodsId
+     */
+    public void deleteGoodsCache(String goodsId) {
+        String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
 
         //缓存失效
         if (redisTemplate.hasKey(goodsKey)) {
             redisTemplate.delete(goodsKey);
         }
-
-        return success;
     }
 }

@@ -25,9 +25,9 @@ function orderDetail(orderId) {
                 $("#orderCreateTime").html(new Date(orderVo.orderCreateTime).format("yyyy-MM-dd hh:mm:ss"));
                 $("#shippingName").html(shipping.shippingName);
                 $("#shippingAddress").html(shipping.shippingAddress);
-                if (orderStatus === -1) {
+                if (orderStatus === 4) {
                     $("#orderStatus").html("已取消");
-                } else if (orderStatus === 0) {
+                } else if (orderStatus === 1) {
                     $("#orderStatus").html("未支付");
                     $(".order-info").append(
                         '<div class="text-line">' +
@@ -35,7 +35,7 @@ function orderDetail(orderId) {
                         '<a class="btn order-cancel" id="cancel" onclick="cancel(' + "'" + orderVo.orderId + "'" + ')">取消订单</a>' +
                         "</div>"
                     );
-                } else if (orderStatus === 1) {
+                } else if (orderStatus === 0) {
                     $("#orderStatus").html("待发货");
                 } else if (orderStatus === 2) {
                     $("#orderStatus").html("待收货");

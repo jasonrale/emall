@@ -12,6 +12,9 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import java.util.List;
 
+/**
+ * 收货地址控制层
+ */
 @Controller
 @RequestMapping("/shipping")
 public class ShippingController {
@@ -26,7 +29,6 @@ public class ShippingController {
 
     /**
      * 查询所有收货地址
-     *
      * @return
      */
     @GetMapping("/all")
@@ -37,7 +39,6 @@ public class ShippingController {
 
     /**
      * 新建收货地址
-     *
      * @param shipping
      * @return
      */
@@ -70,7 +71,6 @@ public class ShippingController {
 
     /**
      * 删除收货地址
-     *
      * @param shippingId
      * @return
      */

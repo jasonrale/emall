@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import javax.validation.constraints.NotEmpty;
 
 /**
- *   收货地址实体类
+ * 收货地址实体类
  */
 @Data
 @NoArgsConstructor

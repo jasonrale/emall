@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- *   秒杀商品实体类。
+ * 秒杀商品实体类。
  */
 @Data
 @NoArgsConstructor

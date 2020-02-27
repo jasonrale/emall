@@ -22,7 +22,7 @@ import static com.emall.entity.User.*;
 
 
 /**
- *  继承AuthorizingRealm抽象类用户认证
+ * 继承AuthorizingRealm抽象类用户认证
  */
 public class ShiroRealm extends AuthorizingRealm {
     private static final Logger logger = LoggerFactory.getLogger(ShiroRealm.class);

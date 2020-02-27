@@ -12,22 +12,21 @@ import org.springframework.util.Assert;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
-import java.io.IOException;
-import java.sql.SQLIntegrityConstraintViolationException;
-
 import static com.emall.shiro.ShiroEncrypt.shiroEncrypt;
 
+/**
+ * 用户业务层
+ */
 @Service
 public class UserService {
     @Resource
-    private UserMapper userMapper;
+    UserMapper userMapper;
 
     @Resource
-    private SnowflakeIdWorker snowflakeIdWorker;
+    SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 根据用户名查询用户对象
-     *
      * @param userName
      * @return User
      */
@@ -37,7 +36,6 @@ public class UserService {
 
     /**
      * 注册验证
-     *
      * @param user
      * @return Result
      */
@@ -73,7 +71,6 @@ public class UserService {
 
     /**
      * 用户密码修改
-     *
      * @param passwordVo
      * @return
      */

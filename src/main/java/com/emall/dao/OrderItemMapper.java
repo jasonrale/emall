@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 订单明细数据接口层
+ */
 public interface OrderItemMapper {
     int insert(OrderItem orderItem);
 

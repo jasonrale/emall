@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.Date;
 
+/**
+ * 秒杀订单控制层
+ */
 @Controller
 @RequestMapping("seckillOrder")
 public class SeckillOrderController {
@@ -42,7 +45,6 @@ public class SeckillOrderController {
 
     /**
      * 生成完整秒杀订单
-     *
      * @param seckillGoodsId
      * @param shippingId
      * @param path

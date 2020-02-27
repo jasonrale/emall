@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 秒杀商品数据接口层
+ */
 public interface SeckillGoodsMapper {
     int deleteBySeckillGoodsId(@Param("seckillGoodsId") String seckillGoodsId);
 

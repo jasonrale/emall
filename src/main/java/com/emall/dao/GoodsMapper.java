@@ -5,6 +5,9 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
+/**
+ * 商品数据接口层
+ */
 public interface GoodsMapper {
     int insert(Goods goods);
 

@@ -4,7 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 /**
- * 类型转换工具类
+ * 类型转换工具
  */
 public class ClassCastUtil {
     /**

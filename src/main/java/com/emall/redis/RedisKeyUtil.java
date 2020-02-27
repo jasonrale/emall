@@ -3,6 +3,7 @@ package com.emall.redis;
 import com.emall.entity.Goods;
 import com.emall.entity.SeckillGoods;
 import com.emall.utils.StringUnicode;
+import com.emall.vo.OrderVo;
 
 /**
  * Redis键生成类
@@ -10,10 +11,12 @@ import com.emall.utils.StringUnicode;
 public class RedisKeyUtil {
     public static final String GOODS_VERSION = "Goods:Version";
     public static final String GOODS_PREFIX = "Goods:";
+    public static final String ORDER_VO_PREFIX = "OrderVo:";
     public static final String CATEGORY_PREFIX = "Category:";
     public static final String SECKILL_GOODS_PREFIX = "SeckillGoods:";
     public static final String SECKILL_ORDER_PREFIX = "SeckillOrder:";
     public static final String ACCESS_LIMIT_PREFIX = "AccessLimit:";
+
 
     /**
      * 所有商品分页键
@@ -150,5 +153,27 @@ public class RedisKeyUtil {
      */
     public static String accessLimit(String userId) {
         return ACCESS_LIMIT_PREFIX + userId;
+    }
+
+    /**
+     * 订单业务对象键
+     *
+     * @param orderVo
+     * @return
+     */
+    public static String orderVoById(OrderVo orderVo) {
+        return ORDER_VO_PREFIX + orderVo.getOrderId();
+    }
+
+    /**
+     * 用户id订单业务分页键
+     *
+     * @param userId
+     * @param currentNo
+     * @param pageSize
+     * @return
+     */
+    public static String orderVoByUserId(String userId, int currentNo, int pageSize) {
+        return ORDER_VO_PREFIX + userId + ":" + currentNo + ":" + pageSize;
     }
 }
