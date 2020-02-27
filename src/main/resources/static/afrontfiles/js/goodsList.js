@@ -7,9 +7,9 @@ $(document).ready(function () {
     var categoryId = encodeURI(getUrlParam("categoryId"));
 
     if (keyWord !== "null") {
-        listByKey(keyWord, "none", 1, 20);
+        listByKey(keyWord, "none", 1, 15);
     } else {
-        listByCategory(categoryId, "none", 1, 20);
+        listByCategory(categoryId, "none", 1, 15);
     }
 });
 
@@ -29,14 +29,14 @@ function listByKey(keyWord, sort, currentNo, pageSize) {
         success: function (data) {
             if (data.status === true) {
                 if (sort === "none") {
-                    $("#default").replaceWith('<li class="sort-item active" id="default" onclick="listByKey(' + "'" + keyWord + "', " + "'none', " + "1, " + "20" + ')">默认排序</li>');
-                    $("#price").replaceWith('<li class="sort-item" id="price" onclick="listByKey(' + "'" + keyWord + "', " + "'asc', " + "1, " + "20" + ')">价格排序</li>');
+                    $("#default").replaceWith('<li class="sort-item active" id="default" onclick="listByKey(' + "'" + keyWord + "', " + "'none', " + "1, " + "15" + ')">默认排序</li>');
+                    $("#price").replaceWith('<li class="sort-item" id="price" onclick="listByKey(' + "'" + keyWord + "', " + "'asc', " + "1, " + "15" + ')">价格排序</li>');
                 } else if (sort === "desc") {
                     $("#default").attr("class", "sort-item");
-                    $("#price").replaceWith('<li class="sort-item active" id="price" onclick="listByKey(' + "'" + keyWord + "', " + "'asc', " + "1, " + "20" + ')">价格排序</li>');
+                    $("#price").replaceWith('<li class="sort-item active" id="price" onclick="listByKey(' + "'" + keyWord + "', " + "'asc', " + "1, " + "15" + ')">价格排序</li>');
                 } else {
                     $("#default").attr("class", "sort-item");
-                    $("#price").replaceWith('<li class="sort-item active" id="price" onclick="listByKey(' + "'" + keyWord + "', " + "'desc', " + "1, " + "20" + ')">价格排序</li>');
+                    $("#price").replaceWith('<li class="sort-item active" id="price" onclick="listByKey(' + "'" + keyWord + "', " + "'desc', " + "1, " + "15" + ')">价格排序</li>');
                 }
 
                 var goodsList = data.obj.list;
@@ -116,14 +116,14 @@ function listByCategory(categoryId, sort, currentNo, pageSize) {
         success: function (data) {
             if (data.status === true) {
                 if (sort === "none") {
-                    $("#default").replaceWith('<li class="sort-item active" id="default" onclick="listByCategory(' + "'" + categoryId + "', " + "'none', " + "1, " + "20" + ')">默认排序</li>');
-                    $("#price").replaceWith('<li class="sort-item" id="price" onclick="listByCategory(' + "'" + categoryId + "', " + "'asc', " + "1, " + "20" + ')">价格排序</li>');
+                    $("#default").replaceWith('<li class="sort-item active" id="default" onclick="listByCategory(' + "'" + categoryId + "', " + "'none', " + "1, " + "15" + ')">默认排序</li>');
+                    $("#price").replaceWith('<li class="sort-item" id="price" onclick="listByCategory(' + "'" + categoryId + "', " + "'asc', " + "1, " + "15" + ')">价格排序</li>');
                 } else if (sort === "desc") {
                     $("#default").attr("class", "sort-item");
-                    $("#price").replaceWith('<li class="sort-item active" id="price" onclick="listByCategory(' + "'" + categoryId + "', " + "'asc', " + "1, " + "20" + ')">价格排序</li>');
+                    $("#price").replaceWith('<li class="sort-item active" id="price" onclick="listByCategory(' + "'" + categoryId + "', " + "'asc', " + "1, " + "15" + ')">价格排序</li>');
                 } else {
                     $("#default").attr("class", "sort-item");
-                    $("#price").replaceWith('<li class="sort-item active" id="price" onclick="listByCategory(' + "'" + categoryId + "', " + "'desc', " + "1, " + "20" + ')">价格排序</li>');
+                    $("#price").replaceWith('<li class="sort-item active" id="price" onclick="listByCategory(' + "'" + categoryId + "', " + "'desc', " + "1, " + "15" + ')">价格排序</li>');
                 }
 
                 var goodsList = data.obj.list;

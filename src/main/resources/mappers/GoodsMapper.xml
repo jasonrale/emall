@@ -26,14 +26,14 @@
 	<select id="countByKeyWord" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(1)
 		from goods
-		where goods_name like #{keyWord,jdbcType=VARCHAR}
+		where match(goods_name) against(#{keyWord,jdbcType=VARCHAR})
 	</select>
 	
 	<select id="countByKeyWordForUser" parameterType="java.lang.String" resultType="java.lang.Integer">
 		select count(1)
 		from goods
-		where goods_name like #{keyWord,jdbcType=VARCHAR}
-		  and goods_status = 1
+		where goods_status = 1
+		  and match(goods_name) against(#{keyWord,jdbcType=VARCHAR})
 	</select>
 	
 	<select id="countByCategoryIdForUser" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -71,7 +71,7 @@
 		from (select goods_id
 			  from goods
 			  where goods_status = 1
-				and goods_name like #{keyWord,jdbcType=VARCHAR}
+				and match(goods_name) against(#{keyWord,jdbcType=VARCHAR})
 			  order by goods_id
 			  limit #{limit} offset #{offset}) ids
 				 inner join goods g
@@ -90,7 +90,7 @@
 			   g.goods_status
 		from (select goods_id
 			  from goods
-			  where goods_name like #{keyWord,jdbcType=VARCHAR}
+			  where match(goods_name) against(#{keyWord,jdbcType=VARCHAR})
 			  order by goods_id
 			  limit #{limit} offset #{offset}) ids
 				 inner join goods g
@@ -110,7 +110,7 @@
 		from (select goods_id
 			  from goods
 			  where goods_status = 1
-				and goods_name like #{keyWord,jdbcType=VARCHAR}
+				and match(goods_name) against(#{keyWord,jdbcType=VARCHAR})
 			  order by goods_price
 			  limit #{limit} offset #{offset}) ids
 				 inner join goods g
@@ -130,7 +130,7 @@
 		from (select goods_id
 			  from goods
 			  where goods_status = 1
-				and goods_name like #{keyWord,jdbcType=VARCHAR}
+				and match(goods_name) against(#{keyWord,jdbcType=VARCHAR})
 			  order by goods_price desc
 			  limit #{limit} offset #{offset}) ids
 				 inner join goods g

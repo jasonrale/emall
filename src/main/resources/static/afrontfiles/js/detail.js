@@ -16,6 +16,7 @@ function detail(goodsId) {
         url: "/emall/goods/" + goodsId + "/goodsId",
         success: function (data) {
             var goods = data.obj;
+
             if (goods === null) {
                 seckillGoodsDetail(goodsId);
             } else {
@@ -57,25 +58,30 @@ function seckillGoodsDetail(seckillGoodsId) {
         url: "/emall/seckillGoods/fromDB/" + seckillGoodsId + "/seckillGoodsId",
         success: function (data) {
             var seckillGoods = data.obj;
-            tempDetailGoods = seckillGoods;
-            var status = seckillGoods.seckillGoodsStatus;
-            $("#goodsName").html(seckillGoods.seckillGoodsName);
-            $("#goodsDescribe").html(seckillGoods.seckillGoodsDescribe);
-            $("#goodsStatus").html(status === 0 ? "未上架" : status === 1 ? "准备中" : status === 2 ? "进行中" : "已结束");
-            $("#status").css("display", "block");
-            $("#goodsPrice").html(seckillGoods.seckillGoodsPrice + "元");
-            $("#goodsStock").html(seckillGoods.seckillGoodsStock + "件");
-            $("#startTime").html(new Date(seckillGoods.seckillGoodsStartTime).format("yyyy-MM-dd hh:mm:ss"));
-            $("#start").css("display", "block");
-            $("#endTime").html(new Date(seckillGoods.seckillGoodsEndTime).format("yyyy-MM-dd hh:mm:ss"));
-            $("#end").css("display", "block");
-            $("#goodsImage").attr("src", seckillGoods.seckillGoodsImage);
-            $("#goodsDetails").attr("src", seckillGoods.seckillGoodsDetails);
-            $("#countDiv").css("display", "none");
-            $("#btn").css("display", "none");
-            if (status === 2) {
-                $("#goSeckill").append('<a class="skipSeckill" onclick="goSeckill(' + "'" + seckillGoods.seckillGoodsId + "'" + ')">前往秒杀</a>').css("display", "block");
+
+            if (seckillGoods === null) {
+                $(".page-wrap").html('<p class="err-tip">此商品太淘气，找不到了</p>');
+            } else {
+                var status = seckillGoods.seckillGoodsStatus;
+                $("#goodsName").html(seckillGoods.seckillGoodsName);
+                $("#goodsDescribe").html(seckillGoods.seckillGoodsDescribe);
+                $("#goodsStatus").html(status === 0 ? "未上架" : status === 1 ? "准备中" : status === 2 ? "进行中" : "已结束");
+                $("#status").css("display", "block");
+                $("#goodsPrice").html(seckillGoods.seckillGoodsPrice + "元");
+                $("#goodsStock").html(seckillGoods.seckillGoodsStock + "件");
+                $("#startTime").html(new Date(seckillGoods.seckillGoodsStartTime).format("yyyy-MM-dd hh:mm:ss"));
+                $("#start").css("display", "block");
+                $("#endTime").html(new Date(seckillGoods.seckillGoodsEndTime).format("yyyy-MM-dd hh:mm:ss"));
+                $("#end").css("display", "block");
+                $("#goodsImage").attr("src", seckillGoods.seckillGoodsImage);
+                $("#goodsDetails").attr("src", seckillGoods.seckillGoodsDetails);
+                $("#countDiv").css("display", "none");
+                $("#btn").css("display", "none");
+                if (status === 2) {
+                    $("#goSeckill").append('<a class="skipSeckill" onclick="goSeckill(' + "'" + seckillGoods.seckillGoodsId + "'" + ')">前往秒杀</a>').css("display", "block");
+                }
             }
+
         }
     });
 }

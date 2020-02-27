@@ -132,7 +132,6 @@ public class GoodsService {
 
         long limit = pageModel.getPageSize();
         long offset = (pageModel.getCurrentNo() - 1) * limit;
-        keyWord = "%" + keyWord + "%";
 
         List<Goods> goodsList = goodsMapper.selectByKeyWordPaged(keyWord, limit, offset);
         int count = goodsMapper.countByKeyWord(keyWord);
@@ -183,7 +182,7 @@ public class GoodsService {
         long limit = pageModel.getPageSize();
         long offset = (pageModel.getCurrentNo() - 1) * limit;
         String listKey = RedisKeyUtil.keyWordOfSort(keyWord, sort, pageModel.getCurrentNo(), pageModel.getPageSize());
-        keyWord = "%" + keyWord + "%";
+
         int count = goodsMapper.countByKeyWordForUser(keyWord);
         List<Goods> goodsList;
 
@@ -369,24 +368,6 @@ public class GoodsService {
     }
 
     /**
-     * 商品删除
-     *
-     * @param goodsId
-     * @return
-     */
-    @Transactional
-    public boolean deleteByGoodsId(String goodsId) {
-        boolean success = goodsMapper.deleteByGoodsId(goodsId) != 0;
-
-        //缓存失效
-        deleteGoodsCache(goodsId);
-
-        redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
-
-        return success;
-    }
-
-    /**
      * 商品修改
      *
      * @param goods
@@ -454,6 +435,7 @@ public class GoodsService {
         try {
             ftp.connect("192.168.153.130", 21);
             ftp.login("ftpadmin", "123456");
+            ftp.enterLocalPassiveMode();
             String ftpPath = "/home/ftpadmin/emall/images/";
 
             Date currentDate = new Date();
@@ -585,6 +567,24 @@ public class GoodsService {
             }
             temp.delete();
         }
+    }
+
+    /**
+     * 商品删除
+     *
+     * @param goodsId
+     * @return
+     */
+    @Transactional
+    public boolean deleteByGoodsId(String goodsId) {
+        boolean success = goodsMapper.deleteByGoodsId(goodsId) != 0;
+
+        //缓存失效
+        deleteGoodsCache(goodsId);
+
+        redisTemplate.opsForValue().increment(RedisKeyUtil.GOODS_VERSION);
+
+        return success;
     }
 
     /**

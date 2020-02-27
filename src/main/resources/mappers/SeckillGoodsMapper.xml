@@ -36,7 +36,7 @@
 	<select id="countByKeyWord" resultType="java.lang.Integer">
 		select count(1)
 		from seckill_goods
-		where seckill_goods_name like #{keyWord,jdbcType=VARCHAR}
+		where match(seckill_goods_name) against(#{keyWord,jdbcType=VARCHAR})
 	</select>
 	
 	<select id="queryAll" resultMap="BaseResultMap">
@@ -70,7 +70,7 @@
 			   s.seckill_goods_status
 		from (select seckill_goods_id
 			  from seckill_goods
-			  where seckill_goods_name like #{keyWord,jdbcType=VARCHAR}
+			  where match(seckill_goods_name) against(#{keyWord,jdbcType=VARCHAR})
 			  order by seckill_goods_id
 			  limit #{limit} offset #{offset}) ids
 				 inner join seckill_goods s

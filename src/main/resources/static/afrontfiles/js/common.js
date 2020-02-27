@@ -35,16 +35,16 @@ function navInfo() {
                 $("#welcome").css("display", "inline");
                 $("#loginName").css("display", "inline").html(data.obj.userName);
                 $("#logout").css("display", "inline");
-            }
-        }
-    });
 
-    $.ajax({
-        type: "GET",
-        url: "/emall/cartItem/count",
-        success: function (data) {
-            if (data.status === true) {
-                $(".cart-count").html(data.obj);
+                $.ajax({
+                    type: "GET",
+                    url: "/emall/cartItem/count",
+                    success: function (data) {
+                        if (data.status === true) {
+                            $(".cart-count").html(data.obj);
+                        }
+                    }
+                });
             }
         }
     });

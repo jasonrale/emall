@@ -6,6 +6,10 @@ $(document).ready(function () {
     seckillGoodsDetail(seckillGoodsId);
 });
 
+/**
+ * 后台管理--秒杀商品详情信息
+ * @param seckillGoodsId
+ */
 function seckillGoodsDetail(seckillGoodsId) {
     $.ajax({
         type: "GET",

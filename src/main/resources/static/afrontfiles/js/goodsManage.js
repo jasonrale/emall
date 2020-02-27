@@ -43,7 +43,8 @@ function querySeckillGoods(currentNo, pageSize) {
  * 商品管理--分页查询
  */
 function adminQuery(currentNo, pageSize, listType, param) {
-    if ((listType === "goodsId" || listType === "goodsName" || listType === "seckillGoodsId" || listType === "seckillGoodsName") && param.trim() === "") {
+    if (param.trim() === "") {
+        adminQuery(currentNo, pageSize, "all", "none");
         return false;
     }
 

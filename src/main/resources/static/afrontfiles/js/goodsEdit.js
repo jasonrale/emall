@@ -177,7 +177,8 @@ function updateSubmit(goodsId, type) {
         var formData = new FormData();
         if (image.val() !== "") {
             formData.append("imageFile", image[0].files[0]);
-        } else if (detail.val() !== "") {
+        }
+        if (detail.val() !== "") {
             formData.append("detailFile", detail[0].files[0]);
         }
         formData.append("goods", JSON.stringify(goods));
@@ -216,7 +217,8 @@ function updateSubmit(goodsId, type) {
         var formData = new FormData();
         if (image.val() !== "") {
             formData.append("imageFile", image[0].files[0]);
-        } else if (detail.val() !== "") {
+        }
+        if (detail.val() !== "") {
             formData.append("detailFile", detail[0].files[0]);
         }
         formData.append("seckillGoods", JSON.stringify(seckillGoods));

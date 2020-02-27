@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 
 /**
- * 商品详情信息
+ * 秒杀商品详情信息
  */
 function seckillDetail(seckillGoodsId) {
     $.ajax({

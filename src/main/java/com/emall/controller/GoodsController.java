@@ -52,18 +52,6 @@ public class GoodsController {
     }
 
     /**
-     * 删除商品
-     * @return
-     */
-    @DeleteMapping(value = "")
-    @ResponseBody
-    public Result delete(@RequestBody String goodsId) {
-        logger.info("根据商品id=" + goodsId + "删除商品");
-
-        return goodsService.deleteByGoodsId(goodsId) ? Result.success("商品删除成功", null) : Result.error("商品删除失败");
-    }
-
-    /**
      * 修改商品
      * @return
      */
@@ -79,6 +67,19 @@ public class GoodsController {
 
         String path = "/tmp/";
         return goodsService.update(result.getObj(), imageFile, detailFile, path);
+    }
+
+    /**
+     * 删除商品
+     *
+     * @return
+     */
+    @DeleteMapping(value = "")
+    @ResponseBody
+    public Result delete(@RequestBody String goodsId) {
+        logger.info("根据商品id=" + goodsId + "删除商品");
+
+        return goodsService.deleteByGoodsId(goodsId) ? Result.success("商品删除成功", null) : Result.error("商品删除失败");
     }
 
     /**

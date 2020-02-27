@@ -65,7 +65,6 @@ public class SeckillGoodsService {
         long limit = pageModel.getPageSize();
         long offset = (pageModel.getCurrentNo() - 1) * limit;
 
-        keyWord = "%" + keyWord + "%";
         List seckillGoodsList = seckillGoodsMapper.queryByKeyWord(keyWord, limit, offset);
         int count = seckillGoodsMapper.countByKeyWord(keyWord);
 
