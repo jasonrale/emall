@@ -12,11 +12,11 @@ public class RedisKeyUtil {
     public static final String GOODS_PREFIX = "Goods:";
     public static final String GOODS_VERSION = "Goods:Version";
     public static final String ORDER_VO_PREFIX = "OrderVo:";
-    public static final String ORDER_VO_VERSION_PREFIX = "OrderVo:Version:";
+    private static final String ORDER_VO_VERSION_PREFIX = "OrderVo:Version:";
     public static final String CATEGORY_PREFIX = "Category:";
     public static final String SECKILL_GOODS_PREFIX = "SeckillGoods:";
-    public static final String SECKILL_ORDER_PREFIX = "SeckillOrder:";
-    public static final String ACCESS_LIMIT_PREFIX = "AccessLimit:";
+    private static final String SECKILL_ORDER_PREFIX = "SeckillOrder:";
+    private static final String ACCESS_LIMIT_PREFIX = "AccessLimit:";
 
 
     /**

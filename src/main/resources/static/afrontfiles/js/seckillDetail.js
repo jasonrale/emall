@@ -179,7 +179,7 @@ function trySeckill(path, seckillGoodsId) {
                 seckillResult(path, seckillGoodsId);
             } else {
                 layer.msg(data.msg, {time: 1000}, function () {
-                    $(window).attr("location", "../../index.html");
+                    $(window).attr("location", "../index.html");
                 });
             }
         },
@@ -209,15 +209,9 @@ function seckillResult(path, seckillGoodsId) {
                         seckillResult(path, seckillGoodsId);
                     }, 500);
                 } else {
-                    layer.confirm("恭喜您，秒杀成功！请确认订单？",
-                        {btn: ["确定", "取消"]},
-                        function () {
-                            window.location.href = "/emall/authenticated/user/orderConfirm.html?seckillGoodsId=" + result + "&path=" + path;
-                        },
-                        function () {
-                            layer.closeAll();
-                        }
-                    );
+                    layer.msg("恭喜您，秒杀成功！", {time: 1000}, function () {
+                        window.location.href = "/emall/authenticated/user/orderConfirm.html?seckillGoodsId=" + result + "&path=" + path;
+                    });
                 }
             } else {
                 layer.msg(data.msg);

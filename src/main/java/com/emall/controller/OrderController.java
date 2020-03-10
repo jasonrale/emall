@@ -40,9 +40,6 @@ public class OrderController {
     GoodsService goodsService;
 
     @Resource
-    ShippingService shippingService;
-
-    @Resource
     CartItemService cartItemService;
 
     @Resource
@@ -76,7 +73,7 @@ public class OrderController {
         logger.info("获取订单信息，订单号=" + orderId);
         User user = loginSession.getCustomerSession();
 
-        if (!orderService.orderIdValid(user.getUserId(), orderId)) {
+        if (user != null && !orderService.orderIdValid(user.getUserId(), orderId)) {
             return Result.error("请求非法");
         }
 

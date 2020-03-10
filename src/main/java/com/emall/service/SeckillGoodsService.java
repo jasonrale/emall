@@ -171,7 +171,19 @@ public class SeckillGoodsService {
      * @return
      */
     public boolean pull(String seckillGoodsId) {
-        return seckillGoodsMapper.pull(seckillGoodsId) != 0;
+        boolean success = seckillGoodsMapper.pull(seckillGoodsId) != 0;
+
+        //清楚秒杀商品缓存
+        if (success) {
+            String seckillGoodsKey = RedisKeyUtil.SECKILL_GOODS_PREFIX + seckillGoodsId;
+            String seckillStockKey = RedisKeyUtil.seckillStockById(seckillGoodsId);
+            List<String> keys = new ArrayList<>();
+            keys.add(seckillGoodsKey);
+            keys.add(seckillStockKey);
+            redisTemplate.delete(keys);
+        }
+
+        return success;
     }
 
     /**

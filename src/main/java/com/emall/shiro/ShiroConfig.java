@@ -157,7 +157,7 @@ public class ShiroConfig {
      *
      * @return
      */
-    public RedisCacheManager cacheManager() {
+    private RedisCacheManager cacheManager() {
         RedisCacheManager redisCacheManager = new RedisCacheManager();
         redisCacheManager.setRedisManager(redisManager());
         return redisCacheManager;

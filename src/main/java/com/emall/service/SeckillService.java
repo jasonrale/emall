@@ -47,7 +47,7 @@ public class SeckillService {
      * @return
      */
     public BufferedImage createCaptcha(User user, String seckillGoodsId) {
-        int width = 80;
+        int width = 90;
         int height = 32;
 
         //创建图像

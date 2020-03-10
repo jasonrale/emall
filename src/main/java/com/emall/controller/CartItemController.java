@@ -6,14 +6,11 @@ import com.emall.result.Result;
 import com.emall.service.CartItemService;
 import com.emall.utils.LoginSession;
 import com.emall.utils.SnowflakeIdWorker;
-import org.apache.shiro.authz.annotation.RequiresUser;
-import org.apache.shiro.web.util.WebUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -52,7 +49,7 @@ public class CartItemController {
      */
     @PutMapping("")
     @ResponseBody
-    public Result cartAdd(@RequestBody CartItem cartItem, HttpServletRequest request) {
+    public Result cartAdd(@RequestBody CartItem cartItem) {
         User user = loginSession.getCustomerSession();
 
         if (user == null) {

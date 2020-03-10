@@ -3,7 +3,6 @@ package com.emall.utils;
 import com.emall.entity.User;
 import com.emall.exception.GeneralException;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
