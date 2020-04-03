@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.Resource;
 
 /**
- * 获取登录信息工具
+ * 获取或设置用户登录信息的工具
  */
 @Component
 public class LoginSession {

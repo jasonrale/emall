@@ -29,15 +29,6 @@ public class CategoryService {
     RedisTemplate redisTemplate;
 
     /**
-     * 查询所有商品类别
-     *
-     * @return
-     */
-    public List<Category> queryAll() {
-        return categoryMapper.queryAll();
-    }
-
-    /**
      * 分页查询所有商品类别
      * @param pageModel
      * @return
@@ -95,7 +86,7 @@ public class CategoryService {
     public boolean update(Category category) {
         Assert.isTrue(!categoryMapper.isExistByName(category.getCategoryName()), "商品类别已存在");
 
-        return categoryMapper.updateByPrimaryKey(category) != 0;
+        return categoryMapper.update(category) != 0;
     }
 
     /**

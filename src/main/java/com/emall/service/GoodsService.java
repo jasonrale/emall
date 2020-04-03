@@ -1,29 +1,23 @@
 package com.emall.service;
 
+import com.emall.dao.CategoryMapper;
 import com.emall.dao.GoodsMapper;
 import com.emall.dao.SeckillGoodsMapper;
+import com.emall.entity.Category;
 import com.emall.entity.Goods;
 import com.emall.redis.RedisKeyUtil;
 import com.emall.result.Result;
 import com.emall.utils.PageModel;
 import com.emall.utils.SnowflakeIdWorker;
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
+import com.emall.utils.UploadUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -35,13 +29,28 @@ public class GoodsService {
     GoodsMapper goodsMapper;
 
     @Resource
+    CategoryMapper categoryMapper;
+
+    @Resource
     SeckillGoodsMapper seckillGoodsMapper;
 
     @Resource
     RedisTemplate redisTemplate;
 
     @Resource
+    UploadUtil uploadUtil;
+
+    @Resource
     SnowflakeIdWorker snowflakeIdWorker;
+
+    /**
+     * 查询所有商品类别(添加或编辑商品时下拉栏)
+     *
+     * @return
+     */
+    public List<Category> queryCategoryList() {
+        return categoryMapper.queryAll();
+    }
 
     /**
      * 分页查询全部商品的完整逻辑
@@ -304,16 +313,11 @@ public class GoodsService {
      */
     @Transactional
     public Result<Goods> insert(Goods goods, MultipartFile imageFile, MultipartFile detailFile, String path) {
-        List<String> urlList = upLoadToServer(imageFile, detailFile, path);
+        List<String> urlList = uploadUtil.uploadToServer(imageFile, detailFile, path);
 
         goods.setGoodsId(String.valueOf(snowflakeIdWorker.nextId()));
         goods.setGoodsImage(urlList.get(0));
         goods.setGoodsDetails(urlList.get(1));
-
-        if (goods.getGoodsActivity() == 1) {
-            //将Goods对应的字段保存到SeckillGoods
-            return seckillGoodsMapper.insert(goods) != 0 ? Result.success("秒杀商品添加成功", goods) : Result.error("秒杀商品添加失败");
-        }
 
         //如果不存在缓存版本号则设置缓存版本
         if (!redisTemplate.hasKey(RedisKeyUtil.GOODS_VERSION)) {
@@ -341,7 +345,7 @@ public class GoodsService {
                 return Result.success("商品修改成功", goods);
             }
         } else if (imageFile != null && detailFile != null) {
-            List<String> urlList = upLoadToServer(imageFile, detailFile, path);
+            List<String> urlList = uploadUtil.uploadToServer(imageFile, detailFile, path);
             goods.setGoodsImage(urlList.get(0));
             goods.setGoodsDetails(urlList.get(1));
             if (goodsMapper.updateByGoodsId(goods) != 0) {
@@ -349,14 +353,14 @@ public class GoodsService {
                 return Result.success("商品修改成功", goods);
             }
         } else if (imageFile != null) {
-            List<String> urlList = upLoadToServer(imageFile, null, path);
+            List<String> urlList = uploadUtil.uploadToServer(imageFile, null, path);
             goods.setGoodsImage(urlList.get(0));
             if (goodsMapper.updateByGoodsId(goods) != 0) {
                 deleteGoodsCache(goods.getGoodsId());
                 return Result.success("商品修改成功", goods);
             }
         } else {
-            List<String> urlList = upLoadToServer(null, detailFile, path);
+            List<String> urlList = uploadUtil.uploadToServer(null, detailFile, path);
             goods.setGoodsDetails(urlList.get(0));
             if (goodsMapper.updateByGoodsId(goods) != 0) {
                 deleteGoodsCache(goods.getGoodsId());
@@ -367,164 +371,7 @@ public class GoodsService {
         return Result.error("商品修改失败");
     }
 
-    /**
-     * 上传到Ftp服务器
-     *
-     * @param imageFile
-     * @param detailFile
-     * @param path
-     * @return
-     */
-    @Transactional
-    public List<String> upLoadToServer(MultipartFile imageFile, MultipartFile detailFile, String path) {
-        String tmpPath = "E:/ImageTemp" + path;
 
-        File dir = new File(tmpPath);
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
-
-        FTPClient ftp = new FTPClient();
-
-        List<String> urlList = new ArrayList<>();
-        InputStream imageLocal = null;
-        InputStream detailLocal = null;
-        try {
-            ftp.connect("192.168.153.130", 21);
-            ftp.login("ftpadmin", "123456");
-            ftp.enterLocalPassiveMode();
-            String ftpPath = "/home/ftpadmin/emall/images/";
-
-            Date currentDate = new Date();
-            String dateStr = new SimpleDateFormat("yyyy/MM/dd").format(currentDate);
-            for (String pathStr : dateStr.split("/")) {
-                ftpPath += pathStr + "/";
-                boolean flag = ftp.changeWorkingDirectory(ftpPath);
-                if (!flag) {
-                    ftp.makeDirectory(ftpPath);
-                }
-            }
-            //指定上传路径
-            ftp.changeWorkingDirectory(ftpPath);
-            //指定上传文件的类型  二进制文件
-            ftp.setFileType(FTP.BINARY_FILE_TYPE);
-
-            if (imageFile != null) {
-                imageLocal = upload(imageFile, path, tmpPath, ftpPath, ftp, urlList);
-            }
-
-            if (detailFile != null) {
-                detailLocal = upload(detailFile, path, tmpPath, ftpPath, ftp, urlList);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            File del = new File(tmpPath);
-            delAllFile(del);
-
-            try {
-                if (imageLocal != null) {
-                    imageLocal.close();
-                }
-                if (detailLocal != null) {
-                    detailLocal.close();
-                }
-                //退出
-                ftp.logout();
-                //断开连接
-                ftp.disconnect();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        return urlList;
-    }
-
-    /**
-     * 文件上传操作
-     * @param clientFile
-     * @param path
-     * @param tmpPath
-     * @param ftpPath
-     * @param ftp
-     * @param urlList
-     * @return
-     */
-    @Transactional
-    public InputStream upload(MultipartFile clientFile, String path, String tmpPath, String ftpPath, FTPClient ftp, List<String> urlList) {
-        InputStream inputLocal = null;
-
-        try {
-            //文件名称
-            String clientFileName = clientFile.getOriginalFilename();
-            //临时图片文件路径
-            File client = new File(path, Objects.requireNonNull(clientFileName));
-
-            //浏览器端上传文件到临时文件夹
-            clientFile.transferTo(client);
-
-            //临时文件
-            File tmp = new File(tmpPath + clientFileName);
-            //ftp流
-            inputLocal = new FileInputStream(tmp);
-            //文件新名称
-            String newFileName = getFileName(clientFileName);
-            //临时文件再上传到图片服务器
-            ftp.storeFile(newFileName, inputLocal);
-            //图片在服务器上的url
-            String url = ftpPath.replace("/home/ftpadmin/emall", "http://192.168.153.130") + newFileName;
-            urlList.add(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return inputLocal;
-    }
-
-    /**
-     * 随机生成文件名称
-     *
-     * @param primitiveFileName
-     * @return
-     */
-    public String getFileName(String primitiveFileName) {
-        //使用uuid生成文件名
-        String fileName = String.valueOf(snowflakeIdWorker.nextId());
-        //获取文件后缀
-        String suffix = primitiveFileName.substring(primitiveFileName.lastIndexOf("."));
-
-        return fileName + suffix;
-    }
-
-    /**
-     * 删除临时文件夹下所有文件
-     *
-     * @param dir
-     */
-    public void delAllFile(File dir) {
-        if (!dir.exists()) {
-            return;
-        } else if (!dir.isDirectory()) {
-            return;
-        }
-
-        String[] tempList = dir.list();
-        if (tempList == null) {
-            return;
-        }
-
-        File temp;
-        String path = dir.getPath();
-        for (String s : tempList) {
-            if (path.endsWith(File.separator)) {
-                temp = new File(path + s);
-            } else {
-                temp = new File(path + File.separator + s);
-            }
-            temp.delete();
-        }
-    }
 
     /**
      * 商品删除
@@ -601,24 +448,6 @@ public class GoodsService {
     public boolean reduceStock(String goodsId, Integer count) {
         //先减库存
         boolean success = goodsMapper.reduceStock(goodsId, count) != 0;
-
-        //缓存失效
-        deleteGoodsCache(goodsId);
-
-        return success;
-    }
-
-    /**
-     * 恢复库存
-     *
-     * @param goodsId
-     * @param count
-     * @return
-     */
-    @Transactional
-    public boolean recoverStock(String goodsId, Integer count) {
-        //先减库存
-        boolean success = goodsMapper.recoverStock(goodsId, count) != 0;
 
         //缓存失效
         deleteGoodsCache(goodsId);

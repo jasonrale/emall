@@ -69,7 +69,7 @@ public class SeckillController {
     }
 
     /**
-     * 生成秒杀路径参数
+     * 秒杀接口限流以及生成秒杀路径参数
      * @param seckillGoodsId
      * @param captchaResult
      * @return
@@ -91,7 +91,7 @@ public class SeckillController {
     }
 
     /**
-     * 验证path
+     * 验证秒杀路径参数
      * @param seckillGoodsId
      * @param path
      * @return

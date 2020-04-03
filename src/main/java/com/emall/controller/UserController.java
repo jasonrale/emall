@@ -32,10 +32,10 @@ public class UserController {
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Resource
-    private LoginSession loginSession;
+    LoginSession loginSession;
 
     @Resource
-    private UserService userService;
+    UserService userService;
 
     /**
      * 获取用户登录信息
@@ -44,7 +44,7 @@ public class UserController {
      */
     @GetMapping("")
     @ResponseBody
-    public Result<Object> userInfo() {
+    public Result userInfo() {
         logger.info("获取用户登录信息中......");
 
         User userInfo = loginSession.getCustomerSession();
@@ -59,7 +59,7 @@ public class UserController {
      */
     @GetMapping("/admin")
     @ResponseBody
-    public Result<Object> adminInfo() {
+    public Result adminInfo() {
         logger.info("获取管理员登录信息中......");
 
         User adminInfo = loginSession.getAdminSession();
@@ -96,6 +96,12 @@ public class UserController {
         return Result.success(url, user);
     }
 
+    /**
+     * 通过Shiro进行登录认证
+     *
+     * @param loginVo
+     * @return
+     */
     public User login(LoginVo loginVo) {
         logger.info("登录验证--" + "用户名：" + loginVo.getUserName());
         //获得Subject对象

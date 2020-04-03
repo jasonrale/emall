@@ -26,7 +26,7 @@ public interface OrderMapper {
 
     List<OrderManageVo> queryAll(@Param("limit") long limit, @Param("offset") long offset);
 
-    List<OrderManageVo> queryAllByUserId(@Param("userId") String userId, @Param("limit") long limit, @Param("offset") long offset);
+    List<OrderManageVo> queryByUserId(@Param("userId") String userId, @Param("limit") long limit, @Param("offset") long offset);
 
     OrderManageVo queryManageByOrderId(@Param("orderId") String orderId);
 

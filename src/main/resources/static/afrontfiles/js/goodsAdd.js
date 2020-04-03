@@ -16,7 +16,7 @@ $(document).ready(function () {
 function categoryList() {
     $.ajax({
         type: "get",
-        url: "/emall/category",
+        url: "/emall/goods/categoryList",
         dataType: "json",
         success: function (data) {
             var categoryList = data.obj;
@@ -99,40 +99,79 @@ function addSubmit() {
         return false;
     }
 
-    var goods = {
-        "goodsName": goodsName,
-        "goodsDescribe": goodsDescribe,
-        "categoryId": categoryId,
-        "goodsStock": goodsStock,
-        "goodsPrice": goodsPrice,
-        "goodsActivity": goodsActivity,
-        "goodsStatus": 0
-    };
+    var formData;
+    if (goodsActivity === 0) {
+        var goods = {
+            "goodsName": goodsName,
+            "goodsDescribe": goodsDescribe,
+            "categoryId": categoryId,
+            "goodsStock": goodsStock,
+            "goodsPrice": goodsPrice,
+            "goodsActivity": goodsActivity,
+            "goodsStatus": 0
+        };
 
-    var formData = new FormData();
-    formData.append("imageFile", image[0].files[0]);
-    formData.append("detailFile", detail[0].files[0]);
-    formData.append("goods", JSON.stringify(goods));
+        formData = new FormData();
+        formData.append("imageFile", image[0].files[0]);
+        formData.append("detailFile", detail[0].files[0]);
+        formData.append("goods", JSON.stringify(goods));
 
-    showLoading();
-    $.ajax({
-        type: "PUT",
-        url: "/emall/goods",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function (data) {
-            if (data.status === true) {
-                layer.msg("商品添加成功", {time: 800}, function () {
-                    $(window).attr("location", "goodsManage.html");
-                });
+        showLoading();
+        $.ajax({
+            type: "PUT",
+            url: "/emall/goods",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.status === true) {
+                    layer.msg("商品添加成功", {time: 800}, function () {
+                        $(window).attr("location", "goodsManage.html");
+                    });
 
-            } else {
-                layer.msg(data.msg, {time : 1000});
+                } else {
+                    layer.msg(data.msg, {time: 1000});
+                }
+            },
+            error: function () {
+                layer.msg("商品添加失败", {time: 1000});
             }
-        },
-        error: function () {
-            layer.msg("商品添加失败", {time : 1000});
-        }
-    });
+        });
+    } else {
+        var seckillGoods = {
+            "seckillGoodsName": goodsName,
+            "seckillGoodsDescribe": goodsDescribe,
+            "categoryId": categoryId,
+            "seckillGoodsStock": goodsStock,
+            "seckillGoodsPrice": goodsPrice,
+            "seckillGoodsStatus": 0
+        };
+
+        formData = new FormData();
+        formData.append("imageFile", image[0].files[0]);
+        formData.append("detailFile", detail[0].files[0]);
+        formData.append("seckillGoods", JSON.stringify(seckillGoods));
+
+        showLoading();
+        $.ajax({
+            type: "PUT",
+            url: "/emall/seckillGoods",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                if (data.status === true) {
+                    layer.msg("秒杀商品添加成功", {time: 800}, function () {
+                        $(window).attr("location", "goodsManage.html");
+                    });
+
+                } else {
+                    layer.msg(data.msg, {time: 1000});
+                }
+            },
+            error: function () {
+                layer.msg("秒杀商品添加失败", {time: 1000});
+            }
+        });
+    }
 }

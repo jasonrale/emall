@@ -90,89 +90,16 @@
 		where seckill_goods_id = #{seckillGoodsId,jdbcType=VARCHAR}
 	</delete>
 	
-	<insert id="insert" parameterType="com.emall.entity.Goods">
+	<insert id="insert" parameterType="com.emall.entity.SeckillGoods">
 		insert into seckill_goods (seckill_goods_id, seckill_goods_name, category_id,
 								   seckill_goods_describe, seckill_goods_stock, seckill_goods_price,
 								   seckill_goods_image, seckill_goods_details, seckill_goods_status)
-		values (#{goodsId,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{categoryId,jdbcType=VARCHAR},
-				#{goodsDescribe,jdbcType=VARCHAR}, #{goodsStock,jdbcType=INTEGER},
-				#{goodsPrice,jdbcType=DECIMAL}, #{goodsImage,jdbcType=VARCHAR},
-				#{goodsDetails,jdbcType=VARCHAR}, #{goodsStatus,jdbcType=INTEGER})
+		values (#{seckillGoodsId,jdbcType=VARCHAR}, #{seckillGoodsName,jdbcType=VARCHAR},
+				#{categoryId,jdbcType=VARCHAR},
+				#{seckillGoodsDescribe,jdbcType=VARCHAR}, #{seckillGoodsStock,jdbcType=INTEGER},
+				#{seckillGoodsPrice,jdbcType=DECIMAL}, #{seckillGoodsImage,jdbcType=VARCHAR},
+				#{seckillGoodsDetails,jdbcType=VARCHAR}, #{seckillGoodsStatus,jdbcType=INTEGER})
 	</insert>
-	
-	<insert id="insertSelective" parameterType="com.emall.entity.SeckillGoods">
-		insert into seckill_goods
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-		  <if test="seckillGoodsId != null">
-			seckill_goods_id,
-		  </if>
-		  <if test="seckillGoodsName != null">
-			seckill_goods_name,
-		  </if>
-		  <if test="categoryId != null">
-		  	category_id,
-		  </if>
-		  <if test="seckillGoodsDescribe != null">
-			seckill_goods_describe,
-		  </if>
-		  <if test="seckillGoodsStock != null">
-			seckill_goods_stock,
-		  </if>
-		  <if test="seckillGoodsPrice != null">
-			seckill_goods_price,
-		  </if>
-		  <if test="seckillGoodsImage != null">
-			seckill_goods_image,
-		  </if>
-		  <if test="seckillGoodsDetails != null">
-			seckill_goods_details,
-		  </if>
-		  <if test="seckillGoodsStartTime != null">
-			seckill_goods_start_time,
-		  </if>
-		  <if test="seckillGoodsEndTime != null">
-			seckill_goods_end_time,
-		  </if>
-		  <if test="seckillGoodsStatus != null">
-			seckill_goods_status,
-		  </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-		  <if test="seckillGoodsId != null">
-			#{seckillGoodsId,jdbcType=VARCHAR},
-		  </if>
-		  <if test="seckillGoodsName != null">
-			#{seckillGoodsName,jdbcType=VARCHAR},
-		  </if>
-		  <if test="categoryId != null">
-		  	#{categoryId,jdbcType=VARCHAR},
-		  </if>
-		  <if test="seckillGoodsDescribe != null">
-			#{seckillGoodsDescribe,jdbcType=VARCHAR},
-		  </if>
-		  <if test="seckillGoodsStock != null">
-			#{seckillGoodsStock,jdbcType=INTEGER},
-		  </if>
-		  <if test="seckillGoodsPrice != null">
-			#{seckillGoodsPrice,jdbcType=DECIMAL},
-		  </if>
-		  <if test="seckillGoodsImage != null">
-			#{seckillGoodsImage,jdbcType=VARCHAR},
-		  </if>
-		  <if test="seckillGoodsDetails != null">
-			#{seckillGoodsDetails,jdbcType=VARCHAR},
-		  </if>
-		  <if test="seckillGoodsStartTime != null">
-			#{seckillGoodsStartTime,jdbcType=TIMESTAMP},
-		  </if>
-		  <if test="seckillGoodsEndTime != null">
-			#{seckillGoodsEndTime,jdbcType=TIMESTAMP},
-		  </if>
-		  <if test="seckillGoodsStatus != null">
-			  #{seckillGoodsStatus,jdbcType=INTEGER},
-		  </if>
-		</trim>
-  	</insert>
 	
 	<update id="update" parameterType="com.emall.entity.SeckillGoods">
 		update seckill_goods

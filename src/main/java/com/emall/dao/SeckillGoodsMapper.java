@@ -12,7 +12,7 @@ import java.util.List;
 public interface SeckillGoodsMapper {
     int deleteBySeckillGoodsId(@Param("seckillGoodsId") String seckillGoodsId);
 
-    int insert(Goods goods);
+    int insert(SeckillGoods seckillGoods);
 
     int update(SeckillGoods seckillGoods);
 

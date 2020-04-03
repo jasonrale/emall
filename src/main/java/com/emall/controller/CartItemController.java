@@ -107,7 +107,7 @@ public class CartItemController {
     }
 
     /**
-     * 订单确认
+     * 订单确认，返回购物车明细对象列表
      * @return
      */
     @PostMapping("/orderConfirm")

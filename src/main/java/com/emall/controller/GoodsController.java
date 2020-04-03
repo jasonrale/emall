@@ -1,6 +1,7 @@
 package com.emall.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.emall.entity.Category;
 import com.emall.entity.Goods;
 import com.emall.result.Result;
 import com.emall.service.GoodsService;
@@ -18,6 +19,7 @@ import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 
 /**
  * 商品控制层
@@ -28,10 +30,22 @@ public class GoodsController {
     private static final Logger logger = LoggerFactory.getLogger(GoodsController.class);
 
     @Resource
-    private GoodsService goodsService;
+    GoodsService goodsService;
 
     @Resource
-    private SeckillGoodsService seckillGoodsService;
+    SeckillGoodsService seckillGoodsService;
+
+    /**
+     * 查询所有商品类别(添加或编辑商品时下拉栏)
+     *
+     * @return
+     */
+    @GetMapping("/categoryList")
+    @ResponseBody
+    public Result<List<Category>> queryCategoryList() {
+        logger.info("查询所有商品类别");
+        return Result.success("查询所有品类成功", goodsService.queryCategoryList());
+    }
 
     /**
      * 添加商品
@@ -126,7 +140,7 @@ public class GoodsController {
      */
     @GetMapping(value = "/admin/{listType}/{param}")
     @ResponseBody
-    public Result queryByType(@Valid PageModel<Goods> pageModel, @PathVariable("listType") String listType, @PathVariable("param") String param) {
+    public Result queryByType(PageModel<Goods> pageModel, @PathVariable("listType") String listType, @PathVariable("param") String param) {
         logger.info("查询商品--By " + listType + "--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
 
         switch (listType) {
@@ -136,12 +150,6 @@ public class GoodsController {
                 return Result.success("根据关键字分页查询商品", goodsService.selectByKeyWordPaged(param, pageModel));
             case "goodsId":
                 return Result.success("根据商品id查询商品", goodsService.selectByGoodsId(param));
-            case "seckillAll":
-                return Result.success("分页查询所有秒杀商品", seckillGoodsService.queryAllPaged(pageModel));
-            case "seckillGoodsName":
-                return Result.success("根据关键字分页查询秒杀商品", seckillGoodsService.selectByKeyWordPaged(param, pageModel));
-            case "seckillGoodsId":
-                return Result.success("根据秒杀商品id查询秒杀商品", seckillGoodsService.selectBySeckillGoodsId(param));
             default:
                 return Result.error("查询失败");
         }

@@ -228,7 +228,7 @@ public class SeckillService {
     }
 
     /**
-     * 预减库存
+     * 预减缓存商品的库存
      * @param seckillGoodsId
      * @return
      */

@@ -29,22 +29,10 @@ public class SeckillOrderController {
     SeckillService seckillService;
 
     @Resource
-    SeckillGoodsService seckillGoodsService;
-
-    @Resource
-    SnowflakeIdWorker snowflakeIdWorker;
-
-    @Resource
-    OrderService orderService;
-
-    @Resource
-    OrderItemService orderItemService;
-
-    @Resource
     SeckillOrderService seckillOrderService;
 
     /**
-     * 生成完整秒杀订单
+     * 生成完整秒杀订单存入数据库
      * @param seckillGoodsId
      * @param shippingId
      * @param path
@@ -54,46 +42,16 @@ public class SeckillOrderController {
     @ResponseBody
     @Transactional
     public Result<String> insert(@RequestParam("seckillGoodsId") String seckillGoodsId, @RequestParam("shippingId") String shippingId, @RequestParam("path") String path) {
-        logger.info("生成完整秒杀订单");
+        logger.info("生成完整秒杀订单存入数据库");
 
         User user = loginSession.getCustomerSession();
-        String userId = user.getUserId();
 
         boolean valid = seckillService.pathValid(user, seckillGoodsId, path);
         if (!valid) {
             return Result.error("请求非法");
         }
 
-        SeckillGoods seckillGoods = seckillGoodsService.selectBySeckillGoodsId(seckillGoodsId);
-
-        //生成订单
-        Order order = new Order();
-        order.setOrderId(String.valueOf(snowflakeIdWorker.nextId()));
-        order.setUserId(userId);
-        order.setOrderPayment(seckillGoods.getSeckillGoodsPrice());
-        order.setOrderStatus(Order.UNPAID);
-        order.setOrderCreateTime(new Date());
-        order.setShippingId(shippingId);
-        orderService.insert(order);
-
-        String orderId = order.getOrderId();
-
-        //生成订单明细
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrderItemId(String.valueOf(snowflakeIdWorker.nextId()));
-        orderItem.setOrderId(orderId);
-        orderItem.setGoodsId(seckillGoodsId);
-        orderItem.setGoodsName(seckillGoods.getSeckillGoodsName());
-        orderItem.setGoodsImage(seckillGoods.getSeckillGoodsImage());
-        orderItem.setGoodsPrice(seckillGoods.getSeckillGoodsPrice());
-        orderItem.setGoodsCount(1);
-        orderItem.setOrderItemSubtotal(seckillGoods.getSeckillGoodsPrice());
-        orderItemService.insert(orderItem);
-
-        //生成秒杀订单
-        SeckillOrder seckillOrder = seckillOrderService.selectByUserIdGoodsId(userId, seckillGoodsId);
-        seckillOrder.setOrderId(orderId);
-        seckillOrderService.insert(seckillOrder);
+        String orderId = seckillOrderService.insert(user.getUserId(), seckillGoodsId, shippingId);
 
         return Result.success("订单已提交，快去看看吧", orderId);
     }

@@ -177,7 +177,7 @@
 		limit #{limit} offset #{offset}
 	</select>
 	
-	<select id="queryAllByUserId" resultMap="OrderManageVo">
+	<select id="queryByUserId" resultMap="OrderManageVo">
 		select o.order_id,
 			   o.user_id,
 			   o.order_payment,

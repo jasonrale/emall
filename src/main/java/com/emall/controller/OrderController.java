@@ -31,22 +31,13 @@ public class OrderController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Resource
-    OrderService orderService;
-
-    @Resource
-    OrderItemService orderItemService;
-
-    @Resource
-    GoodsService goodsService;
-
-    @Resource
-    CartItemService cartItemService;
-
-    @Resource
     LoginSession loginSession;
 
     @Resource
-    SnowflakeIdWorker snowflakeIdWorker;
+    OrderService orderService;
+
+    @Resource
+    GoodsService goodsService;
 
     /**
      * 分页查询当前用户所有订单列表（包含订单明细）
@@ -90,33 +81,14 @@ public class OrderController {
     @Transactional
     public Result<String> normalSubmit(@RequestBody OrderSubmitVo orderSubmitVo) {
         User user = loginSession.getCustomerSession();
-        String userId = user.getUserId();
-
-        Goods goods = orderSubmitVo.getGoods();
-        String shippingId = orderSubmitVo.getShippingId();
-        Integer count = orderSubmitVo.getCount();
-        String goodsId = goods.getGoodsId();
 
         //减库存
-        boolean outOfStock = goodsService.reduceStock(goodsId, count);
+        boolean outOfStock = goodsService.reduceStock(orderSubmitVo.getGoods().getGoodsId(), orderSubmitVo.getCount());
         if (!outOfStock) {
             return Result.error("库存不足");
         }
 
-        //生成订单
-        Order order = new Order(String.valueOf(snowflakeIdWorker.nextId()), userId, goods.getGoodsPrice().multiply(new BigDecimal(count)),
-                Order.UNPAID, new Date(), null, null, null, shippingId);
-
-        orderService.insert(order);
-
-        String orderId = order.getOrderId();
-
-        //生成订单明细
-        OrderItem orderItem = new OrderItem(String.valueOf(snowflakeIdWorker.nextId()), orderId, goodsId, goods.getGoodsName(),
-                goods.getGoodsImage(), goods.getGoodsPrice(), count, order.getOrderPayment());
-
-        orderItemService.insert(orderItem);
-
+        String orderId = orderService.normalSubmit(user.getUserId(), orderSubmitVo);
 
         return Result.success("订单已提交，快去看看吧", orderId);
     }
@@ -150,25 +122,7 @@ public class OrderController {
             return Result.error("库存不足");
         }
 
-        //生成订单
-        Order order = new Order(String.valueOf(snowflakeIdWorker.nextId()), userId, cartOrderSubmitVo.getTotalPrice(), Order.UNPAID,
-                new Date(), null, null, null, cartOrderSubmitVo.getShippingId());
-
-        orderService.insert(order);
-
-        String orderId = order.getOrderId();
-
-        //生成订单明细并删除购物车明细
-        for (CartItem cartItem : cartItemList) {
-            String goodsId = cartItem.getGoodsId();
-            Integer count = cartItem.getGoodsCount();
-
-            OrderItem orderItem = new OrderItem(String.valueOf(snowflakeIdWorker.nextId()), orderId, goodsId, cartItem.getGoodsName(),
-                    cartItem.getGoodsImage(), cartItem.getGoodsPrice(), count, cartItem.getCartItemSubtotal());
-
-            orderItemService.insert(orderItem);
-            cartItemService.deleteByCartItemId(cartItem.getCartItemId());
-        }
+        String orderId = orderService.fromCartSubmit(user.getUserId(), cartOrderSubmitVo);
 
         return Result.success("订单已提交，快去看看吧", orderId);
     }
@@ -194,7 +148,7 @@ public class OrderController {
      */
     @GetMapping("/{listType}/{param}")
     @ResponseBody
-    public Result queryAllByUserId(@Valid PageModel<OrderManageVo> pageModel, @PathVariable("listType") String listType, @PathVariable("param") String param) {
+    public Result queryAllByType(PageModel<OrderManageVo> pageModel, @PathVariable("listType") String listType, @PathVariable("param") String param) {
         logger.info("查询订单--By " + listType + ":" + param + "--第" + pageModel.getCurrentNo() + "页，每页" + pageModel.getPageSize() + "条数据");
 
         switch (listType) {
@@ -203,7 +157,7 @@ public class OrderController {
             case "orderId":
                 return Result.success("根据订单id查询订单", orderService.queryManageByOrderId(param));
             case "userId":
-                return Result.success("根据用户id分页查询订单", orderService.queryAllByUserId(param, pageModel));
+                return Result.success("根据用户id分页查询订单", orderService.queryByUserId(param, pageModel));
             default:
                 return Result.error("查询失败");
         }

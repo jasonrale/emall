@@ -39,7 +39,7 @@ function goodsInit(goodsId) {
             $("#stock").val(goods.goodsStock);
             $.ajax({
                 type: "get",
-                url: "/emall/category",
+                url: "/emall/goods/categoryList",
                 dataType: "json",
                 success: function (data) {
                     var categoryList = data.obj;
@@ -76,7 +76,7 @@ function seckillGoodsInit(seckillGoodsId) {
             $("#stock").val(seckillGoods.seckillGoodsStock);
             $.ajax({
                 type: "get",
-                url: "/emall/category",
+                url: "/emall/goods/categoryList",
                 dataType: "json",
                 success: function (data) {
                     var categoryList = data.obj;

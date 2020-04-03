@@ -26,17 +26,6 @@ public class CategoryController {
     CategoryService categoryService;
 
     /**
-     * 查询所有商品类别
-     * @return
-     */
-    @GetMapping("")
-    @ResponseBody
-    public Result<List<Category>> queryAll() {
-        logger.info("查询所有商品类别");
-        return Result.success("查询所有品类成功", categoryService.queryAll());
-    }
-
-    /**
      * 分页查询所有商品类别
      * @return
      */

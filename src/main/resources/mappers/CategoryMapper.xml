@@ -52,7 +52,7 @@
 		values (#{categoryId,jdbcType=VARCHAR}, #{categoryName,jdbcType=VARCHAR})
 	</insert>
 	
-	<update id="updateByPrimaryKey" parameterType="com.emall.entity.Category">
+	<update id="update" parameterType="com.emall.entity.Category">
 		update category
 		set category_name = #{categoryName,jdbcType=VARCHAR}
 		where category_id = #{categoryId,jdbcType=VARCHAR}

@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 public class RabbitConfig {
-    private static final String SECKILL_QUEUE = "seckill.queue";
-    private static final String SECKILL_EXCHANGE = "seckillExchange";
+    static final String SECKILL_QUEUE = "seckill.queue";
+    static final String SECKILL_EXCHANGE = "seckillExchange";
 //    //Fanout广播
 //    public static final String FANOUT_QUEUE1 = "fanout.queue1";
 //    public static final String FANOUT_QUEUE2 = "fanout.queue2";

@@ -19,9 +19,9 @@ public interface CategoryMapper {
 
     List<Category> adminQueryAll(@Param("limit") long limit, @Param("offset") long offset);
 
-    int insert(Category record);
+    int insert(Category category);
 
-    int updateByPrimaryKey(Category record);
+    int update(Category category);
 
     int count();
 }

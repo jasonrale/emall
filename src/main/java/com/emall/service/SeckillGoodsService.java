@@ -6,6 +6,8 @@ import com.emall.redis.RedisKeyUtil;
 import com.emall.result.Result;
 import com.emall.utils.FutureRunnable;
 import com.emall.utils.PageModel;
+import com.emall.utils.SnowflakeIdWorker;
+import com.emall.utils.UploadUtil;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,13 +27,16 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class SeckillGoodsService {
     @Resource
-    GoodsService goodsService;
-
-    @Resource
     SeckillGoodsMapper seckillGoodsMapper;
 
     @Resource
     RedisTemplate redisTemplate;
+
+    @Resource
+    SnowflakeIdWorker snowflakeIdWorker;
+
+    @Resource
+    UploadUtil uploadUtil;
 
     @Resource
     ScheduledExecutorService scheduleThreadPool;
@@ -173,7 +178,7 @@ public class SeckillGoodsService {
     public boolean pull(String seckillGoodsId) {
         boolean success = seckillGoodsMapper.pull(seckillGoodsId) != 0;
 
-        //清楚秒杀商品缓存
+        //清除秒杀商品缓存
         if (success) {
             String seckillGoodsKey = RedisKeyUtil.SECKILL_GOODS_PREFIX + seckillGoodsId;
             String seckillStockKey = RedisKeyUtil.seckillStockById(seckillGoodsId);
@@ -271,29 +276,39 @@ public class SeckillGoodsService {
 
         if (imageFile == null && detailFile == null) {
             if (seckillGoodsMapper.update(seckillGoods) != 0) {
-                return Result.success("商品修改成功", seckillGoods);
+                return Result.success("秒杀商品修改成功", seckillGoods);
             }
         } else if (imageFile != null && detailFile != null) {
-            List<String> urlList = goodsService.upLoadToServer(imageFile, detailFile, path);
+            List<String> urlList = uploadUtil.uploadToServer(imageFile, detailFile, path);
             seckillGoods.setSeckillGoodsImage(urlList.get(0));
             seckillGoods.setSeckillGoodsDetails(urlList.get(1));
             if (seckillGoodsMapper.update(seckillGoods) != 0) {
-                return Result.success("商品修改成功", seckillGoods);
+                return Result.success("秒杀商品修改成功", seckillGoods);
             }
         } else if (imageFile != null) {
-            List<String> urlList = goodsService.upLoadToServer(imageFile, null, path);
+            List<String> urlList = uploadUtil.uploadToServer(imageFile, null, path);
             seckillGoods.setSeckillGoodsImage(urlList.get(0));
             if (seckillGoodsMapper.update(seckillGoods) != 0) {
-                return Result.success("商品修改成功", seckillGoods);
+                return Result.success("秒杀商品修改成功", seckillGoods);
             }
         } else {
-            List<String> urlList = goodsService.upLoadToServer(null, detailFile, path);
+            List<String> urlList = uploadUtil.uploadToServer(null, detailFile, path);
             seckillGoods.setSeckillGoodsDetails(urlList.get(0));
             if (seckillGoodsMapper.update(seckillGoods) != 0) {
-                return Result.success("商品修改成功", seckillGoods);
+                return Result.success("秒杀商品修改成功", seckillGoods);
             }
         }
 
-        return Result.error("商品修改失败");
+        return Result.error("秒杀商品修改失败");
+    }
+
+    public Result<SeckillGoods> insert(SeckillGoods seckillGoods, MultipartFile imageFile, MultipartFile detailFile, String path) {
+        List<String> urlList = uploadUtil.uploadToServer(imageFile, detailFile, path);
+
+        seckillGoods.setSeckillGoodsId(String.valueOf(snowflakeIdWorker.nextId()));
+        seckillGoods.setSeckillGoodsImage(urlList.get(0));
+        seckillGoods.setSeckillGoodsDetails(urlList.get(1));
+
+        return seckillGoodsMapper.insert(seckillGoods) != 0 ? Result.success("秒杀商品添加成功", seckillGoods) : Result.error("秒杀商品添加失败");
     }
 }

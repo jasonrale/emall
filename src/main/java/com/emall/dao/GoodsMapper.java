@@ -1,5 +1,6 @@
 package com.emall.dao;
 
+import com.emall.entity.Category;
 import com.emall.entity.Goods;
 import org.apache.ibatis.annotations.Param;
 

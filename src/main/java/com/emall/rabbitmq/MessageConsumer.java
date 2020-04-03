@@ -45,7 +45,7 @@ public class MessageConsumer {
 
         SeckillGoods seckillGoods = seckillGoodsService.selectBySeckillGoodsId(seckillGoodsId);
         int stock = seckillGoods.getSeckillGoodsStock();
-        if (stock < 0) {
+        if (stock <= 0) {
             return;
         }
         //判断是否已经秒杀到了
