@@ -98,7 +98,7 @@ function adminQuery(currentNo, pageSize, listType, param) {
                                 "<td>" + goodsList[j].goodsPrice + "元" + "</td>" +
                                 "<td>" + goodsList[j].goodsStock + "件" + "</td>" +
                                 "<td>" + (goodsList[j].goodsStatus === 1 ?
-                                    '<a id="' + goodsId + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'" + goodsId + "'" + ')">下架</a>' :
+                                    '<a id="' + goodsId + '" class="btn btn-xs btn-warning opear" onclick="' + "pull(" + "'" + goodsId + "'," + "'" + listType + "'" + ')">下架</a>' :
                                     '<a id="' + goodsId + '" style="background-color: #55933b" class="btn btn-xs btn-warning opear" onclick="' + "put(" + "'" + goodsId + "', " + "'" + listType + "'" + ')">上架</a>') +
                                 "</td>" +
                                 "<td>" +
