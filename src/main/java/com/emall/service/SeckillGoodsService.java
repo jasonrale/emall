@@ -8,6 +8,8 @@ import com.emall.utils.FutureRunnable;
 import com.emall.utils.PageModel;
 import com.emall.utils.SnowflakeIdWorker;
 import com.emall.utils.UploadUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,8 @@ public class SeckillGoodsService {
 
     @Resource
     ScheduledExecutorService scheduleThreadPool;
+
+    private static final Logger logger = LoggerFactory.getLogger(SeckillGoodsService.class);
 
     /**
      * 管理员分页查询全部秒杀商品
@@ -149,15 +153,15 @@ public class SeckillGoodsService {
                 long end = endTime.getTime() / 1000;
                 long now = System.currentTimeMillis() / 1000;
                 if (now < start) {
-                    System.out.println("秒杀商品" + seckillGoodsId + "准备中");
+                    logger.info("秒杀商品" + seckillGoodsId + "准备中");
                 } else if (now == start) {
                     seckillGoodsMapper.changeStatus(seckillGoodsId, SeckillGoods.ONGOING);
-                    System.out.println("秒杀商品" + seckillGoodsId + "开始");
+                    logger.info("秒杀商品" + seckillGoodsId + "开始");
                 } else if (now < end) {
-                    System.out.println("秒杀商品" + seckillGoodsId + "进行中");
+                    logger.info("秒杀商品" + seckillGoodsId + "进行中");
                 } else if (now > end) {
                     seckillGoodsMapper.changeStatus(seckillGoodsId, SeckillGoods.COMPLETE);
-                    System.out.println("秒杀商品" + seckillGoodsId + "已结束");
+                    logger.info("秒杀商品" + seckillGoodsId + "已结束");
                     getFuture().cancel(false);
                 }
             }
@@ -245,17 +249,6 @@ public class SeckillGoodsService {
         }
 
         return seckillGoodsList;
-    }
-
-    /**
-     * 数据库减库存
-     * @param seckillGoods
-     * @return
-     */
-    public boolean reduceStock(SeckillGoods seckillGoods) {
-        String seckillGoodsId = seckillGoods.getSeckillGoodsId();
-
-        return seckillGoodsMapper.reduceStock(seckillGoodsId) != 0;
     }
 
     /**

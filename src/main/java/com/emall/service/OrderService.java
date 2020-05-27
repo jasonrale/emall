@@ -183,6 +183,30 @@ public class OrderService {
     }
 
     /**
+     * 减库存
+     *
+     * @param goodsId
+     * @param count
+     * @return
+     */
+    @Transactional
+    public boolean reduceStock(String goodsId, Integer count) {
+        //先减库存
+        boolean success = orderMapper.reduceStock(goodsId, count) != 0;
+
+        if (success) {
+            String goodsKey = RedisKeyUtil.GOODS_PREFIX + goodsId;
+
+            //缓存失效
+            if (redisTemplate.hasKey(goodsKey)) {
+                redisTemplate.delete(goodsKey);
+            }
+        }
+
+        return success;
+    }
+
+    /**
      * 订单提交（立即购买）
      *
      * @param userId

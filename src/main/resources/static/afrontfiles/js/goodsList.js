@@ -51,7 +51,7 @@ function listByKey(keyWord, sort, currentNo, pageSize) {
                     for (var i = 0; i < goodsList.length; i++) {
                         var element = '<li class="p-item">' +
                             '<div class="p-img-con">' +
-                            '<a class="link" href="detail.html?goodsId=' + goodsList[i].goodsId + '">' +
+                            '<a class="link" target="_blank" href="detail.html?goodsId=' + goodsList[i].goodsId + '">' +
                             '<img class="p-img" src="' + goodsList[i].goodsImage + '" alt="' + goodsList[i].goodsName + '">' +
                             "</a>" +
                             "</div>" +
@@ -138,7 +138,7 @@ function listByCategory(categoryId, sort, currentNo, pageSize) {
                     for (var i = 0; i < goodsList.length; i++) {
                         var element = '<li class="p-item">' +
                             '<div class="p-img-con">' +
-                            '<a class="link" href="detail.html?goodsId=' + goodsList[i].goodsId + '">' +
+                            '<a class="link" target="_blank" href="detail.html?goodsId=' + goodsList[i].goodsId + '">' +
                             '<img class="p-img" src="' + goodsList[i].goodsImage + '" alt="' + goodsList[i].goodsName + '">' +
                             "</a>" +
                             "</div>" +

@@ -35,18 +35,22 @@ function seckillDetail(seckillGoodsId) {
                     $("#goodsStock").html(stock + "件");
                     if (status === 1) {
                         $("#goodsStatus").html("准备中");
+                        $("#seckill").css("display", "none");
                         $("#countDown").html(remainSeconds);
                     } else if (status === 2) {
                         $("#goodsStatus").html("进行中");
                         $("#countDown").html(remainSeconds).css("display", "none");
                         $("#captchaImg").attr("src", "/emall/seckill/" + seckillGoodsId + "/captcha");
                         $("#captcha").css("display", "block");
+                        $("#seckill").replaceWith('<input type="button" id="seckill" class="seckill" onclick="captchaPath(' + "'" + seckillGoodsId + "'" + ')" value="立即秒杀">');
+                        $("#seckill").css("display", "block");
                     } else {
                         $("#goodsStatus").html("已结束");
+                        $("#seckill").attr("disabled", true).css("display", "none");
                         $("#countDown").html(remainSeconds).css("display", "none");
                     }
 
-                    $("#seckill").replaceWith('<input type="button" id="seckill" class="seckill" onclick="captchaPath(' + "'" + seckillGoodsId + "'" + ')" value="立即秒杀">');
+
                 } else {
                     $("#goodsStock").html(stock + "件");
                     if (status === 3) {
@@ -79,7 +83,7 @@ function countDown(timeFlag, stock, goingSeconds, seckillGoodsId) {
     if (remainSeconds > 0) {//秒杀准备中，倒计时
         timeFlag = true;
         $("#goodsStatus").html("准备中");
-        $("#seckill").attr("disabled", true);
+        $("#seckill").css("display", "none");
         $("#countDown").html(remainSeconds - 1);
         $("#remainSeconds").val(remainSeconds - 1);
         timeout = setTimeout(function () {
@@ -91,7 +95,8 @@ function countDown(timeFlag, stock, goingSeconds, seckillGoodsId) {
         $("#captchaImg").attr("src", "/emall/seckill/" + seckillGoodsId + "/captcha");
         $("#captcha").css("display", "block");
         $("#goodsStatus").html("进行中");
-        $("#seckill").attr("disabled", false);
+        $("#seckill").replaceWith('<input type="button" id="seckill" class="seckill" onclick="captchaPath(' + "'" + seckillGoodsId + "'" + ')" value="立即秒杀">');
+        $("#seckill").css("display", "block");
         $("#countDown").html(remainSeconds - 1);
         $("#remainSeconds").val(remainSeconds - 1);
         timeout = setTimeout(function () {
@@ -105,12 +110,11 @@ function countDown(timeFlag, stock, goingSeconds, seckillGoodsId) {
             $("#goodsStatus").html("库存不足");
             $("#captcha").css("display", "none");
             $("#seckill").replaceWith('<input type="button" id="seckill" class="seckill" value="库存不足">');
-            $("#seckill").attr("disabled", true);
+            $("#seckill").attr("disabled", true).css("display", "none");
             $("#countDown").html(remainSeconds - 1).css("display", "none");
         } else {
             $("#captcha").css("display", "block");
             $("#goodsStatus").html("进行中");
-            $("#seckill").attr("disabled", false);
             $("#countDown").html(remainSeconds - 1);
         }
         $("#remainSeconds").val(remainSeconds - 1);
@@ -121,7 +125,7 @@ function countDown(timeFlag, stock, goingSeconds, seckillGoodsId) {
         $("#countDownDiv").css("display", "none");
         $("#captcha").css("display", "none");
         $("#seckill").replaceWith('<input type="button" id="seckill" class="seckill" value="已结束">');
-        $("#seckill").attr("disabled", true);
+        $("#seckill").attr("disabled", true).css("display", "none");
         $("#goodsStatus").html("已结束");
         if (timeFlag) {
             clearTimeout(timeout);
@@ -136,7 +140,7 @@ function countDown(timeFlag, stock, goingSeconds, seckillGoodsId) {
 function captchaPath(seckillGoodsId) {
     var captchaResult = $("#captchaResult").val();
     if (captchaResult.trim() === "") {
-        layer.msg("请输入验证码", {time: 1000});
+        layer.msg("请输入验证码计算结果", {time: 1000});
         return false;
     } else if (isNaN(captchaResult)) {
         layer.msg("请输入正确格式的计算结果", {time: 1200});

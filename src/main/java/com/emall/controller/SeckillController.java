@@ -81,7 +81,7 @@ public class SeckillController {
         logger.info("验证计算结果并生成秒杀路径参数");
 
         User user = loginSession.getCustomerSession();
-        Result<String> result = seckillService.checkCaptchaResult(loginSession.getCustomerSession(), seckillGoodsId, captchaResult);
+        Result<String> result = seckillService.checkCaptchaResult(user, seckillGoodsId, captchaResult);
         if (!result.isStatus()) {
             return result;
         }

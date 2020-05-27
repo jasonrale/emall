@@ -108,7 +108,7 @@ function submitValid() {
             success: function (data) {
                 if (data.status === true) {
                     layer.msg("注册成功", {time: 800}, function () {
-                        $(window).attr("location", "/result/result.html?resultType=register");
+                        $(window).attr('location', '../result/result.html?resultType=register');
                     });
                 } else {
                     layer.msg(data.msg, {time : 1000})

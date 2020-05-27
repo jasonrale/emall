@@ -36,9 +36,6 @@ public class OrderController {
     @Resource
     OrderService orderService;
 
-    @Resource
-    GoodsService goodsService;
-
     /**
      * 分页查询当前用户所有订单列表（包含订单明细）
      * @param pageModel
@@ -83,7 +80,7 @@ public class OrderController {
         User user = loginSession.getCustomerSession();
 
         //减库存
-        boolean outOfStock = goodsService.reduceStock(orderSubmitVo.getGoods().getGoodsId(), orderSubmitVo.getCount());
+        boolean outOfStock = orderService.reduceStock(orderSubmitVo.getGoods().getGoodsId(), orderSubmitVo.getCount());
         if (!outOfStock) {
             return Result.error("库存不足");
         }
@@ -103,7 +100,6 @@ public class OrderController {
     @Transactional
     public Result<String> fromCartSubmit(@RequestBody CartOrderSubmitVo cartOrderSubmitVo) {
         User user = loginSession.getCustomerSession();
-        String userId = user.getUserId();
 
         //减库存
         boolean success = true;
@@ -112,7 +108,7 @@ public class OrderController {
             String goodsId = cartItem.getGoodsId();
             Integer count = cartItem.getGoodsCount();
 
-            if (!goodsService.reduceStock(goodsId, count)) {
+            if (!orderService.reduceStock(goodsId, count)) {
                 success = false;
                 break;
             }
@@ -203,7 +199,7 @@ public class OrderController {
     @ResponseBody
     public Result<String> received(@RequestBody String orderId) {
         logger.info("确认收货，订单号=" + orderId);
-        return orderService.received(orderId) ? Result.success("订单发货成功", orderId) : Result.error("订单发货失败");
+        return orderService.received(orderId) ? Result.success("订单收货成功", orderId) : Result.error("订单收货失败");
     }
 
     /**

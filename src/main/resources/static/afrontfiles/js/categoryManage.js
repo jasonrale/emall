@@ -31,7 +31,7 @@ function adminQueryAll(currentNo, pageSize) {
                         "<td>" + categoryList[i].categoryName + "</td>" +
                         "<td>" +
                         '<a class="opera" onclick="update(' + "'" + categoryList[i].categoryId + "'" + ')">修改名称</a>' +
-                        '<a class="opera" onclick="del(' + "'" + categoryList[i].categoryId + "'" + ')">删除品类</a>' +
+                        '<a class="opera" onclick="del(' + "'" + categoryList[i].categoryId + "'" + ')">删除类别</a>' +
                         "</td>" +
                         "</tr>";
                     tbody.append(element);
@@ -89,7 +89,7 @@ function insert() {
         layer.open({
             id: 1,
             type: 1,
-            title: '添加品类',
+            title: '添加类别',
             skin: 'layui-layer-rim',
             area: ['400px', '160px', 'center'],
             btnAlign: 'c',
@@ -105,7 +105,7 @@ function insert() {
             btn1: function (index) {
                 var categoryName = $("#add").val();
                 if (categoryName === null || categoryName === "") {
-                    layer.msg("品类名称不能为空", {time : 1000});
+                    layer.msg("类别名称不能为空", {time: 1000});
                 } else {
                     $.ajax({
                         type: "PUT",
@@ -132,7 +132,7 @@ function insert() {
 }
 
 /**
- * 修改品类名称
+ * 修改类别名称
  */
 function update(categoryId) {
     layer.open({
@@ -154,7 +154,7 @@ function update(categoryId) {
         btn1: function (index) {
             var categoryName = $("#add").val();
             if (categoryName === undefined || categoryName.trim() === "") {
-                layer.msg("品类名称不能为空", {time : 1000});
+                layer.msg("类别名称不能为空", {time: 1000});
             } else {
                 var category = {"categoryId": categoryId, "categoryName": categoryName};
                 $.ajax({
@@ -182,7 +182,7 @@ function update(categoryId) {
 }
 
 /**
- * 删除品类
+ * 删除类别
  */
 function del(categoryId) {
     layer.confirm(

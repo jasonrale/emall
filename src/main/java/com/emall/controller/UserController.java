@@ -132,6 +132,7 @@ public class UserController {
      */
     @GetMapping("/logout")
     public String logout() {
+        logger.info("注销");
         SecurityUtils.getSubject().logout(); // session删除、RememberMe cookie也将被删除
         return "redirect:/user/login.html";
     }
@@ -147,7 +148,7 @@ public class UserController {
         logger.info("修改用户信息");
 
         Result result = userService.userUpdate(userUpdateVo) ?
-                Result.success("用户信息修改成功", null) : Result.error("用户信息修改失败");
+                Result.success("用户信息修改成功", null) : Result.error("用户名已存在");
 
         if (result.isStatus()) {
             User user = loginSession.getCustomerSession();

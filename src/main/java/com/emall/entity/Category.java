@@ -17,6 +17,6 @@ import javax.validation.constraints.NotEmpty;
 public class Category {
     private String categoryId;          //商品类别id
 
-    @NotEmpty(message = "品类名称不能为空")
+    @NotEmpty(message = "类别名称不能为空")
     private String categoryName;        //商品类别名称
 }

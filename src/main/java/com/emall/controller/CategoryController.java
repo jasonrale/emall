@@ -53,12 +53,12 @@ public class CategoryController {
      */
     @PutMapping("/admin")
     @ResponseBody
-    public Result<String> insert(@RequestBody String categoryName) {
+    public Result<String> insert(String categoryName) {
         logger.info("添加商品类别--" + categoryName);
         if (StringUtils.isEmpty(categoryName)) {
-            return Result.error("品类名称不能为空");
+            return Result.error("类别名称不能为空");
         }
-        return categoryService.insert(categoryName) ? Result.success("添加品类成功", categoryName) : Result.error("添加品类失败");
+        return categoryService.insert(categoryName) ? Result.success("添加类别成功", categoryName) : Result.error("添加类别失败");
     }
 
     /**
@@ -69,7 +69,7 @@ public class CategoryController {
     @ResponseBody
     public Result<Category> update(@Valid @RequestBody Category category) {
         logger.info("修改商品类别--" + category);
-        return categoryService.update(category) ? Result.success("修改品类名称成功", category) : Result.error("修改品类名称失败");
+        return categoryService.update(category) ? Result.success("修改类别名称成功", category) : Result.error("修改类别名称失败");
     }
 
     /**

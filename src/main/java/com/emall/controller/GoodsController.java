@@ -32,9 +32,6 @@ public class GoodsController {
     @Resource
     GoodsService goodsService;
 
-    @Resource
-    SeckillGoodsService seckillGoodsService;
-
     /**
      * 查询所有商品类别(添加或编辑商品时下拉栏)
      *

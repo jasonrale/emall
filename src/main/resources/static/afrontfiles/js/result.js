@@ -3,8 +3,6 @@ $(document).ready(function () {
     var resultType = (getUrlParam("resultType"));
     if (resultType === "register") {
         $(".register-success").css("display", "block");
-    } else if (resultType === "reset") {
-        $(".pass-reset-success").css("display", "block");
     } else if (resultType === "cart") {
         $(".cart-add-success").css("display", "block");
     } else if (resultType === "payment") {

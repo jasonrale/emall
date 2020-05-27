@@ -100,7 +100,7 @@ function addSubmit() {
     }
 
     var formData;
-    if (goodsActivity === 0) {
+    if (goodsActivity == 0) {
         var goods = {
             "goodsName": goodsName,
             "goodsDescribe": goodsDescribe,

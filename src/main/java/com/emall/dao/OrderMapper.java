@@ -20,6 +20,8 @@ public interface OrderMapper {
 
     OrderVo queryByOrderId(@Param("orderId") String orderId);
 
+    int reduceStock(@Param("goodsId") String goodsId, @Param("count") Integer count);
+
     int insert(Order order);
 
     Order selectByOrderId(@Param("orderId") String orderId);

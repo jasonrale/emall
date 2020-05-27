@@ -268,7 +268,7 @@ function deleteShipping(shippingId) {
                 success: function (data) {
                     if (data.status === true) {
                         layer.msg(data.msg, {time: 1000}, function () {
-                            window.location.reload();
+                            queryAllShipping();
                         });
                     } else {
                         layer.msg(data.msg);

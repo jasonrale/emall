@@ -176,7 +176,7 @@ public class SeckillGoodsController {
             return Result.error("秒杀商品同时上架不可超过十二种");
         }
 
-        return seckillGoodsService.put(seckillGoodsId, startTime, endTime) ? Result.success("商品上架成功", null) : Result.error("商品上架失败");
+        return seckillGoodsService.put(seckillGoodsId, startTime, endTime) ? Result.success("秒杀商品上架成功", null) : Result.error("秒杀商品上架失败");
     }
 
     /**
@@ -190,7 +190,7 @@ public class SeckillGoodsController {
     public Result pull(@RequestBody String seckillGoodsId) {
         logger.info("根据秒杀商品id=" + seckillGoodsId + "下架");
 
-        return seckillGoodsService.pull(seckillGoodsId) ? Result.success("商品下架成功", null) : Result.error("商品下架失败");
+        return seckillGoodsService.pull(seckillGoodsId) ? Result.success("秒杀商品下架成功", null) : Result.error("秒杀商品下架失败");
     }
 
     /**

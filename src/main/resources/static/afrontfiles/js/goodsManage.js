@@ -474,7 +474,7 @@ function delGoods(goodsId) {
                             layer.close(index);
                             var listType = $("#listType").val();
                             var param = $("#param").val();
-                            var currentNo = $("#currentNo").val();
+                            var currentNo = $("#currentNo").val() * 1;
                             adminQuery(currentNo, 10, listType, param);
                         });
                     } else {
@@ -507,7 +507,7 @@ function delSeckillGoods(seckillGoodsId) {
                     if (data.status === true) {
                         layer.msg(data.msg, {time: 800}, function () {
                             layer.close(index);
-                            var currentNo = $("#currentNo").val();
+                            var currentNo = $("#currentNo").val() * 1;
                             adminQuery(currentNo, 10, "seckillAll", "none")
                         });
                     } else {

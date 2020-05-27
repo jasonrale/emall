@@ -1,5 +1,6 @@
 package com.emall.service;
 
+import com.emall.dao.SeckillGoodsMapper;
 import com.emall.entity.SeckillGoods;
 import com.emall.entity.SeckillOrder;
 import com.emall.entity.User;
@@ -32,10 +33,10 @@ public class SeckillService {
     SnowflakeIdWorker snowflakeIdWorker;
 
     @Resource
-    SeckillGoodsService seckillGoodsService;
+    SeckillOrderService seckillOrderService;
 
     @Resource
-    SeckillOrderService seckillOrderService;
+    SeckillGoodsMapper seckillGoodsMapper;
 
     //验证码数学运算符
     private static char[] ops = new char[]{'+', '-', '*'};
@@ -180,7 +181,7 @@ public class SeckillService {
     @Transactional
     public SeckillOrder seckill(User user, SeckillGoods seckillGoods) {
         //减库存 写入秒杀订单
-        boolean success = seckillGoodsService.reduceStock(seckillGoods);
+        boolean success = reduceStock(seckillGoods.getSeckillGoodsId());
         if (success) {
             return seckillOrderService.insertCache(user, seckillGoods);
         } else {
@@ -188,6 +189,16 @@ public class SeckillService {
             setStockOver(seckillGoods.getSeckillGoodsId());
             return null;
         }
+    }
+
+    /**
+     * 数据库减库存
+     *
+     * @param seckillGoodsId
+     * @return
+     */
+    public boolean reduceStock(String seckillGoodsId) {
+        return seckillGoodsMapper.reduceStock(seckillGoodsId) != 0;
     }
 
     /**

@@ -37,6 +37,10 @@ function detail(goodsId) {
     });
 }
 
+/**
+ * 商品数量文本框格式验证
+ * @param goodsStock
+ */
 function countValid(goodsStock) {
     var element = document.getElementById("count");
     element.onkeyup = function () {
@@ -115,7 +119,7 @@ function cartAdd(goods) {
             contentType: 'application/json;charset=UTF-8',
             success: function (data) {
                 if (data.status === true) {
-                    layer.msg(data.msg, {time: 1000});
+                    $(window).attr('location', '../result/result.html?resultType=cart');
                 } else {
                     if (data.msg === "Authc") {
                         $(window).attr("location", "../user/login.html");

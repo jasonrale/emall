@@ -147,6 +147,13 @@
 		where order_id = #{orderId,jdbcType=VARCHAR}
 	</select>
 	
+	<update id="reduceStock">
+		update goods
+		set goods_stock = goods_stock - #{count,jdbcType=INTEGER}
+		where goods_id = #{goodsId,jdbcType=VARCHAR}
+		  and goods_stock >= #{count,jdbcType=INTEGER};
+	</update>
+	
 	<insert id="insert" parameterType="com.emall.entity.Order">
 		insert into `order` (order_id, user_id, order_payment, order_status, order_create_time, order_payment_time,
 							 order_send_time, order_end_time, shipping_id)
