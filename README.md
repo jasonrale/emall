@@ -1,2 +1,2 @@
 # emall
-Emall for graduation project.
+Emall for lesson.
